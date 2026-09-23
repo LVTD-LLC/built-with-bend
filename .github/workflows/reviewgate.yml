@@ -1,0 +1,109 @@
+
+name: ReviewGate
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  issue_comment:
+    types: [created]
+
+permissions: {}
+
+jobs:
+  availability:
+    name: Check ReviewGate configuration
+    if: >-
+      ${{
+        (github.event_name == 'pull_request' &&
+         github.event.pull_request.head.repo.full_name == github.repository &&
+         github.actor != 'dependabot[bot]') ||
+        (github.event_name == 'issue_comment' &&
+         github.event.action == 'created' &&
+         github.event.issue.pull_request &&
+         github.event.issue.state == 'open' &&
+         github.event.comment.body == '@reviewgate review' &&
+         contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association))
+      }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    permissions: {}
+    outputs:
+      enabled: ${{ steps.key.outputs.enabled }}
+    steps:
+      - name: Check whether the review key is configured
+        id: key
+        shell: bash
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: |
+          if [ -n "$OPENROUTER_API_KEY" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "ReviewGate skipped: OPENROUTER_API_KEY is not configured." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+  review:
+    needs: availability
+    if: >-
+      ${{
+        needs.availability.outputs.enabled == 'true' &&
+        github.event_name == 'pull_request' &&
+        github.event.pull_request.head.repo.full_name == github.repository &&
+        github.actor != 'dependabot[bot]'
+      }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      actions: read
+      attestations: read
+      contents: read
+      pull-requests: write
+      issues: write
+      checks: write
+      statuses: read
+    concurrency:
+      group: reviewgate-${{ github.workflow }}-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: LVTD-LLC/reviewgate@main
+        with:
+          openrouter_api_key: ${{ secrets.OPENROUTER_API_KEY }}
+          min_severity: P4
+          angle_timeout_seconds: 300
+          total_timeout_seconds: 660
+
+  rereview:
+    needs: availability
+    if: >-
+      ${{
+        needs.availability.outputs.enabled == 'true' &&
+        github.event_name == 'issue_comment' &&
+        github.event.action == 'created' &&
+        github.event.issue.pull_request &&
+        github.event.issue.state == 'open' &&
+        github.event.comment.body == '@reviewgate review' &&
+        contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)
+      }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: write
+      attestations: read
+      contents: read
+      pull-requests: write
+      issues: write
+    concurrency:
+      group: reviewgate-rereview-${{ github.event.comment.id }}
+      cancel-in-progress: false
+    steps:
+      - uses: LVTD-LLC/reviewgate@main
+        with:
+          mode: rereview
+          review_workflow: reviewgate.yml
