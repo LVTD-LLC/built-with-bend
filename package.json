@@ -1,0 +1,31 @@
+{
+  "name": "built_with_bend",
+  "version": "1.0.0",
+  "description": "A human-reviewed directory of apps, sites, and projects built with Bend 2.",
+  "scripts": {
+    "build": "node scripts/build-assets.mjs",
+    "lint": "eslint \"frontend/src/js/**/*.js\" \"scripts/**/*.mjs\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LVTD-LLC/built-with-bend"
+  },
+  "keywords": [
+    "django",
+    "htmx",
+    "alpine",
+    "frontend"
+  ],
+  "author": "LVTD, LLC",
+  "license": "MIT",
+  "engines": {
+    "node": ">=24.15.0"
+  },
+  "bugs": {
+    "url": "https://github.com/LVTD-LLC/built-with-bend/issues"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.1"
+  },
+  "dependencies": {}
+}

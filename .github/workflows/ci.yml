@@ -1,0 +1,101 @@
+name: CI and deploy
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  checks:
+    name: Quality and PostgreSQL tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: built_with_bend
+          POSTGRES_USER: bend
+          POSTGRES_PASSWORD: ci-only-password
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U bend -d built_with_bend"
+          --health-interval 5s --health-timeout 5s --health-retries 15
+    env:
+      DJANGO_READ_DOT_ENV: '0'
+      SECRET_KEY: ci-only-not-used-in-production
+      ENVIRONMENT: test
+      SITE_URL: http://localhost:8000
+      DATABASE_URL: postgres://bend:ci-only-password@127.0.0.1:5432/built_with_bend
+    steps:
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: uv sync --locked
+      - run: npm ci --include=dev
+      - run: make ci-local
+  image:
+    name: Production container build
+    needs: checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: deployment/Dockerfile
+          push: false
+          build-args: DEPLOYMENT_REVISION=${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+  deploy:
+    name: Deploy and verify live revision
+    needs: [checks, image]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository == 'LVTD-LLC/built-with-bend'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    concurrency:
+      group: built-with-bend-production
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+      - name: Skip superseded commits
+        id: latest
+        run: |
+          if [ "$(git ls-remote origin refs/heads/main | cut -f1)" = "$GITHUB_SHA" ]; then
+            echo 'current=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'A newer main revision exists; skipping this deployment.'
+          fi
+      - name: Create immutable deployment archive
+        if: steps.latest.outputs.current == 'true' 
+        run: |
+          git archive --format=tar HEAD > /tmp/bend-deploy.tar
+          mkdir /tmp/bend-definition
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          definition = {'schemaVersion': 2, 'dockerfileLines': ['FROM scratch']}
+          lines = Path('deployment/Dockerfile').read_text().replace('ARG DEPLOYMENT_REVISION=development', 'ARG DEPLOYMENT_REVISION=' + os.environ['GITHUB_SHA']).splitlines()
+          definition['dockerfileLines'] = lines
+          Path('/tmp/bend-definition/captain-definition').write_text(json.dumps(definition))
+          PY
+          tar --append --file=/tmp/bend-deploy.tar --directory=/tmp/bend-definition captain-definition
+      - name: Deploy with app-scoped token and verify SHA
+        if: steps.latest.outputs.current == 'true' 
+        env:
+          CAPROVER_SERVER: https://captain.cr.lvtd.dev
+          CAPROVER_APP_NAME: built-with-bend
+          CAPROVER_APP_TOKEN: ${{ secrets.APP_TOKEN }}
+          PRODUCTION_URL: https://builtwithbend.com
+        run: node scripts/deploy-caprover.mjs /tmp/bend-deploy.tar "$GITHUB_SHA"
