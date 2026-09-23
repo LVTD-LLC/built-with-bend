@@ -5,6 +5,7 @@ python-quality:
 	uv run ruff format --check .
 frontend-check:
 	npm run lint
+	node --test scripts/deploy-caprover.test.mjs
 	npm run build
 	uv run djlint frontend/templates --check
 migrations-check:

@@ -100,7 +100,8 @@ both, and deploys **only this repository's main** after checks pass. Deployments
 are serialized and use the app-scoped `APP_TOKEN` GitHub secret, never the server
 password. The action archives the exact git SHA, embeds that revision in the Docker build,
 submits the source through CapRover's app-token API, and waits for `/health/` to
-report that exact revision. CapRover builds the same Dockerfile validated in CI.
+report that exact revision in 12 consecutive checks over at least 55 seconds. A local
+container healthcheck gates Swarm readiness on the process and database. CapRover builds the same Dockerfile validated in CI.
 A successful upload alone is not a successful deployment.
 
 Runtime: `ENVIRONMENT=prod`, `DEBUG=False`, strong `SECRET_KEY`, PostgreSQL

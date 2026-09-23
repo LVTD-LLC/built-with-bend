@@ -16,6 +16,7 @@ with release sections grouped by ISO 8601 date headings (`## YYYY-MM-DD`).
 ## 2026-09-23
 
 - Create the non-root runtime home directory so Gunicorn can initialize its local control socket.
+- Gate rolling updates on a local process/database healthcheck and require 12 consecutive live revision checks; cover mixed healthy/broken rollouts with regression tests.
 
 - Generate through hosted Djass job 33 and specialize into Built with Bend.
 - Add curated project/source models, search/filter/pagination, detail pages,

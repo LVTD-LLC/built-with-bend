@@ -23,4 +23,5 @@ COPY --from=assets /app/frontend/static ./frontend/static
 RUN useradd --system --create-home --home-dir /home/app --uid 10001 app && chown -R app:app /app
 USER app
 EXPOSE 8000
+HEALTHCHECK --interval=10s --timeout=5s --start-period=150s --retries=3 CMD ["python", "deployment/healthcheck.py"]
 CMD ["sh", "deployment/entrypoint.sh"]
