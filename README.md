@@ -4,7 +4,9 @@ A human-reviewed directory of apps, games, tools, and experiments built with
 Bend 2.
 
 **[Explore the collection](https://builtwithbend.com)** ·
-**[Submit a build](https://builtwithbend.com/submit/)**
+**[Submit a build](https://builtwithbend.com/submit/)** ·
+**[Guides](https://builtwithbend.com/docs/)** ·
+**[Blog](https://builtwithbend.com/blog/)**
 
 Find projects by category, source, or search. Each listing links to its original
 sources, with a live site and repository when available. Closed-source projects

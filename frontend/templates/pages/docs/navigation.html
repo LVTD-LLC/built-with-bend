@@ -1,0 +1,14 @@
+{% for section in navigation %}
+    <div class="docs-nav-section">
+        <h2 class="docs-nav-heading">{{ section.category }}</h2>
+        <ul>
+            {% for page in section.pages %}
+                <li>
+                    <a class="app-focus"
+                       href="{{ page.url }}"
+                       {% if current_category == section.category_slug and current_page == page.slug %}aria-current="page"{% endif %}>{{ page.title }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endfor %}

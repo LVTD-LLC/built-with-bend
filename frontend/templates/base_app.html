@@ -1,0 +1,161 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="antialiased">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        {% include "components/favicon.html" %}
+        {% block meta %}
+            <title>Built with Bend</title>
+            <meta name="description"
+                  content="A human-reviewed directory of apps, sites, and projects built with Bend 2." />
+            <meta name="robots" content="noindex, nofollow" />
+        {% endblock meta %}
+        {% include "components/posthog.html" %}
+        <script>
+    // Set theme early to avoid a flash of incorrect theme.
+    (function () {
+      try {
+        var theme = localStorage.getItem("theme");
+        if (!theme) {
+          theme = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        }
+        document.documentElement.classList.toggle("dark", theme === "dark");
+      } catch (e) {
+        // no-op
+      }
+    })();
+        </script>
+        <link rel="stylesheet" href="{% static 'css/app.css' %}" />
+        <style>[x-cloak] { display: none !important; }</style>
+        <script>
+    document.addEventListener("htmx:configRequest", function (event) {
+      event.detail.headers["X-CSRFToken"] = "{{ csrf_token }}";
+    });
+    document.addEventListener("DOMContentLoaded", function () {
+      if (window.htmx) {
+        window.htmx.config.historyRestoreAsHxRequest = false;
+      }
+    });
+        </script>
+        <script defer src="{% static 'vendors/js/htmx.min.js' %}"></script>
+        <script defer src="{% static 'vendors/js/alpine.min.js' %}"></script>
+        <script type="module" src="{% static 'js/app.js' %}"></script>
+    </head>
+    <body {% if posthog_pageview_enabled %}data-posthog-pageview-enabled="true" data-posthog-route="{{ posthog_pageview_route }}" data-posthog-content-group="{{ posthog_content_group }}"{% endif %}
+          {% if request.user.is_authenticated %}data-user-settings-cache{% endif %}>
+        {% block default_messages %}
+            {% include "components/messages.html" with messages=messages %}
+        {% endblock default_messages %}
+        <div class="min-h-dvh bg-white text-gray-950 dark:bg-gray-950 dark:text-gray-100">
+            <header class="sticky top-0 z-20 border-b border-gray-950/10 bg-white dark:border-white/10 dark:bg-gray-950">
+                <div class="mx-auto flex min-h-16 max-w-7xl items-center gap-8 px-6 font-mono lg:px-8">
+                    <a href="{% url 'home' %}"
+                       class="app-focus shrink-0"
+                       aria-label="Built with Bend homepage">{% include "components/brand_mark.html" %}</a>
+                    <nav class="hidden items-center gap-6 text-sm text-gray-500 dark:text-gray-400 lg:flex"
+                         aria-label="Product navigation">
+                        <a href="{% url 'home' %}"
+                           class="app-focus hover:text-gray-950 dark:hover:text-white {% if request.resolver_match.url_name == 'home' %}text-gray-950 dark:text-white{% endif %}"
+                           data-shortcut-key="h"
+                           data-shortcut-label="Dashboard">dashboard</a>
+                        <a href="{% url 'docs_home' %}"
+                           class="app-focus hover:text-gray-950 dark:hover:text-white {% if 'docs' in request.resolver_match.url_name %}text-gray-950 dark:text-white{% endif %}"
+                           data-shortcut-key="d"
+                           data-shortcut-label="Docs">docs</a>
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'settings' %}"
+                               class="app-focus hover:text-gray-950 dark:hover:text-white {% if request.resolver_match.url_name == 'settings' %}text-gray-950 dark:text-white{% endif %}"
+                               data-shortcut-key="s"
+                               data-shortcut-label="Settings">settings</a>
+                            {% if user.is_superuser %}
+                                <a href="{% url 'admin_panel' %}"
+                                   class="app-focus hover:text-gray-950 dark:hover:text-white {% if request.resolver_match.url_name == 'admin_panel' %}text-gray-950 dark:text-white{% endif %}"
+                                   data-shortcut-key="a"
+                                   data-shortcut-label="Admin">admin</a>
+                            {% endif %}
+                        {% endif %}
+                    </nav>
+                    <div class="ml-auto hidden items-center gap-5 text-sm text-gray-500 dark:text-gray-400 lg:flex">
+                        <button type="button"
+                                data-theme-toggle
+                                class="app-focus hover:text-gray-950 dark:hover:text-white"
+                                aria-label="Toggle theme"
+                                data-shortcut-key="t"
+                                data-shortcut-label="Toggle theme">
+                            <span data-theme-label>Theme</span>
+                        </button>
+                        {% if user.is_authenticated %}
+                            <form method="post" action="{% url 'account_logout' %}">
+                                {% csrf_token %}
+                                <button type="submit"
+                                        class="app-focus hover:text-gray-950 dark:hover:text-white">sign out</button>
+                            </form>
+                        {% else %}
+                            <a href="{% url 'account_login' %}"
+                               class="app-focus hover:text-gray-950 dark:hover:text-white"
+                               data-shortcut-key="i"
+                               data-shortcut-label="Sign in">sign in</a>
+                            <a href="{% url 'account_signup' %}"
+                               class="app-focus rounded-lg border border-gray-950/20 px-3 py-2 font-semibold text-gray-950 hover:border-gray-950/50 dark:border-white/20 dark:text-white dark:hover:border-white/50"
+                               data-shortcut-key="u"
+                               data-shortcut-label="Sign up">get started</a>
+                        {% endif %}
+                    </div>
+                    <details class="relative ml-auto lg:hidden"
+                             @keydown.escape.window="$el.open = false"
+                             @click.outside="$el.open = false">
+                        <summary class="app-focus cursor-pointer list-none text-sm">menu</summary>
+                        <nav class="absolute right-0 top-9 z-30 w-56 rounded-xl bg-white p-5 shadow-lg ring-1 ring-gray-950/10 dark:bg-gray-900 dark:shadow-none dark:ring-white/10"
+                             aria-label="Mobile product navigation">
+                            <div class="flex flex-col gap-5 text-base text-gray-700 sm:text-sm dark:text-gray-200">
+                                <a class="app-focus" href="{% url 'home' %}">dashboard</a>
+                                <a class="app-focus" href="{% url 'docs_home' %}">docs</a>
+                                {% if user.is_authenticated %}
+                                    <a class="app-focus" href="{% url 'settings' %}">settings</a>
+                                    {% if user.is_superuser %}<a class="app-focus"
+   href="{% url 'admin_panel' %}">admin</a>{% endif %}
+                                    <form method="post" action="{% url 'account_logout' %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="app-focus">sign out</button>
+                                    </form>
+                                {% else %}
+                                    <a class="app-focus" href="{% url 'account_login' %}">sign in</a>
+                                    <a class="app-focus font-semibold text-orange-700 dark:text-orange-400"
+                                       href="{% url 'account_signup' %}">get started</a>
+                                {% endif %}
+                                <button type="button"
+                                        data-theme-toggle
+                                        class="app-focus text-left"
+                                        aria-label="Toggle theme"><span data-theme-label>Theme</span></button>
+                            </div>
+                        </nav>
+                    </details>
+                </div>
+            </header>
+            <main class="isolate min-w-0">
+                {% block content %}
+                {% endblock content %}
+            </main>
+            <footer class="border-t border-gray-950/10 bg-white dark:border-white/10 dark:bg-gray-950">
+                <div class="mx-auto flex max-w-7xl flex-col gap-5 px-6 py-8 font-mono text-base text-gray-500 sm:flex-row sm:items-center sm:text-sm lg:px-8 dark:text-gray-400">
+                    <a href="{% url 'home' %}"
+                       class="app-focus inline-flex shrink-0"
+                       aria-label="Built with Bend homepage">{% include "components/brand_mark.html" %}</a>
+                    <span>© {% now "Y" %} Built with Bend</span>
+                    <div class="flex gap-5 sm:ml-auto">
+                        <a class="app-focus hover:text-gray-950 dark:hover:text-white"
+                           href="{% url 'privacy_policy' %}">privacy</a>
+                        <a class="app-focus hover:text-gray-950 dark:hover:text-white"
+                           href="{% url 'terms_of_service' %}">terms</a>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        {% block schema %}
+        {% endblock schema %}
+        {% include "components/chatwoot.html" %}
+    </body>
+</html>

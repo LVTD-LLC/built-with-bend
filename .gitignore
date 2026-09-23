@@ -141,7 +141,3 @@ dmypy.json
 
 # Other
 .DS_Store
-
-# Rebuilt from frontend/src during development and Docker builds.
-frontend/static/directory/site.css
-frontend/static/directory/site.js

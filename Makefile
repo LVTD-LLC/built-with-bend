@@ -6,6 +6,7 @@ python-quality:
 frontend-check:
 	npm run lint
 	node --test scripts/deploy-caprover.test.mjs
+	npm run test:analytics
 	npm run build
 	uv run djlint frontend/templates --check
 migrations-check:

@@ -23,7 +23,13 @@ not served by the website's `/docs/` routes and remain available when
 - [CapRover](../../TECHNICAL.md#caprover)
 
 
+- [Sentry performance](deployment/sentry-performance.md)
 
+
+- [Chatwoot](deployment/chatwoot.md)
+
+
+- [Apprise](deployment/apprise.md)
 
 
 Public documentation belongs in `apps/pages/content/docs/` when generated.

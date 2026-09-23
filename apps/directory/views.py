@@ -104,14 +104,32 @@ def submitted(request):
 
 @require_GET
 def health(request):
+    from django.core.cache import cache
     from django.db import connection
 
     try:
         with connection.cursor() as cursor:
             cursor.execute("SELECT 1")
+        cache.set("bend:health", True, timeout=10)
+        if cache.get("bend:health") is not True:
+            return JsonResponse({"status": "unavailable"}, status=503)
         return JsonResponse({"status": "ok", "revision": settings.DEPLOYMENT_REVISION})
     except Exception:
         return JsonResponse({"status": "unavailable"}, status=503)
+
+
+@require_GET
+def worker_health(request):
+    from django.core.cache import cache
+
+    try:
+        healthy = cache.get(f"bend:worker:{settings.DEPLOYMENT_REVISION}") is True
+    except Exception:
+        healthy = False
+    return JsonResponse(
+        {"status": "ok" if healthy else "unavailable", "revision": settings.DEPLOYMENT_REVISION},
+        status=200 if healthy else 503,
+    )
 
 
 @require_GET

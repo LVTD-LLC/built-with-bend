@@ -1,0 +1,68 @@
+{% extends "base_landing.html" %}
+{% block content %}
+    {% if request.GET.account_deleted %}
+        <div class="mx-auto max-w-7xl px-6 pt-8 lg:px-8">
+            <div class="max-w-[48ch] rounded-xl bg-green-50 p-4 text-base/7 text-green-900 ring-1 ring-green-700/15 dark:bg-green-950 dark:text-green-100 dark:ring-green-300/15">
+                Your account has been deleted.
+            </div>
+        </div>
+    {% endif %}
+    <section class="py-24 sm:py-32 lg:py-36">
+        <div class="mx-auto max-w-7xl px-6 lg:px-8">
+            <h1 class="max-w-[20ch] text-5xl font-semibold tracking-tight text-balance text-gray-950 sm:text-7xl dark:text-white">A human-reviewed directory of apps, sites, and projects built with Bend 2.</h1>
+            <p class="app-text-muted mt-7 max-w-[48ch] text-lg/8 text-pretty">A focused product foundation with authentication, APIs, background work, and an interface designed to stay clear as your product grows.</p>
+            <div class="mt-9">
+                <a href="{% url 'account_signup' %}"
+                   class="app-focus inline-flex min-h-12 items-center justify-center rounded-xl bg-orange-700 px-4 py-3 text-sm font-semibold text-white hover:bg-orange-800 dark:bg-orange-500 dark:text-gray-950 dark:hover:bg-orange-400"
+                   data-posthog-cta="signup"
+                   data-posthog-cta-location="landing_hero">Get started</a>
+            </div>
+        </div>
+    </section>
+    <section class="border-y border-gray-950/10 py-20 dark:border-white/10 lg:py-24">
+        <div class="mx-auto max-w-7xl px-6 lg:px-8">
+            <h2 class="max-w-[30ch] text-4xl font-semibold tracking-tight text-balance sm:text-5xl">What you get</h2>
+            <div class="mt-12 divide-y divide-gray-950/10 border-y border-gray-950/10 dark:divide-white/10 dark:border-white/10">
+                <div class="grid gap-3 py-6 md:grid-cols-[7fr_13fr]">
+                    <h3 class="text-xl font-semibold">Django-first workflows</h3>
+                    <p class="app-text-muted max-w-[56ch] text-base/7 text-pretty">Server-rendered pages, forms, HTMX interactions, and Alpine.js state with clear ownership boundaries.</p>
+                </div>
+                <div class="grid gap-3 py-6 md:grid-cols-[7fr_13fr]">
+                    <h3 class="text-xl font-semibold">Production foundations</h3>
+                    <p class="app-text-muted max-w-[56ch] text-base/7 text-pretty">Authentication, account settings, API access, deployment paths, and repeatable quality checks.</p>
+                </div>
+                <div class="grid gap-3 py-6 md:grid-cols-[7fr_13fr]">
+                    <h3 class="text-xl font-semibold">A restrained interface</h3>
+                    <p class="app-text-muted max-w-[56ch] text-base/7 text-pretty">Accessible controls, responsive layouts, dark mode, and a design system ready to become your own.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="bg-orange-700 py-16 text-white dark:border-y dark:border-white/10 dark:bg-gray-950">
+        <div class="mx-auto flex max-w-7xl flex-col gap-8 px-6 sm:flex-row sm:items-end sm:justify-between lg:px-8">
+            <div>
+                <h2 class="max-w-[30ch] text-4xl font-semibold tracking-tight text-balance sm:text-5xl">Choose the plan that fits.</h2>
+                <p class="mt-4 max-w-[48ch] text-lg/8 text-pretty text-orange-50 dark:text-gray-300">Start with the product today and change plans as your needs evolve.</p>
+            </div>
+            <a class="app-focus border-b border-white pb-1 text-sm font-semibold text-white dark:border-orange-400 dark:text-orange-300"
+               href="{% url 'pricing' %}">Explore pricing</a>
+        </div>
+    </section>
+{% endblock content %}
+{% block schema %}
+    <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Built with Bend",
+    "description": "A human-reviewed directory of apps, sites, and projects built with Bend 2.",
+    "thumbnailUrl": "https://osig.app/g?site=x&style=logo&font=markerfelt&title=Built%20with%20Bend&subtitle=A%20human-reviewed%20directory%20of%20apps%2C%20sites%2C%20and%20projects%20built%20with%20Bend%202.",
+    "url": "{{ public_site_url }}/",
+    "author": {
+      "@type": "Person",
+      "name": "LVTD, LLC",
+      "url": "https://lvtd.dev"
+    }
+  }
+    </script>
+{% endblock schema %}

@@ -1,0 +1,12 @@
+# Public guides to existing app features. Operator guides live in docs/maintainers/.
+navigation:
+  getting-started:
+    - introduction
+    - account
+  features:
+    - navigation
+    - mcp
+
+  api-reference:
+    - introduction
+    - user

@@ -1,0 +1,73 @@
+{% extends "base_app.html" %}
+{% block meta %}
+    <title>Admin | Built with Bend</title>
+    <meta name="robots" content="noindex, nofollow" />
+{% endblock meta %}
+{% block content %}
+    <div class="mx-auto max-w-7xl px-6 py-14 lg:px-8 lg:py-18">
+        <div class="border-b border-gray-950/10 pb-10 dark:border-white/10">
+            <h1 class="text-4xl font-semibold tracking-tight text-balance">Admin</h1>
+            <p class="app-text-muted mt-4 max-w-[58ch] text-base/7 text-pretty">A compact view of account growth and recent signups.</p>
+        </div>
+        <section class="@container py-10" aria-labelledby="account-totals-heading">
+            <h2 id="account-totals-heading" class="sr-only">Account totals</h2>
+            <dl class="grid gap-8 @3xl:grid-cols-2">
+                <div class="border-b border-gray-950/10 pb-8 @3xl:border-b-0 @3xl:border-r @3xl:pr-8 dark:border-white/10">
+                    <dt class="font-medium text-gray-700 dark:text-gray-200">Total users</dt>
+                    <dd class="mt-2 text-4xl font-semibold tabular-nums">
+                        {{ total_users }}
+                    </dd>
+                    <dd class="app-text-muted mt-3 text-base/7 sm:text-sm/6">
+                        {{ new_users_week }} this week · {{ new_users_month }} this month.
+                    </dd>
+                </div>
+                <div class="@3xl:pl-8">
+                    <dt class="font-medium text-gray-700 dark:text-gray-200">Total profiles</dt>
+                    <dd class="mt-2 text-4xl font-semibold tabular-nums">
+                        {{ total_profiles }}
+                    </dd>
+                    {% if total_users > 0 %}
+                        <dd class="app-text-muted mt-3 text-base/7 sm:text-sm/6">
+                            {{ total_profiles|floatformat:0 }} of {{ total_users }} users · {% widthratio total_profiles total_users 100 %}%.
+                        </dd>
+                    {% endif %}
+                </div>
+            </dl>
+        </section>
+        <section class="border-t border-gray-950/10 pt-8 dark:border-white/10"
+                 aria-labelledby="recent-users-heading">
+            <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+                <h2 id="recent-users-heading"
+                    class="text-2xl font-semibold tracking-tight">Recent users</h2>
+                <p class="app-text-muted text-base/7 sm:text-sm/6">{{ avg_users_per_day|floatformat:1 }} average signups per day over 30 days.</p>
+            </div>
+            <div class="-mx-6 -my-2 mt-6 overflow-x-auto whitespace-nowrap lg:-mx-8">
+                <div class="inline-block min-w-full px-6 py-2 align-middle lg:px-8">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-gray-950/10 dark:border-white/10">
+                                <th class="whitespace-nowrap py-3 pr-6 text-left font-medium">Email</th>
+                                <th class="whitespace-nowrap px-6 py-3 text-left font-medium">Username</th>
+                                <th class="whitespace-nowrap py-3 pl-6 text-left font-medium">Joined</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-950/10 dark:divide-white/10">
+                            {% for user in recent_users %}
+                                <tr>
+                                    <td class="py-4 pr-6">{{ user.email }}</td>
+                                    <td class="px-6 py-4 text-gray-500 dark:text-gray-400">{{ user.username }}</td>
+                                    <td class="py-4 pl-6 text-gray-500 dark:text-gray-400">{{ user.date_joined|date:"M d, Y" }}</td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="3"
+                                        class="py-8 text-center text-gray-500 dark:text-gray-400">No users yet.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock content %}
