@@ -15,18 +15,15 @@ with release sections grouped by ISO 8601 date headings (`## YYYY-MM-DD`).
 
 ## 2026-09-23
 
-- Create the non-root runtime home directory so Gunicorn can initialize its local control socket.
-- Gate rolling updates on a local process/database healthcheck and require 12 consecutive live revision checks; cover mixed healthy/broken rollouts with regression tests.
-
-- Generate through hosted Djass job 33 and specialize into Built with Bend.
-- Add curated project/source models, search/filter/pagination, detail pages,
-  anonymous submissions, private review queue, and superuser-only Ninja ingestion.
-- Add responsive warm editorial UI, dark mode, accessibility controls, and sitemap.
-- Remove public SaaS signup/billing and first-user promotion; store API key digests.
-- Verify first-user privilege isolation and dark-mode secondary-action contrast.
-- Deploy tested immutable main revisions to main CapRover using an app-scoped token.
+- Regenerate via hosted Djass job 34 with every feature enabled except DigitalOcean.
+- Preserve the directory, moderation, admin ingestion API, and database while restoring AI, MCP/OAuth, S3, Stripe, blog/docs, analytics, monitoring, notifications, keyboard shortcuts, and ReviewGate.
+- Keep public signup closed and remove implicit first-user admin promotion.
+- Add a private Redis broker, Q2 worker and authenticated Qdrant service; verify worker revision readiness in deployment.
+- Use project-scoped S3, PostHog and Sentry configuration; retain deferred Stripe activation.
+- Upgrade MJML to remove reported npm vulnerabilities.
 
 
+- Keep all documentation publicly accessible without login or payment, with regression tests for anonymous and unpaid readers independently of product access controls.
 
 
 - Use the SITE_URL repository variable for deployment notifications, matching the app setting name.
@@ -36,11 +33,14 @@ with release sections grouped by ISO 8601 date headings (`## YYYY-MM-DD`).
 
 - Separate user-facing README from TECHNICAL.md and AGENTS.md; add contributor guidance with a configured ReviewGate 5/5 requirement.
 
+- Include ReviewGate reviews and maintainer rereviews that skip when the GitHub Actions OpenRouter secret is absent.
+
 ### Added
 - Qdrant-enabled projects include a lazily initialized authenticated client,
   environment configuration, and focused connection tests.
 
 ### Changed
+- Configured PostHog analytics now starts automatically for visitors and signed-in users, without an acceptance banner; legacy opt-outs are migrated before the first pageview, and account/checkout events no longer require consent cookies.
 - Website docs are public, app-focused, and indexable. Operator guides live in repository-only `docs/maintainers/`; docs navigation is compact/responsive and only the hovered article link underlines.
 - Public and authenticated pages now use a quieter, border-led design system
   with compact navigation, a single-column marketing hero, smaller controls,
@@ -55,6 +55,10 @@ with release sections grouped by ISO 8601 date headings (`## YYYY-MM-DD`).
 - Logging now uses canonical dotted event names, binary outcomes,
   OpenTelemetry-style request/job/resource fields, and privacy-aware scalar
   context across console, JSON, and Sentry output.
+- PostHog now receives a strictly allowlisted, fail-open clone of application
+  logs through batched OTLP export when `POSTHOG_LOGS_ENABLED=True`.
+- PostHog now records privacy-filtered MCP protocol and tool usage without
+  argument values, tool responses, or exception payloads.
 - Changelog entries now use date-based headings instead of version-based
   release placeholders.
 - CI now runs parallel Python quality, frontend, and pytest jobs. Pytest uses

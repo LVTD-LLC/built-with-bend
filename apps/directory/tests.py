@@ -52,6 +52,33 @@ class DirectoryTests(TestCase):
     def test_inactive_key_rejected(self):
         self.assertEqual(self.post_api(**self.token(active=False)).status_code, 401)
 
+    def test_worker_health_requires_current_revision_heartbeat(self):
+        from django.conf import settings
+        from django.core.cache import cache
+
+        current = f"bend:worker:{settings.DEPLOYMENT_REVISION}"
+        cache.delete(current)
+        cache.set("bend:worker:old-revision", True, timeout=20)
+        self.assertEqual(self.client.get("/health/workers/").status_code, 503)
+        cache.set(current, True, timeout=20)
+        self.assertEqual(self.client.get("/health/workers/").status_code, 200)
+        cache.delete(current)
+        self.assertEqual(self.client.get("/health/workers/").status_code, 503)
+
+    def test_inactive_profile_key_rejected_by_generated_api_and_mcp(self):
+        from apps.api.auth import get_profile_for_api_key
+        from apps.mcp_server.auth import authenticate_mcp_headers
+
+        profile = self.admin.profile
+        key = profile.set_api_key()
+        profile.save()
+        self.assertEqual(get_profile_for_api_key(key), profile)
+        self.assertEqual(authenticate_mcp_headers({"authorization": f"Bearer {key}"}), profile)
+        self.admin.is_active = False
+        self.admin.save()
+        self.assertIsNone(get_profile_for_api_key(key))
+        self.assertIsNone(authenticate_mcp_headers({"authorization": f"Bearer {key}"}))
+
     def test_revoked_admin_access_rejected(self):
         headers = self.token()
         self.admin.is_superuser = False

@@ -117,6 +117,30 @@ Checks:
 - Run a local worker only when behavior depends on real queue execution.
 ```
 
+## MCP Tool Change
+
+Use for hosted MCP tools, OAuth/API-key behavior, and REST/MCP parity.
+
+```markdown
+Goal:
+
+Context:
+- Inspect:
+  - `apps/mcp_server/server.py`
+  - `apps/mcp_server/auth.py`
+  - `apps/mcp_server/tests/`
+  - Shared API/service code used by the tool.
+
+Implementation notes:
+- Keep tool behavior on the same service layer as REST when possible.
+- Never log or expose API keys or OAuth tokens.
+- Add parity tests when REST and MCP should agree.
+
+Checks:
+- `make pytest-check -- apps/mcp_server apps/api -q`
+- `make django-check`
+```
+
 ## Docs, Skills, or Agent Guidance Change
 
 Use for `AGENTS.md`, `docs/quality.md`, generated skills, code tours, and eval

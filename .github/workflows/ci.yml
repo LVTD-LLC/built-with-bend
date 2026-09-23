@@ -60,7 +60,7 @@ jobs:
     needs: [checks, image]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository == 'LVTD-LLC/built-with-bend'
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 35
     concurrency:
       group: built-with-bend-production
       cancel-in-progress: false
@@ -97,5 +97,6 @@ jobs:
           CAPROVER_SERVER: https://captain.cr.lvtd.dev
           CAPROVER_APP_NAME: built-with-bend
           CAPROVER_APP_TOKEN: ${{ secrets.APP_TOKEN }}
+          WORKERS_APP_TOKEN: ${{ secrets.WORKERS_APP_TOKEN }}
           PRODUCTION_URL: https://builtwithbend.com
         run: node scripts/deploy-caprover.mjs /tmp/bend-deploy.tar "$GITHUB_SHA"

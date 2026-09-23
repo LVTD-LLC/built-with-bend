@@ -3,16 +3,13 @@
 ## Provenance
 
 Generated using the **hosted Djass Go CLI**, `djass generate --payload … --output …`,
-on 2026-09-23. Djass job **33** completed generation, download, and extraction.
+on 2026-09-23. Djass job **34** completed generation, download, and extraction.
 `djass-manifest.json` and `project-metadata.json` preserve the original generation
-options. No direct Cookiecutter invocation was used. The SaaS scaffold was then
-specialized into a directory: public auth, billing, worker, email, and optional
-integrations were removed, not just hidden behind UI links.
+options. No direct Cookiecutter invocation was used. Every feature flag is **y**, except `use_digitalocean=n`. The full scaffold is retained alongside the directory. Public signup remains closed; Stripe activation remains deferred.
 
 ## Stack and local setup
 
-Python 3.14, Django, Django Ninja, PostgreSQL in production, plain Django templates,
-small JavaScript enhancement, project CSS, and WhiteNoise. Exact dependency
+Python 3.14, Django, Django Ninja, PostgreSQL in production, Django templates, Tailwind for generated surfaces, small JavaScript enhancements, project CSS, and WhiteNoise. Exact dependency
 versions are in `uv.lock`. SQLite works for local development; CI also uses Postgres.
 
 ```sh
@@ -26,8 +23,7 @@ uv run python manage.py createsuperuser
 uv run python manage.py runserver
 ```
 
-No Redis, public accounts, email delivery, payment service, or background worker is
-required. `make ci-local` runs the configured quality and application checks.
+Production adds private Redis, a Q2 worker, authenticated Qdrant, S3-compatible media, AI provider configuration, PostHog and Sentry. Public accounts and payments are not required for browsing or submissions. `make ci-local` runs the configured quality and application checks.
 
 ## Data and moderation
 
@@ -91,7 +87,7 @@ Production credentials are kept in Infisical Openclaw/prod at
 
 CapRover at `https://captain.cr.lvtd.dev` (138.201.126.181):
 
-- `built-with-bend`: port 8000, two Gunicorn workers, one web replica.
+- `built-with-bend`: port 8000, two Gunicorn ASGI workers, one web replica.
 - `built-with-bend-postgres`: private PostgreSQL 17, no host ports, persistent
   `built-with-bend-postgres-data` volume at `/var/lib/postgresql/data`.
 
@@ -129,3 +125,25 @@ transaction rollback, duplicate handling, unsafe URLs, anti-spam, bootstrap key
 revocation, sitemap visibility, and honest empty/search states. Browser checks
 cover desktop/mobile, themes, search, submission, and admin review interactions.
 Stripe sponsorship products and checkout are intentionally deferred.
+
+## Full-feature regeneration and integrations
+
+The source of truth is `djass-manifest.json` (hosted job 34). All 18 current feature options are enabled except DigitalOcean. The original generated API remains at `/api/`, while the directory API lives at `/api/v1/` with its own namespace. MCP is mounted at `/mcp/` through the ASGI application. Profile API/MCP keys are separate from directory ingestion keys. Revoking a user's active status rejects both.
+
+- **AI**: Pydantic AI/OpenRouter model helpers, server-side `OPENROUTER_API_KEY`. No public prompt endpoint or invented AI product feature.
+- **MCP**: authenticated Streamable HTTP, `get_user_info`, OAuth discovery/PKCE and profile-key support. `BEND_MCP_API_KEY` bootstraps the curator profile only when no key exists.
+- **S3**: dedicated `built-with-bend-prod` bucket and bucket-scoped service account; anonymous reads for public media only. `AWS_S3_BUCKET_NAME` is respected.
+- **Qdrant**: private `built-with-bend-qdrant`, key-authenticated, persistent `/qdrant/storage`; client remains lazy and no unused collections are created.
+- **Background jobs**: private password-protected `built-with-bend-redis`, persistent `/data`; `built-with-bend-workers` runs `manage.py runworker`. Worker readiness requires a current-revision Q2 heartbeat.
+- **Stripe**: checkout, subscription and webhook scaffold retained; do not enable paid sponsorships until the dedicated Stripe account/product is configured.
+- **Blog and docs**: public markdown-backed `/blog/` and `/docs/`, original directory branding and app-specific guides.
+- **Telemetry**: dedicated PostHog project and Sentry project. Never set an organization personal API token as the runtime ingestion key.
+- **MJML**: existing private MJML renderer; npm dependency updated to the current compatible major to address audit findings.
+- **Chatwoot / Apprise / Healthchecks pings**: generated integrations retained; external widgets/notifications/pings require their project-specific settings. No unsolicited notification destinations are created. Database/cache and worker health endpoints are active.
+- **ReviewGate**: enabled using the repository OpenRouter secret; require completed 5/5 review on the current PR head.
+
+Web and worker deployments use separate app tokens and the same immutable commit archive. CI first verifies 12 consecutive web revision probes, then deploys and verifies the worker. The local container healthcheck tests the actual process dependencies. Swarm's app-specific update policy continues after a failed transient task instead of leaving old and new tasks indefinitely after a pause; sustained revision probes remain the deployment success gate.
+
+The existing PostgreSQL database, auth users, directory tables and migrations are preserved. Core/Allauth/Q2/MCP migrations add their own tables. The generated initial extension migration was adapted **before its first deployment** to enable only available PostgreSQL extensions; Qdrant supplies vector storage, and no application model requires pgvector. No existing historical directory migration is rewritten. Take a database dump before the additive migration rollout.
+
+Original stack reference (some generic account-oriented examples) is retained at `docs/maintainers/generated-stack-reference.md`; this guide and AGENTS.md define actual production behavior.

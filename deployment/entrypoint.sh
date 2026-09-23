@@ -15,9 +15,12 @@ for attempt in range(60):
             raise SystemExit('Database unavailable after 120 seconds.') from None
         time.sleep(2)
 PY
+if [ "${APP_PROCESS_TYPE:-server}" = "worker" ]; then
+    exec python manage.py runworker
+fi
 python manage.py migrate --noinput
 python manage.py collectstatic --noinput
 if [ -n "${BEND_ADMIN_PASSWORD:-}" ]; then
     python manage.py bootstrap_curator
 fi
-exec gunicorn built_with_bend.wsgi:application --bind 0.0.0.0:8000 --workers 2 --threads 2 --access-logfile - --access-logformat '%(m)s %(U)s %(s)s' --error-logfile -
+exec gunicorn built_with_bend.asgi:application --worker-class uvicorn_worker.UvicornWorker --bind 0.0.0.0:8000 --workers 2 --access-logfile - --access-logformat '%(m)s %(U)s %(s)s' --error-logfile -

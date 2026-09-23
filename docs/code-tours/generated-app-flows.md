@@ -148,6 +148,90 @@ Common footguns:
 - Creating duplicate schedules without a stable name.
 - Letting server and worker use different `Q_CLUSTER_NAME` values.
 
+## Stripe Billing
+
+Entrypoints:
+
+- `apps/core/stripe_webhooks.py`
+- `apps/core/models.py`
+- `apps/core/tests/test_stripe_webhooks.py`
+- `frontend/templates/pages/pricing.html`
+- `apps/api/schemas.py`
+
+Flow:
+
+1. Stripe Checkout or billing portal sends users to Stripe.
+2. Stripe webhooks update profile subscription state.
+3. API and templates expose only safe billing state.
+
+Checks:
+
+- `make pytest-check -- apps/core/tests/test_stripe_webhooks.py apps/api -q`
+- `make django-check`
+
+Common footguns:
+
+- Non-idempotent webhook handling.
+- Trusting client-side billing state.
+- Leaving Stripe imports or docs behind when a template option disables Stripe.
+
+## Hosted MCP
+
+Entrypoints:
+
+- `apps/mcp_server/server.py`
+- `apps/mcp_server/auth.py`
+- `apps/mcp_server/oauth.py`
+- `apps/mcp_server/tests/`
+- `apps/api/services.py`
+
+Flow:
+
+1. MCP clients authenticate through OAuth or legacy API-key headers.
+2. Tools should call shared services where behavior overlaps with REST.
+3. REST and MCP should agree on response semantics for shared behavior.
+
+Checks:
+
+- `make pytest-check -- apps/mcp_server apps/api -q`
+- `make django-check`
+
+Common footguns:
+
+- Duplicating behavior in MCP instead of using a shared service.
+- Logging bearer tokens or API keys.
+- Updating REST behavior without MCP parity coverage.
+
+## User-Facing Docs
+
+Entrypoints:
+
+- `apps/pages/content/docs/`
+- `apps/pages/content/docs/navigation.yaml`
+- `apps/pages/views.py`
+- `frontend/templates/pages/docs/`
+- `apps/pages/test_docs.py`
+- `apps/pages/content/AGENTS.md`
+
+Flow:
+
+1. Markdown content and navigation define docs pages.
+2. Public docs views render repository-owned content with site-level URL context only.
+3. Public templates provide responsive navigation, code copying, and indexable metadata;
+   the sitemap includes each documentation page.
+
+Checks:
+
+- `make pytest-check -- apps/pages/test_docs.py -q`
+- `make frontend-check` when docs templates or JS change
+
+Common footguns:
+
+- Adding docs content without navigation.
+- Rendering unsafe template syntax from docs content.
+- Exposing real user data or adding operator runbooks to public docs.
+- Forgetting content-specific guidance in `apps/pages/content/AGENTS.md`.
+
 ## External Dependencies and Builds
 
 Entrypoints:

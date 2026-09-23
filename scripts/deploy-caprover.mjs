@@ -47,6 +47,7 @@ export async function deploy({
   request = fetch,
   pause = delay,
   attempts = 120,
+  healthPath = '/health/',
 }) {
   if (
     !appToken ||
@@ -67,7 +68,7 @@ export async function deploy({
   // Upload acceptance is not deployment success. Check what the public server actually serves.
   let healthyChecks = 0;
   for (let attempt = 0; attempt < attempts; attempt++) {
-    const url = new URL('/health/', productionUrl);
+    const url = new URL(healthPath, productionUrl);
     url.searchParams.set('check', `${gitSha}-${Date.now()}`);
     try {
       const live = await request(url, {
@@ -107,6 +108,16 @@ if (
       productionUrl: process.env.PRODUCTION_URL,
       archive: await readFile(process.argv[2]),
       gitSha: process.argv[3],
+    });
+    if (!process.env.WORKERS_APP_TOKEN) throw new Error('Missing worker deployment token.');
+    await deploy({
+      server: process.env.CAPROVER_SERVER,
+      appName: `${process.env.CAPROVER_APP_NAME}-workers`,
+      appToken: process.env.WORKERS_APP_TOKEN,
+      productionUrl: process.env.PRODUCTION_URL,
+      archive: await readFile(process.argv[2]),
+      gitSha: process.argv[3],
+      healthPath: '/health/workers/',
     });
   } catch (error) {
     // Do not log request headers, server response bodies, or credential-bearing objects.

@@ -37,6 +37,13 @@ class Command(BaseCommand):
                 digest=AdminAPIKey.hash_token(token),
                 defaults={"user": user, "name": "Initial curator automation"},
             )
+        from apps.core.models import Profile
+
+        profile, _created = Profile.objects.get_or_create(user=user)
+        mcp_key = os.environ.get("BEND_MCP_API_KEY")
+        if mcp_key and not profile.has_api_key:
+            profile.set_api_key(mcp_key)
+            profile.save(update_fields=["api_key_prefix", "api_key_hash", "updated_at"])
         self.stdout.write(
             "Curator bootstrap complete; existing passwords and key revocations were preserved."
         )

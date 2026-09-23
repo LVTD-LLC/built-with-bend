@@ -1,0 +1,49 @@
+{% extends "base_app.html" %}
+{% block content %}
+    <div class="mx-auto max-w-7xl px-6 py-14 lg:px-8 lg:py-18">
+        <div class="flex flex-col gap-6 border-b border-gray-950/10 pb-10 sm:flex-row sm:items-end sm:justify-between dark:border-white/10">
+            <div>
+                <h1 class="max-w-[20ch] text-4xl font-semibold tracking-tight text-balance">Welcome to Built with Bend</h1>
+                <p class="app-text-muted mt-4 max-w-[58ch] text-base/7 text-pretty">This is your product dashboard. Lead with the next useful action and keep project-specific setup close to where people need it.</p>
+            </div>
+            <a href="{% url 'docs_home' %}" class="app-button-secondary shrink-0">View docs</a>
+        </div>
+        <section class="border-b border-gray-950/10 py-10 dark:border-white/10"
+                 aria-labelledby="agent-setup-heading">
+            <div class="grid gap-6 md:grid-cols-[7fr_13fr]">
+                <div>
+                    <h2 id="agent-setup-heading" class="text-xl font-semibold">Connect an AI agent</h2>
+                    <p class="app-text-muted mt-2 text-base/7 text-pretty sm:text-sm/6">Copy the setup prompt or open the tool-neutral instructions for OAuth, MCP, and API access.</p>
+                </div>
+                <div class="min-w-0">
+                    <label for="agent-setup-prompt" class="mb-2 block font-medium">Copy/paste prompt</label>
+                    <textarea id="agent-setup-prompt"
+                              readonly
+                              rows="10"
+                              aria-describedby="agent-setup-help"
+                              class="app-input block w-full p-4 font-mono text-base/7 sm:text-sm/6">{{ agent_setup_prompt }}</textarea>
+                    <p id="agent-setup-help"
+                       class="app-text-muted mt-2 text-base/7 text-pretty sm:text-sm/6">Prefer OAuth. Keep fallback API keys in local environment variables, never in URLs, source code, logs, or committed config.</p>
+                    <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                        <a href="{{ agent_instructions_url }}"
+                           class="text-sm font-semibold text-orange-700 dark:text-orange-300">View agent instructions</a>
+                        <button type="button"
+                                data-copy-button
+                                data-copy-source="#agent-setup-prompt"
+                                class="app-button-primary"><span data-copy-label>Copy prompt</span></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="py-10" aria-labelledby="next-steps-heading">
+            <div class="grid gap-6 md:grid-cols-[7fr_13fr]">
+                <h2 id="next-steps-heading" class="text-xl font-semibold">Next step</h2>
+                <p class="app-text-muted max-w-[58ch] text-base/7 text-pretty">Replace this guidance with the first high-value action in your product. Keep examples, API URLs, and implementation detail in docs instead of crowding the dashboard.</p>
+            </div>
+        </section>
+    </div>
+    {% if show_confetti %}
+        <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+        <script>confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });</script>
+    {% endif %}
+{% endblock content %}

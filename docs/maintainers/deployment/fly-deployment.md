@@ -79,6 +79,18 @@ fly secrets set MAILGUN_API_KEY="..."
 fly secrets set GITHUB_CLIENT_ID="..." GITHUB_CLIENT_SECRET="..."
 ```
 
+For S3-compatible media storage, also set:
+
+```bash
+fly secrets set AWS_S3_ENDPOINT_URL="..." AWS_ACCESS_KEY_ID="..." AWS_SECRET_ACCESS_KEY="..."
+```
+
+For Stripe, also set:
+
+```bash
+fly secrets set STRIPE_SECRET_KEY="..." STRIPE_WEBHOOK_SECRET="..."
+```
+
 Do not import the full local `.env` file into Fly without reviewing it first. The local file includes Docker hostnames such as `db` and `redis` that are not valid for Fly-hosted databases.
 
 ## Deploy

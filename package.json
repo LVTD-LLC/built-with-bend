@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "description": "A human-reviewed directory of apps, sites, and projects built with Bend 2.",
   "scripts": {
-    "build": "node scripts/build-assets.mjs",
+    "build": "npm run build:vendor && npm run build:css && npm run build:js && node scripts/build-assets.mjs",
+    "build:css": "tailwindcss -i frontend/src/styles/index.css -o frontend/static/css/app.css --minify",
+    "build:js": "node scripts/copy-app-js.mjs",
+    "build:vendor": "node scripts/copy-vendor-assets.mjs",
+    "watch": "npm run build:vendor && node scripts/watch-assets.mjs",
+    "test:analytics": "node --test scripts/test-posthog.mjs",
     "lint": "eslint \"frontend/src/js/**/*.js\" \"scripts/**/*.mjs\""
   },
   "repository": {
@@ -25,7 +30,15 @@
     "url": "https://github.com/LVTD-LLC/built-with-bend/issues"
   },
   "devDependencies": {
-    "eslint": "^8.57.1"
+    "@tailwindcss/cli": "^4.3.0",
+    "@tailwindcss/forms": "^0.5.10",
+    "@tailwindcss/typography": "^0.5.16",
+    "eslint": "^8.57.1",
+    "tailwindcss": "^4.3.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "alpinejs": "^3.15.12",
+    "htmx.org": "^2.0.10",
+    "mjml": "^5.4.1"
+  }
 }

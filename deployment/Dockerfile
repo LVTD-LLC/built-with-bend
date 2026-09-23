@@ -3,7 +3,8 @@ FROM node:24.15.0-slim AS assets
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
-COPY scripts/build-assets.mjs scripts/build-assets.mjs
+COPY scripts scripts
+COPY tailwind.config.js tailwind.config.js
 COPY frontend frontend
 RUN npm run build
 FROM python:3.14.5-slim

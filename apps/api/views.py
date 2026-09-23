@@ -1,73 +1,138 @@
-from uuid import UUID
+import logging
 
-from django.contrib.admin.views.decorators import staff_member_required
-from django.core.exceptions import ValidationError
-from django.db import IntegrityError
-from ninja import NinjaAPI, Schema
+from django.core.cache import cache
+from django.db import connection
+from django.http import HttpRequest
+from ninja import NinjaAPI
 from ninja.errors import HttpError
-from ninja.security import HttpBearer, django_auth_superuser
-from pydantic import Field
 
-from apps.directory.models import AdminAPIKey, Category, Project
-from apps.directory.services import create_project
+from apps.api.auth import api_key_auth, session_auth
+from apps.api.schemas import UserInfoOut, UserSettingsOut
+from apps.api.services import serialize_user_info
 
+logger = logging.getLogger(__name__)
 
-class AdminBearer(HttpBearer):
-    def authenticate(self, request, token):
-        key = (
-            AdminAPIKey.objects.select_related("user")
-            .filter(
-                digest=AdminAPIKey.hash_token(token),
-                active=True,
-                user__is_active=True,
-                user__is_superuser=True,
-            )
-            .first()
-        )
-        return key.user if key else None
+api = NinjaAPI()
 
 
-api = NinjaAPI(
-    title="Built with Bend · Admin API",
-    version="1.0",
-    auth=[AdminBearer(), django_auth_superuser],
-    docs_decorator=staff_member_required,
-)
+@api.get("/healthcheck", auth=None, include_in_schema=False, tags=["private"])
+def healthcheck(request: HttpRequest):
+    """
+    Comprehensive healthcheck endpoint for monitoring and load balancers.
 
+    Checks database and Redis connectivity.
 
-class ProjectIn(Schema):
-    title: str = Field(min_length=1, max_length=120)
-    description: str = Field(min_length=1, max_length=3000)
-    author: str = Field(default="", max_length=120)
-    category: Category = Category.OTHER
-    website_url: str = Field(default="", max_length=1000)
-    repository_url: str = Field(default="", max_length=1000)
-    sources: list[str] = Field(default_factory=list, max_length=20)
-    publish: bool = False
+    Returns:
+    - 200 OK if all services are healthy
+    - 503 if any service is down
 
+    NOTE: We intentionally return boolean health fields (instead of "healthy"/"unhealthy"
+    strings) to make healthcheck consumption trivial for load balancers and scripts.
+    """
 
-class ProjectOut(Schema):
-    id: UUID
-    title: str
-    status: str
-    website_url: str
-    repository_url: str
+    checks = {
+        "database": False,
+        "redis": False,
+    }
 
-
-@api.post("/projects", response={201: ProjectOut})
-def add_project(request, payload: ProjectIn):
-    """Create a draft by default. Set publish=true only after editorial review."""
+    # Check database connectivity
     try:
-        project = create_project(**payload.model_dump())
-    except ValidationError as exc:
-        raise HttpError(422, "; ".join(exc.messages)) from None
-    except IntegrityError:
-        raise HttpError(409, "A project with that primary URL already exists.") from None
-    return 201, project
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1")
+            cursor.fetchone()
+        checks["database"] = True
+    except Exception as error:
+        logger.error(
+            "healthcheck.dependency.completed",
+            extra={
+                "event.name": "healthcheck.dependency.completed",
+                "dependency": "database",
+                "outcome": "failure",
+                "error.type": error.__class__.__name__,
+            },
+            exc_info=True,
+        )
+
+    # Check Redis connectivity
+    try:
+        cache_key = "healthcheck_test"
+        cache_value = "ok"
+        cache.set(cache_key, cache_value, timeout=10)
+        retrieved_value = cache.get(cache_key)
+
+        if retrieved_value == cache_value:
+            checks["redis"] = True
+        else:
+            logger.error(
+                "healthcheck.dependency.completed",
+                extra={
+                    "event.name": "healthcheck.dependency.completed",
+                    "dependency": "redis",
+                    "outcome": "failure",
+                    "error.type": "CacheValueMismatch",
+                },
+            )
+    except Exception as error:
+        logger.error(
+            "healthcheck.dependency.completed",
+            extra={
+                "event.name": "healthcheck.dependency.completed",
+                "dependency": "redis",
+                "outcome": "failure",
+                "error.type": error.__class__.__name__,
+            },
+            exc_info=True,
+        )
+
+    healthy = all(checks.values())
+    payload = {
+        "healthy": healthy,
+        "checks": checks,
+    }
+
+    if healthy:
+        return payload
+
+    return 503, payload
 
 
-@api.get("/projects/{project_id}", response=ProjectOut)
-def get_project(request, project_id: UUID):
-    from django.shortcuts import get_object_or_404
+@api.get(
+    "/user",
+    response=UserInfoOut,
+    auth=api_key_auth,
+    tags=["user"],
+)
+def get_user_info(request: HttpRequest):
+    """Return safe profile and account details for the authenticated API key."""
+    return serialize_user_info(request.auth)
 
-    return get_object_or_404(Project, pk=project_id)
+
+@api.get(
+    "/user/settings",
+    response=UserSettingsOut,
+    auth=[session_auth],
+    include_in_schema=False,
+    tags=["private"],
+)
+def user_settings(request: HttpRequest):
+    profile = request.auth
+    try:
+        profile_data = {
+            "has_pro_subscription": profile.has_active_subscription,
+        }
+
+        data = {"profile": profile_data}
+
+        return data
+    except Exception as error:
+        logger.error(
+            "user_settings.fetch.completed",
+            extra={
+                "event.name": "user_settings.fetch.completed",
+                "profile_id": profile.id,
+                "outcome": "failure",
+                "error.type": error.__class__.__name__,
+            },
+            exc_info=True,
+        )
+        raise HttpError(500, "An unexpected error occurred.") from None

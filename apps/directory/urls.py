@@ -1,6 +1,8 @@
 from django.contrib.sitemaps.views import sitemap
 from django.urls import path
 
+from built_with_bend.sitemaps import BlogSitemap, DocumentationSitemap
+
 from . import views
 from .sitemaps import PageSitemap, ProjectSitemap
 
@@ -9,7 +11,14 @@ urlpatterns = [
     path(
         "sitemap.xml",
         sitemap,
-        {"sitemaps": {"pages": PageSitemap, "projects": ProjectSitemap}},
+        {
+            "sitemaps": {
+                "pages": PageSitemap,
+                "projects": ProjectSitemap,
+                "blog": BlogSitemap,
+                "docs": DocumentationSitemap,
+            }
+        },
         name="sitemap",
     ),
     path("", views.index, name="index"),
@@ -17,5 +26,6 @@ urlpatterns = [
     path("submitted/", views.submitted, name="submitted"),
     path("projects/<uuid:pk>/", views.detail, name="project"),
     path("health/", views.health, name="health"),
+    path("health/workers/", views.worker_health, name="worker_health"),
     path("robots.txt", views.robots),
 ]

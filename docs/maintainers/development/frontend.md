@@ -16,6 +16,8 @@ The generated app uses a small static asset build:
 - `frontend/src/js/` contains small browser modules.
 - `frontend/static/js/` contains the copied browser modules served by Django.
 - `frontend/static/vendors/js/` contains npm-managed HTMX and Alpine.js files.
+- `frontend/src/js/modules/shortcuts.js` registers keyboard shortcuts from
+  rendered `data-shortcut-key` controls.
 
 
 The browser modules are copied as individual files so they stay easy to inspect and debug in a generated Django project. Add bundling later only if your app needs it.
@@ -61,6 +63,8 @@ The full page should include the same partial that the HTMX response returns so
 direct loads and refreshes render the same server-owned UI.
 
 Use Alpine.js when the state is local to the browser, such as dropdowns, modals, disclosure panels, and theme toggles.
+
+Keyboard shortcuts should stay tied to visible navigation controls. Use one stable letter per action, ignore text-entry fields, and keep shortcut hints hidden below large desktop breakpoints.
 
 Keep normal Django forms and server validation as the source of truth. Avoid JSON for ordinary page updates unless you are integrating a third-party widget or background behavior.
 

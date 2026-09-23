@@ -136,6 +136,56 @@ Trace notes:
 
 - Watch for passing model instances or creating schedules at import time.
 
+## Seed 6: REST and MCP Parity
+
+Goal: add a behavior that both REST and MCP expose.
+
+Expected files:
+
+- `apps/api/services.py`
+- `apps/api/views.py`
+- `apps/mcp_server/server.py`
+- `apps/mcp_server/tests/`
+- `apps/api/tests.py`
+
+Fail-to-pass checks:
+
+- REST test proves the behavior.
+- MCP test proves the same semantics.
+- Parity test compares key response fields or errors.
+
+Pass-to-pass checks:
+
+- `make pytest-check -- apps/api apps/mcp_server -q`
+
+Trace notes:
+
+- Watch for copying business logic into MCP instead of calling a shared service.
+
+## Seed 7: Stripe Webhook Regression
+
+Goal: adjust subscription behavior without making webhooks non-idempotent.
+
+Expected files:
+
+- `apps/core/stripe_webhooks.py`
+- `apps/core/tests/test_stripe_webhooks.py`
+- Any exposed API or template billing state.
+
+Fail-to-pass checks:
+
+- Replaying the same webhook does not duplicate state.
+- Out-of-order or missing fields fail safely.
+
+Pass-to-pass checks:
+
+- `make pytest-check -- apps/core/tests/test_stripe_webhooks.py -q`
+- `make django-check`
+
+Trace notes:
+
+- Watch for trusting client-side billing status.
+
 ## Seed 8: Dependency Import Smoke
 
 Goal: add a runtime import and prove clean installs can import it.
@@ -159,6 +209,33 @@ Pass-to-pass checks:
 Trace notes:
 
 - Watch for transitive dependencies used as direct imports.
+
+## Seed 9: Docs Navigation
+
+Goal: add a docs page and keep navigation, rendering, and scoped instructions
+aligned.
+
+Expected files:
+
+- `apps/pages/content/docs/`
+- `apps/pages/content/docs/navigation.yaml`
+- `apps/pages/test_docs.py`
+- `apps/pages/content/AGENTS.md` when guidance changes.
+
+Fail-to-pass checks:
+
+- The docs route renders.
+- Navigation includes the new page.
+
+Pass-to-pass checks:
+
+- `make pytest-check -- apps/pages/test_docs.py -q`
+- `make frontend-check` when docs templates or JS change.
+
+Trace notes:
+
+- Watch for docs content that assumes secrets, local paths, or one specific
+  agent vendor.
 
 ## Seed 10: Agent Guidance Update
 
