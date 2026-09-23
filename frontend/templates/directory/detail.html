@@ -1,0 +1,12 @@
+{% extends "directory/base.html" %}{% block title %}{{ project.title }} — Built with Bend{% endblock %}{% block description %}{{ project.description|truncatechars:160 }}{% endblock %}{% block meta %}<link rel="canonical"
+      href="https://builtwithbend.com{{ project.get_absolute_url }}">{% endblock %}{% block content %}<article class="project-detail"><a class="back" href="{% url 'directory:index' %}">← Back to the collection</a><p class="eyebrow">{{ project.get_category_display }}{% if project.featured %} · Curator’s pick{% endif %}</p><h1>{{ project.title }}</h1>{% if project.author %}<p class="author">Built by {{ project.author }}</p>{% endif %}<div class="project-description">{{ project.description|linebreaks }}</div><div class="project-actions">{% if project.website_url %}<a class="button"
+   href="{{ project.website_url }}"
+   target="_blank"
+   rel="noopener noreferrer nofollow">Visit the project ↗</a>{% endif %}{% if project.repository_url %}<a class="button secondary"
+   href="{{ project.repository_url }}"
+   target="_blank"
+   rel="noopener noreferrer nofollow">View repository ↗</a>{% endif %}</div><section class="sources"><h2>The sources</h2><p>Explore the original posts and links behind this build.</p>{% for source in project.sources.all %}<a href="{{ source.url }}"
+   target="_blank"
+   rel="noopener noreferrer nofollow"><span>{{ source.get_kind_display }}</span><span>{{ source.url|truncatechars:75 }} ↗</span></a>{% empty %}<a href="{{ project.canonical_url }}"
+   target="_blank"
+   rel="noopener noreferrer nofollow">Original project ↗</a>{% endfor %}</section></article>{% endblock %}

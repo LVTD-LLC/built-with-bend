@@ -1,0 +1,97 @@
+[project]
+name = "built_with_bend"
+version = "0.1.0"
+description = "A human-reviewed directory of apps, sites, and projects built with Bend 2."
+authors = [{ name = "LVTD, LLC", email = "rasul@lvtd.dev" }]
+requires-python = ">=3.14.5,<4.0"
+dependencies = [
+    "django>=6.0.5,<7",
+    "django-environ>=0.13.0,<1",
+    "django-ninja>=1.6.2,<2",
+    "gunicorn>=26.0.0,<27",
+    "psycopg[binary]>=3.3.4,<4",
+    "whitenoise>=6.12.0,<7",
+]
+
+[dependency-groups]
+dev = ["ruff>=0.15.16", "djlint>=1.36.4", "pytest>=9.0.3", "pytest-django>=4.12.0"]
+
+[tool.uv]
+required-environments = [
+    "sys_platform == 'linux' and platform_machine == 'x86_64'",
+]
+
+[tool.ruff]
+line-length = 100
+# Avoid emitting Python 3.14-only formatting that external review tooling may not parse yet.
+target-version = "py313"
+exclude = ["**/migrations/*.py"]
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "F",    # pyflakes
+    "B",    # flake8-bugbear
+    "I",    # isort
+    "DJ",   # django-specific rules
+    "UP",   # pyupgrade
+    "C90",  # mccabe complexity
+]
+
+[tool.ruff.lint.per-file-ignores]
+"**/migrations/*.py" = ["E501", "F401", "F403", "F405"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["apps", "built_with_bend"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.pyscn.output]
+directory = ".pyscn/reports"
+
+[tool.pyscn.analysis]
+exclude_patterns = [
+    "**/migrations/**",
+    "**/tests/**",
+    "**/tests.py",
+    "**/test_*.py",
+    "**/*_test.py",
+    "**/__pycache__/**",
+    ".venv/**",
+    "venv/**",
+    "env/**",
+]
+
+[tool.pyscn.complexity]
+max_complexity = 15
+
+[tool.pyscn.clones]
+min_lines = 20
+similarity_threshold = 0.90
+
+[tool.mutmut]
+source_paths = ["apps/", "built_with_bend/"]
+only_mutate = [
+    "apps/api/services.py",
+    "apps/core/utils.py",
+]
+do_not_mutate = [
+    "**/migrations/*.py",
+    "**/tests/*.py",
+    "**/tests.py",
+    "**/test_*.py",
+]
+also_copy = ["conftest.py", "pytest.ini", "frontend/", "mutmut_config.py"]
+pytest_add_cli_args = ["-p", "mutmut_config"]
+
+[tool.djlint]
+profile="django"
+ignore = "H031,H006,H023,H021,H011,T002,H005,H014,H016,H030,T001"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = []
