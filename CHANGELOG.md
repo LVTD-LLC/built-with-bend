@@ -20,6 +20,7 @@ with release sections grouped by ISO 8601 date headings (`## YYYY-MM-DD`).
   anonymous submissions, private review queue, and superuser-only Ninja ingestion.
 - Add responsive warm editorial UI, dark mode, accessibility controls, and sitemap.
 - Remove public SaaS signup/billing and first-user promotion; store API key digests.
+- Verify first-user privilege isolation and dark-mode secondary-action contrast.
 - Deploy tested immutable main revisions to main CapRover using an app-scoped token.
 
 

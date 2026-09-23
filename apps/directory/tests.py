@@ -224,3 +224,11 @@ class DirectoryTests(TestCase):
         self.admin.refresh_from_db()
         self.assertEqual(self.admin.password, old_password)
         self.assertFalse(AdminAPIKey.objects.get().active)
+
+
+class OrdinaryUserTests(TestCase):
+    def test_first_user_is_not_automatically_promoted(self):
+        user = get_user_model().objects.create_user("ordinary-first-user")
+        user.refresh_from_db()
+        self.assertFalse(user.is_staff)
+        self.assertFalse(user.is_superuser)
