@@ -65,6 +65,7 @@ export async function deploy({
   await uploadApp({ server, appName, appToken, gitSha, archive, request });
 
   // Upload acceptance is not deployment success. Check what the public server actually serves.
+  let healthyChecks = 0;
   for (let attempt = 0; attempt < attempts; attempt++) {
     const url = new URL('/health/', productionUrl);
     url.searchParams.set('check', `${gitSha}-${Date.now()}`);
@@ -75,12 +76,16 @@ export async function deploy({
         signal: AbortSignal.timeout(10_000),
       });
       if (live.ok && (await live.json()).revision === gitSha) {
-        console.log(
-          `Verified production revision ${gitSha} at ${productionUrl}`,
-        );
-        return;
-      }
+        healthyChecks++;
+        if (healthyChecks >= 12) {
+          console.log(
+            `Verified production revision ${gitSha} at ${productionUrl} across 12 consecutive checks`,
+          );
+          return;
+        }
+      } else healthyChecks = 0;
     } catch {
+      healthyChecks = 0;
       // Temporary connection errors during a rollout are retried within the bounded wait.
     }
     if (attempt + 1 < attempts) await pause(5000);
