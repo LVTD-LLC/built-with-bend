@@ -3,7 +3,7 @@ from datetime import timedelta
 
 from django.contrib.auth import get_user_model
 from django.core import signing
-from django.test import Client, TestCase
+from django.test import Client, TestCase, TransactionTestCase
 from django.utils import timezone
 
 from .models import AdminAPIKey, Project, SourceLink, Submission
@@ -64,20 +64,6 @@ class DirectoryTests(TestCase):
         self.assertEqual(self.client.get("/health/workers/").status_code, 200)
         cache.delete(current)
         self.assertEqual(self.client.get("/health/workers/").status_code, 503)
-
-    def test_inactive_profile_key_rejected_by_generated_api_and_mcp(self):
-        from apps.api.auth import get_profile_for_api_key
-        from apps.mcp_server.auth import authenticate_mcp_headers
-
-        profile = self.admin.profile
-        key = profile.set_api_key()
-        profile.save()
-        self.assertEqual(get_profile_for_api_key(key), profile)
-        self.assertEqual(authenticate_mcp_headers({"authorization": f"Bearer {key}"}), profile)
-        self.admin.is_active = False
-        self.admin.save()
-        self.assertIsNone(get_profile_for_api_key(key))
-        self.assertIsNone(authenticate_mcp_headers({"authorization": f"Bearer {key}"}))
 
     def test_revoked_admin_access_rejected(self):
         headers = self.token()
@@ -259,3 +245,24 @@ class OrdinaryUserTests(TestCase):
         user.refresh_from_db()
         self.assertFalse(user.is_staff)
         self.assertFalse(user.is_superuser)
+
+
+class ProfileTransportTests(TransactionTestCase):
+    def setUp(self):
+        self.admin = get_user_model().objects.create_superuser(
+            "transport-curator", "curator@example.com", "test-only-password"
+        )
+
+    def test_inactive_profile_key_rejected_by_generated_api_and_mcp(self):
+        from apps.api.auth import get_profile_for_api_key
+        from apps.mcp_server.auth import authenticate_mcp_headers
+
+        profile = self.admin.profile
+        key = profile.set_api_key()
+        profile.save()
+        self.assertEqual(get_profile_for_api_key(key), profile)
+        self.assertEqual(authenticate_mcp_headers({"authorization": f"Bearer {key}"}), profile)
+        self.admin.is_active = False
+        self.admin.save()
+        self.assertIsNone(get_profile_for_api_key(key))
+        self.assertIsNone(authenticate_mcp_headers({"authorization": f"Bearer {key}"}))
