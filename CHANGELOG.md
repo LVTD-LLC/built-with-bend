@@ -21,6 +21,18 @@ with release sections grouped by ISO 8601 date headings (`## YYYY-MM-DD`).
 - Add a private Redis broker, Q2 worker and authenticated Qdrant service; verify worker revision readiness in deployment.
 - Use project-scoped S3, PostHog and Sentry configuration; retain deferred Stripe activation.
 - Upgrade MJML to remove reported npm vulnerabilities.
+- Add the full Djass-generated Python dependency set, supporting agent references, and configured ReviewGate as a reviewed prerequisite to the full-feature integration.
+
+- Create the non-root runtime home directory so Gunicorn can initialize its local control socket.
+- Gate rolling updates on a local process/database healthcheck and require 12 consecutive live revision checks; cover mixed healthy/broken rollouts with regression tests.
+
+- Generate through hosted Djass job 33 and specialize into Built with Bend.
+- Add curated project/source models, search/filter/pagination, detail pages,
+  anonymous submissions, private review queue, and superuser-only Ninja ingestion.
+- Add responsive warm editorial UI, dark mode, accessibility controls, and sitemap.
+- Remove public SaaS signup/billing and first-user promotion; store API key digests.
+- Verify first-user privilege isolation and dark-mode secondary-action contrast.
+- Deploy tested immutable main revisions to main CapRover using an app-scoped token.
 
 
 - Keep all documentation publicly accessible without login or payment, with regression tests for anonymous and unpaid readers independently of product access controls.
