@@ -20,7 +20,7 @@ COPY pyproject.toml uv.lock .python-version ./
 RUN uv sync --locked --no-dev --no-install-project
 COPY . .
 COPY --from=assets /app/frontend/static ./frontend/static
-RUN useradd --system --uid 10001 app && chown -R app:app /app
+RUN useradd --system --create-home --home-dir /home/app --uid 10001 app && chown -R app:app /app
 USER app
 EXPOSE 8000
 CMD ["sh", "deployment/entrypoint.sh"]
