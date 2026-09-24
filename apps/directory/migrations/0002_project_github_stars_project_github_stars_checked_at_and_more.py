@@ -46,7 +46,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='project',
             name='slug',
-            field=models.SlugField(blank=True, max_length=160, null=True),
+            field=models.SlugField(blank=True, db_index=False, max_length=160, null=True),
         ),
         migrations.AddField(
             model_name='project',
