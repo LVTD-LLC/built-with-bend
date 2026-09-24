@@ -122,3 +122,18 @@ def test_bundled_social_artwork_is_available_to_staticfiles():
         assert len(image) < 1_000_000
         built = finders.find(f"social/{name}.png")
         assert built and Path(built).read_bytes() == image
+
+
+@pytest.mark.parametrize("path", ["/blog/", "/docs/getting-started/introduction/"])
+def test_shared_social_metadata_accepts_minimal_route_context(rf, path):
+    from django.template import Context, Template
+    from django.urls import resolve
+
+    request = rf.get(path)
+    request.resolver_match = resolve(path)
+    html = Template("{% load social %}{% social_meta %}").render(Context({"request": request}))
+    parser = HeadParser()
+    parser.feed(html)
+    assert parser.metadata["og:title"][0]
+    assert parser.metadata["og:description"][0]
+    assert parser.metadata["og:url"] == [settings.SITE_URL.rstrip("/") + path]

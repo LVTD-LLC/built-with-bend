@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.utils.text import Truncator
 
 from apps.directory.social import project_card_content, project_card_version
-from apps.pages.services import build_absolute_public_url
+from apps.pages.services import BLOG_DESCRIPTION, BLOG_TITLE, build_absolute_public_url
 
 register = template.Library()
 DEFAULT_DESCRIPTION = (
@@ -41,13 +41,13 @@ def social_meta(context):
         kind = "article"
         card = "blog"
     elif route == "blog_posts":
-        title, description = context["blog_title"], context["blog_description"]
+        title = context.get("blog_title") or BLOG_TITLE
+        description = context.get("blog_description") or BLOG_DESCRIPTION
         card = "blog"
     elif route == "docs_page":
-        title = f"{context['page_title']} — Built with Bend Guides"
-        description = (
-            context.get("meta_description") or f"{context['page_title']} for Built with Bend."
-        )
+        page_title = context.get("page_title") or "Guides"
+        title = f"{page_title} — Built with Bend Guides"
+        description = context.get("meta_description") or f"{page_title} for Built with Bend."
         card = "guides"
     elif route in ("submit", "submitted"):
         title = "Submit a build — Built with Bend"
