@@ -3,7 +3,7 @@ from datetime import timedelta
 
 from django.contrib.auth import get_user_model
 from django.core import signing
-from django.test import Client, TestCase, TransactionTestCase
+from django.test import Client, TestCase, TransactionTestCase, override_settings
 from django.utils import timezone
 
 from .models import AdminAPIKey, Project, SourceLink, Submission
@@ -208,13 +208,17 @@ class DirectoryTests(TestCase):
         self.assertEqual(self.client.get("/?page=invalid").status_code, 200)
         self.assertEqual(self.client.get("/health/").json()["status"], "ok")
 
+    @override_settings(SITE_URL="https://builtwithbend.example")
     def test_sitemap_only_contains_published_projects(self):
         draft = create_project(**self.payload)
         self.assertNotContains(self.client.get("/sitemap.xml"), draft.get_absolute_url())
         draft.status = Project.Status.PUBLISHED
         draft.full_clean()
         draft.save()
-        self.assertContains(self.client.get("/sitemap.xml"), draft.get_absolute_url())
+        response = self.client.get("/sitemap.xml")
+        self.assertContains(response, f"https://builtwithbend.example{draft.get_absolute_url()}")
+        self.assertContains(response, "https://builtwithbend.example/blog/")
+        self.assertNotContains(response, "https://example.com/")
 
     def test_bootstrap_does_not_reset_password_or_reenable_revoked_key(self):
         import os

@@ -1,8 +1,8 @@
 {% extends "base_landing.html" %}
 {% load static %}
 {% block title %}{{ blog_post.title }} | Built with Bend Blog{% endblock %}
+{% block description %}{{ blog_post.description }}{% endblock %}
 {% block meta %}
-    <meta name="description" content="{{ blog_post.description }}" />
     {% if blog_post.metadata_keywords %}
         <meta name="keywords" content="{{ blog_post.metadata_keywords|join:', ' }}" />
     {% endif %}
@@ -29,17 +29,17 @@
 {% endblock meta %}
 {% block content %}
     <link rel="stylesheet" href="{% static 'css/app.css' %}">
-    <article class="container px-4 py-8 mx-auto md:relative">
+    <article class="blog-page container px-4 py-8 mx-auto md:relative">
         <div class="mx-auto max-w-3xl">
             <a href="{% url 'blog_posts' %}"
-               class="inline-flex rounded-md text-sm font-semibold text-orange-700 hover:text-orange-800">← Blog</a>
-            <div class="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-gray-500">
+               class="inline-flex rounded-md text-sm font-semibold blog-link">← Blog</a>
+            <div class="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm blog-muted">
                 <time datetime="{{ blog_post.published_at|date:'Y-m-d' }}">{{ blog_post.published_at|date:"M j, Y" }}</time>
                 <span>{{ blog_post.reading_time_minutes }} min read</span>
                 <span>{{ blog_post.author }}</span>
             </div>
             <h1 class="mt-4 mb-4 text-3xl font-bold">{{ blog_post.title }}</h1>
-            <p class="mb-8 text-lg leading-8 text-gray-600">{{ blog_post.description }}</p>
+            <p class="mb-8 text-lg leading-8 blog-muted">{{ blog_post.description }}</p>
             <div class="max-w-none prose prose-lg">{{ blog_post.html|safe }}</div>
         </div>
     </article>
