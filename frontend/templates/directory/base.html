@@ -1,9 +1,9 @@
-{% load static %}
+{% load static social %}
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{% block title %}Built with Bend — A directory of Bend 2 projects{% endblock %}</title><meta name="description"
       content="{% block description %}Discover apps, games, tools, and experiments built with Bend 2. A human-reviewed directory with links to the builds and their sources.{% endblock %}"><meta name="theme-color" content="#fbf8f4"><link rel="icon"
       href="{% static 'directory/icon.svg' %}"
-      type="image/svg+xml"><link rel="stylesheet" href="{% static 'css/app.css' %}"><link rel="stylesheet" href="{% static 'directory/site.css' %}"><script src="{% static 'directory/site.js' %}" defer></script>{% block meta %}{% endblock %}{% include "components/posthog.html" %}{% block schema %}{% endblock %}</head>
+      type="image/svg+xml"><link rel="stylesheet" href="{% static 'css/app.css' %}"><link rel="stylesheet" href="{% static 'directory/site.css' %}"><script src="{% static 'directory/site.js' %}" defer></script>{% block meta %}{% endblock %}{% social_meta %}{% include "components/posthog.html" %}{% block schema %}{% endblock %}</head>
     <body {% if posthog_pageview_enabled %}data-posthog-pageview-enabled="true" data-posthog-route="{{ posthog_pageview_route }}" data-posthog-content-group="{{ posthog_content_group }}"{% endif %}><a class="skip" href="#main">Skip to content</a><header class="header shell"><a class="brand" href="{% url 'directory:index' %}"><span class="brand-mark" aria-hidden="true">b.</span>builtwithbend</a><nav aria-label="Main navigation"><a href="https://bend-lang.com/"
    target="_blank"
    rel="noopener noreferrer">About Bend ↗</a><a class="nav-submit" href="{% url 'directory:submit' %}">Submit a build <span aria-hidden="true">↗</span></a><button class="theme-toggle" aria-label="Toggle color theme" type="button">◐</button></nav></header>

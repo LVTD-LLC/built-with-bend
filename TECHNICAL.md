@@ -193,3 +193,19 @@ zero includes recorded zeroes. Popularity sorts place unknown values last.
 Source/type counts respect the other selected filters. Sponsor links are the
 four explicitly selected LVTD projects, not Bend-built directory entries or paid
 placements; Stripe sponsorship checkout remains deferred.
+
+## Social previews
+
+Both public template shells render `social_meta` from
+`apps/core/templatetags/social.py`. It supplies page-specific titles, descriptions,
+canonical-origin URLs, image alt text, and large X cards. Project pages share the
+directory artwork; guides, submissions, and the blog have dedicated artwork.
+Blog frontmatter can override `image` and `image_alt`; custom images do not inherit
+assumed dimensions. Missing blog artwork falls back to the local blog card.
+
+The committed 1200×630 PNGs live in `frontend/src/social/`. `npm run build` copies
+them to `frontend/static/social/` for WhiteNoise/collectstatic. To regenerate them,
+install Playwright locally (`npm install --no-save --package-lock=false playwright`
+and `npx playwright install chromium`), then run
+`node scripts/generate-social-images.mjs`. The generator uses system fonts and
+makes no external font or image requests. Ordinary builds need no browser.

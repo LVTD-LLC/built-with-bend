@@ -15,6 +15,8 @@ with release sections grouped by ISO 8601 date headings (`## YYYY-MM-DD`).
 
 ## 2026-09-24
 
+- Add branded, self-hosted social preview images and consistent Open Graph/X metadata across public pages, including projects and guides.
+
 - Publish the first blog post, introducing Bend 2 through five source-checked directory projects.
 - Include the blog index in the sitemap, use the configured public host for directory sitemap URLs, and give blog pages one description with theme-aware reading styles.
 

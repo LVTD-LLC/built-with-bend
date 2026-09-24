@@ -35,7 +35,9 @@ def test_blog_index_renders_empty_state(client, blog_posts_dir):
     assert content.count('name="description"') == 1
     assert "No blog posts available at the moment." in content
     assert 'href="https://canonical.example/blog/"' in content
-    escaped_default_image_url = escape(BLOG_DEFAULT_IMAGE_URL, quote=True)
+    escaped_default_image_url = escape(
+        "https://canonical.example" + BLOG_DEFAULT_IMAGE_URL, quote=True
+    )
     assert f'property="og:image" content="{escaped_default_image_url}"' in content
     assert 'name="twitter:card" content="summary_large_image"' in content
     assert f'name="twitter:image" content="{escaped_default_image_url}"' in content

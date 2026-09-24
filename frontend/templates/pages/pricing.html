@@ -1,25 +1,10 @@
 {% extends "base_landing.html" %}
 {% load static %}
+{% block title %}Pricing | Built with Bend{% endblock %}
+{% block description %}Compare Built with Bend plans and choose the option that fits your workflow.{% endblock %}
 {% block meta %}
-    <title>Pricing | Built with Bend</title>
-    <meta name="description"
-          content="Compare Built with Bend plans and choose the option that fits your workflow." />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="{{ public_site_url }}{% url 'pricing' %}" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Pricing | Built with Bend" />
-    <meta property="og:url" content="{{ public_site_url }}{% url 'pricing' %}" />
-    <meta property="og:description"
-          content="Compare Built with Bend plans and choose the option that fits your workflow." />
-    <meta property="og:image"
-          content="https://osig.app/g?site=x&style=logo&font=markerfelt&title=Built%20with%20Bend%20Pricing&subtitle=Plans%20and%20billing" />
-    <meta property="og:locale" content="en_US" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Pricing | Built with Bend" />
-    <meta name="twitter:description"
-          content="Compare Built with Bend plans and choose the option that fits your workflow." />
-    <meta name="twitter:image"
-          content="https://osig.app/g?site=x&style=logo&font=markerfelt&title=Built%20with%20Bend%20Pricing&subtitle=Plans%20and%20billing" />
 {% endblock meta %}
 {% block content %}
     <div class="py-24 bg-white dark:bg-gray-950 sm:py-32">

@@ -1,27 +1,11 @@
 {% extends "base_landing.html" %}
 {% load static %}
+{% block title %}Privacy Policy - Built with Bend{% endblock %}
+{% block description %}Privacy Policy for Built with Bend - Learn how we collect, use, and protect your personal information.{% endblock %}
 {% block meta %}
-    <title>Privacy Policy - Built with Bend</title>
-    <meta name="description"
-          content="Privacy Policy for Built with Bend - Learn how we collect, use, and protect your personal information." />
     <meta name="robots" content="index, follow" />
     <link rel="canonical"
           href="{{ public_site_url }}{% url 'privacy_policy' %}" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Privacy Policy - Built with Bend" />
-    <meta property="og:url"
-          content="{{ public_site_url }}{% url 'privacy_policy' %}" />
-    <meta property="og:description"
-          content="Privacy Policy for Built with Bend - Learn how we collect, use, and protect your personal information." />
-    <meta property="og:image"
-          content="https://osig.app/g?site=meta&style=logo&font=markerfelt&title=Privacy%20Policy&subtitle=Built%20with%20Bend" />
-    <meta property="og:locale" content="en_US" />
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="Privacy Policy - Built with Bend" />
-    <meta name="twitter:description"
-          content="Privacy Policy for Built with Bend - Learn how we collect, use, and protect your personal information." />
-    <meta name="twitter:image"
-          content="https://osig.app/g?site=x&style=logo&font=markerfelt&title=Privacy%20Policy&subtitle=Built%20with%20Bend" />
 {% endblock meta %}
 {% block content %}
     <div class="px-4 py-16 mx-auto max-w-4xl sm:py-24 sm:px-6 lg:px-8">

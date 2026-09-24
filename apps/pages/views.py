@@ -18,7 +18,6 @@ from apps.core.choices import ProfileStates
 from apps.core.models import Profile
 from apps.core.views import build_absolute_public_url, build_agent_setup_prompt
 from apps.pages.services import (
-    BLOG_DEFAULT_IMAGE_URL,
     BLOG_DESCRIPTION,
     BLOG_TITLE,
     BlogPostNotFound,
@@ -126,7 +125,6 @@ def blog_posts_view(request):
         {
             "blog_title": BLOG_TITLE,
             "blog_description": BLOG_DESCRIPTION,
-            "blog_image_url": BLOG_DEFAULT_IMAGE_URL,
             "blog_posts": blog_posts,
             "canonical_url": blog_index_url(),
             "schema_json": json_ld(blog_index_schema(blog_posts)),

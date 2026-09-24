@@ -5,6 +5,8 @@ published_at: 2026-09-24
 keywords: [Bend programming language, Bend 2, Bend 2 projects]
 topics: [Bend 2, Project examples]
 author: Built with Bend
+image: /static/social/bend-2-projects.png
+image_alt: "What can you build with Bend 2? Five projects worth exploring."
 ---
 
 A programming language gets more interesting when someone builds something you can inspect. With Bend 2, that includes a recreation of Doom's first level, an SVG editor, a storage engine, and a Mandelbrot explorer.

@@ -1,8 +1,7 @@
 {% extends "pages/docs/base_docs.html" %}
 {% block title %}{{ page_title }} - {{ category_title }} | Built with Bend Documentation{% endblock %}
+{% block description %}{{ meta_description|default:page_title }}{% endblock %}
 {% block meta %}
-    <meta name="description"
-          content="{% if meta_description %}{{ meta_description }}{% else %}{{ page_title }} documentation for Built with Bend{% endif %}" />
     {% if author %}<meta name="author" content="{{ author }}" />{% endif %}
     <meta name="robots" content="index, follow" />
     {% if canonical_url %}<link rel="canonical" href="{{ canonical_url }}" />{% endif %}

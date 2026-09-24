@@ -6,7 +6,7 @@ import re
 from dataclasses import dataclass
 from datetime import date, datetime, time
 from pathlib import Path
-from urllib.parse import urlencode, urlsplit
+from urllib.parse import urlsplit
 
 import frontmatter
 import markdown
@@ -21,14 +21,7 @@ BLOG_TITLE = "Built with Bend Blog"
 BLOG_DESCRIPTION = "A human-reviewed directory of apps, sites, and projects built with Bend 2."
 BLOG_DEFAULT_AUTHOR = "LVTD, LLC"
 BLOG_DEFAULT_AUTHOR_URL = "https://lvtd.dev"
-BLOG_DEFAULT_IMAGE_PARAMS = {
-    "site": "x",
-    "style": "logo",
-    "font": "markerfelt",
-    "title": BLOG_TITLE,
-    "subtitle": BLOG_DESCRIPTION,
-}
-BLOG_DEFAULT_IMAGE_URL = "https://osig.app/g?" + urlencode(BLOG_DEFAULT_IMAGE_PARAMS)
+BLOG_DEFAULT_IMAGE_URL = "/static/social/blog.png"
 BLOG_MARKDOWN_EXTENSIONS = ["fenced_code", "tables"]
 BLOG_REQUIRED_FRONTMATTER = ("title", "description", "published_at")
 BLOG_SLUG_PATTERN = re.compile(r"^[a-z0-9][a-z0-9-]*$")
@@ -178,7 +171,9 @@ def load_blog_post(path: Path, *, content_dir: Path | None = None) -> BlogPost:
         topics=topics,
         canonical_url=canonical_url
         or build_absolute_public_url(reverse("blog_post", kwargs={"slug": slug})),
-        image_url=build_absolute_public_url(image) if image else BLOG_DEFAULT_IMAGE_URL,
+        image_url=build_absolute_public_url(image)
+        if image
+        else build_absolute_public_url(BLOG_DEFAULT_IMAGE_URL),
         image_alt=image_alt,
         robots=robots,
         source_path=path,
@@ -247,7 +242,7 @@ def publisher_schema() -> dict:
     return {
         "@type": "Organization",
         "name": "Built with Bend",
-        "logo": {"@type": "ImageObject", "url": BLOG_DEFAULT_IMAGE_URL},
+        "logo": {"@type": "ImageObject", "url": build_absolute_public_url(BLOG_DEFAULT_IMAGE_URL)},
     }
 
 
