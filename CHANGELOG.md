@@ -15,6 +15,8 @@ with release sections grouped by ISO 8601 date headings (`## YYYY-MM-DD`).
 
 ## 2026-09-24
 
+- Add anonymous $100 USD one-week sponsorship Checkout, with verified payment activation, automatic seven-day expiry, refund/dispute removal, and retry-safe fulfillment. Checkout stays closed until the dedicated Stripe account is configured.
+
 - Publish the first blog post, introducing Bend 2 through five source-checked directory projects.
 - Include the blog index in the sitemap, use the configured public host for directory sitemap URLs, and give blog pages one description with theme-aware reading styles.
 

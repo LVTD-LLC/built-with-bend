@@ -1,0 +1,30 @@
+{% extends "directory/base.html" %}
+{% block title %}Your sponsorship — Built with Bend{% endblock %}
+{% block content %}
+    <section class="confirmation">
+        {% if sponsor.status == "paid" and not sponsor.hidden %}
+            <h1>
+                Thanks for supporting
+                <br>
+                <span>the builders.</span>
+            </h1>
+            <p>{{ sponsor.business_name }}’s sponsorship runs from {{ sponsor.starts_at|date:"M j, Y, H:i T" }} to {{ sponsor.ends_at|date:"M j, Y, H:i T" }}.</p>
+        {% elif sponsor.status == "revoked" or sponsor.hidden %}
+            <h1>
+                Your sponsorship
+                <br>
+                <span>is not active.</span>
+            </h1>
+            <p>Contact <a href="mailto:rasul@lvtd.dev">rasul@lvtd.dev</a> for help with your placement.</p>
+        {% else %}
+            <h1>
+                Confirming your
+                <br>
+                <span>sponsorship.</span>
+            </h1>
+            <p>Your link appears after Stripe confirms payment. This usually takes a few moments. Refresh this page to check; please do not pay again.</p>
+            <p><a href="" class="button">Check payment status</a></p>
+        {% endif %}
+        <a href="{% url 'directory:index' %}" class="button">Back to the directory ↗</a>
+    </section>
+{% endblock %}

@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django.db import IntegrityError, transaction
 from django.utils import timezone
 
-from .models import AdminAPIKey, Project, SourceLink, Submission
+from .models import AdminAPIKey, Project, SourceLink, Sponsorship, Submission
 from .services import approve_submission
 
 
@@ -71,3 +71,17 @@ class AdminAPIKeyAdmin(admin.ModelAdmin):
 admin.site.site_header = "Built with Bend"
 admin.site.site_title = "Built with Bend · Admin"
 admin.site.index_title = "Curate the directory"
+
+
+@admin.register(Sponsorship)
+class SponsorshipAdmin(admin.ModelAdmin):
+    list_display = ["business_name", "status", "starts_at", "ends_at", "hidden"]
+    list_filter = ["status", "hidden"]
+    search_fields = ["business_name", "website_url", "checkout_session_id"]
+    readonly_fields = [field.name for field in Sponsorship._meta.fields if field.name != "hidden"]
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False

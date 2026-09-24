@@ -11,7 +11,7 @@ from django.utils import timezone
 from django.views.decorators.http import require_GET, require_http_methods
 
 from .forms import SubmissionForm
-from .models import Category, Project, SourceKind, SubmissionLimit
+from .models import Category, Project, SourceKind, Sponsorship, SubmissionLimit
 
 
 def source_filter(kind):
@@ -92,6 +92,7 @@ def index(request):
         {
             "page": page,
             "total": total,
+            "paid_sponsors": Sponsorship.active(),
             "q": query,
             "category": category,
             "source": source,
