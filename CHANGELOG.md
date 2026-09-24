@@ -15,6 +15,8 @@ with release sections grouped by ISO 8601 date headings (`## YYYY-MM-DD`).
 
 ## 2026-09-24
 
+- Add optional HTTPS project thumbnail URLs to ingestion, reviewed submissions, and admin; display previews on project cards and detail pages with broken-image fallback.
+
 - Add anonymous $100 USD one-week sponsorship Checkout, with verified payment activation, automatic seven-day expiry, refund/dispute removal, and retry-safe fulfillment. Checkout stays closed until the dedicated Stripe account is configured.
 - Add Blog to the main navigation on desktop and mobile, and remove Guides from the footer.
 

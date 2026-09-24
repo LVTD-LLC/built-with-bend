@@ -22,3 +22,10 @@ html[data-theme=dark] .button.secondary{color:var(--accent)}html[data-theme=dark
 .blog-page .prose{--tw-prose-body:var(--ink);--tw-prose-headings:var(--ink);--tw-prose-links:var(--accent);--tw-prose-bold:var(--ink);--tw-prose-counters:var(--muted);--tw-prose-bullets:var(--muted);--tw-prose-quotes:var(--ink);--tw-prose-quote-borders:var(--line);--tw-prose-code:var(--ink);--tw-prose-hr:var(--line)}
 
 .sponsor strong,.sponsor small{overflow-wrap:anywhere}
+
+/* Optional project previews; missing or broken images leave the text card intact. */
+.project-thumbnail{display:block;overflow:hidden;border:1px solid var(--line);border-radius:5px;background:var(--soft);margin-bottom:18px}
+.project-thumbnail[hidden]{display:none}
+.project-thumbnail img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:contain}
+.detail-thumbnail{margin-block:24px;max-width:960px}
+.detail-thumbnail img{max-height:540px}

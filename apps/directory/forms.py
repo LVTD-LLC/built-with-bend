@@ -20,6 +20,7 @@ class SubmissionForm(forms.ModelForm):
             "description",
             "website_url",
             "repository_url",
+            "thumbnail_url",
             "category",
             "author",
             "contact",
@@ -29,6 +30,7 @@ class SubmissionForm(forms.ModelForm):
             "description": "What does it do?",
             "website_url": "Live site or demo URL",
             "repository_url": "Repository URL",
+            "thumbnail_url": "Thumbnail image URL (optional)",
             "contact": "Contact (private, optional)",
         }
         widgets = {"description": forms.Textarea(attrs={"rows": 5})}
@@ -45,6 +47,9 @@ class SubmissionForm(forms.ModelForm):
             {"time": timezone.now().timestamp()}, salt="submission"
         )
         self.fields["source_url"].widget.attrs["placeholder"] = "https://x.com/…/status/…"
+        self.fields["thumbnail_url"].widget.attrs["placeholder"] = (
+            "https://example.com/screenshot.png"
+        )
         self.fields["title"].widget.attrs["placeholder"] = "Give your build a name"
 
     def clean(self):

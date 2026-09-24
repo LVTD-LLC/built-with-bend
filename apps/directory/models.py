@@ -1,4 +1,5 @@
 import hashlib
+import ipaddress
 import uuid
 from urllib.parse import urlsplit
 
@@ -15,6 +16,21 @@ def validate_public_url(value):
     parsed = urlsplit(value)
     if parsed.username or parsed.password:
         raise ValidationError("Use a public URL without embedded credentials.")
+
+
+def validate_thumbnail_url(value):
+    """Images are browser-loaded HTTPS URLs; never fetched by the application."""
+    URLValidator(schemes=["https"])(value)
+    validate_public_url(value)
+    host = urlsplit(value).hostname.lower().rstrip(".")
+    if "." not in host or host.endswith((".localhost", ".local", ".internal")):
+        raise ValidationError("Use a publicly accessible HTTPS image URL.")
+    try:
+        address = ipaddress.ip_address(host)
+    except ValueError:
+        return
+    if not address.is_global:
+        raise ValidationError("Use a publicly accessible HTTPS image URL.")
 
 
 class Category(models.TextChoices):
@@ -65,6 +81,12 @@ class Project(models.Model):
     category = models.CharField(max_length=20, choices=Category, default=Category.OTHER)
     website_url = models.URLField(max_length=1000, blank=True, validators=[validate_public_url])
     repository_url = models.URLField(max_length=1000, blank=True, validators=[validate_public_url])
+    thumbnail_url = models.URLField(
+        max_length=2000,
+        blank=True,
+        validators=[validate_thumbnail_url],
+        help_text="Optional direct HTTPS link to a screenshot or example image, not a webpage.",
+    )
     canonical_url = models.URLField(max_length=1000, unique=True, validators=[validate_public_url])
     status = models.CharField(max_length=20, choices=Status, default=Status.DRAFT, db_index=True)
     featured = models.BooleanField(default=False)
@@ -154,6 +176,12 @@ class Submission(models.Model):
     source_url = models.URLField(max_length=1000, validators=[validate_public_url])
     website_url = models.URLField(max_length=1000, blank=True, validators=[validate_public_url])
     repository_url = models.URLField(max_length=1000, blank=True, validators=[validate_public_url])
+    thumbnail_url = models.URLField(
+        max_length=2000,
+        blank=True,
+        validators=[validate_thumbnail_url],
+        help_text="Optional direct HTTPS link to a screenshot or example image, not a webpage.",
+    )
     contact = models.CharField(
         max_length=250, blank=True, help_text="Private. Never displayed publicly."
     )
