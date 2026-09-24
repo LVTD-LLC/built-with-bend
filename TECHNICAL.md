@@ -296,7 +296,9 @@ A separate account must be created/activated through the Stripe Dashboard; the
 Connect accounts API is not a replacement for an organization's own business account.
 
 The Checkout uses card payments, no promotion codes, no adaptive pricing, and
-server-selected quantity/Price. Price currency, amount, mode, and active status are
+server-selected quantity/Price. Each session explicitly disables Managed Payments,
+so account defaults cannot override the fixed-price, standard Checkout contract.
+Price currency, amount, mode, and active status are
 checked before each new session. A signed, hour-lived form token plus a persisted
 order and Stripe idempotency key prevent duplicate sessions on retries. Start a
 fresh form after 30 minutes; an existing Stripe checkout follows Stripe's expiry.

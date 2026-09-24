@@ -15,6 +15,8 @@ with release sections grouped by ISO 8601 date headings (`## YYYY-MM-DD`).
 
 ## 2026-09-24
 
+- Fix sponsorship Checkout on Stripe accounts that enable Managed Payments by default.
+
 - Add configurable R2 hosting for reviewed project thumbnails, with background imports, validated raster conversion, hosted URL/status API fields, bounded retries, and separate bucket credentials. R2 activation requires verified account access and runtime configuration.
 
 - Add optional HTTPS project thumbnail URLs to ingestion, reviewed submissions, and admin; display previews on project cards and detail pages with broken-image fallback.

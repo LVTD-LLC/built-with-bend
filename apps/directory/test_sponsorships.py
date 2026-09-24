@@ -115,6 +115,7 @@ def test_checkout_fixed_price_anonymous_and_idempotent(client, billing):
     billing.v1.checkout.sessions.create.assert_called_once()
     params = billing.v1.checkout.sessions.create.call_args.args[0]
     assert params["mode"] == "payment"
+    assert params["managed_payments"] == {"enabled": False}
     assert params["line_items"] == [{"price": "price_week", "quantity": 1}]
     assert params["payment_method_types"] == ["card"]
     assert params["allow_promotion_codes"] is False
