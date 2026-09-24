@@ -72,6 +72,8 @@ def create_checkout(data):
         session = client.v1.checkout.sessions.create(
             {
                 "mode": "payment",
+                # Preserve standard Checkout even on Managed Payments-default accounts.
+                "managed_payments": {"enabled": False},
                 "payment_method_types": ["card"],
                 "line_items": [{"price": sponsor.stripe_price_id, "quantity": 1}],
                 "client_reference_id": str(sponsor.pk),
