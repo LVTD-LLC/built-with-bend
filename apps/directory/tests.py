@@ -1,4 +1,5 @@
 import json
+import xml.etree.ElementTree as ET
 from datetime import timedelta
 
 from django.contrib.auth import get_user_model
@@ -218,7 +219,8 @@ class DirectoryTests(TestCase):
         response = self.client.get("/sitemap.xml")
         self.assertContains(response, f"https://builtwithbend.example{draft.get_absolute_url()}")
         self.assertContains(response, "https://builtwithbend.example/blog/")
-        self.assertNotContains(response, "https://example.com/")
+        locations = [node.text for node in ET.fromstring(response.content).findall(".//{*}loc")]
+        self.assertTrue(all(url.startswith("https://builtwithbend.example/") for url in locations))
 
     def test_bootstrap_does_not_reset_password_or_reenable_revoked_key(self):
         import os
