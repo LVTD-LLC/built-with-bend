@@ -4,7 +4,7 @@ from datetime import timedelta
 from django.conf import settings
 from django.core.paginator import Paginator
 from django.db import transaction
-from django.db.models import Q
+from django.db.models import F, Q
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
@@ -14,22 +14,76 @@ from .forms import SubmissionForm
 from .models import Category, Project, SourceKind, SubmissionLimit
 
 
+def source_filter(kind):
+    # Include native project URLs even when ingestion omitted a SourceLink.
+    hosts = {
+        "github": ("github.com",),
+        "x": ("x.com", "twitter.com"),
+        "reddit": ("reddit.com", "old.reddit.com"),
+        "video": ("youtube.com", "youtu.be", "vimeo.com"),
+    }
+    result = Q(sources__kind=kind)
+    if kind == "website":
+        result |= ~Q(website_url="")
+    for host in hosts.get(kind, ()):
+        for field in ("repository_url", "canonical_url", "website_url"):
+            for scheme in ("https", "http"):
+                result |= Q(**{f"{field}__istartswith": f"{scheme}://{host}/"})
+                result |= Q(**{f"{field}__istartswith": f"{scheme}://www.{host}/"})
+    return result
+
+
+def minimum_count(value):
+    try:
+        return min(max(int(value), 0), 2147483647)
+    except (ValueError, TypeError):
+        return None
+
+
 @require_GET
 def index(request):
-    projects = Project.objects.filter(status=Project.Status.PUBLISHED).prefetch_related("sources")
-    total = projects.count()
+    published = Project.objects.filter(status=Project.Status.PUBLISHED)
+    total = published.count()
+    projects = published.prefetch_related("sources")
     query = request.GET.get("q", "").strip()[:200]
     category = request.GET.get("category", "")
     source = request.GET.get("source", "")
+    category = category if category in Category.values else ""
+    source = source if source in SourceKind.values else ""
+    stars = minimum_count(request.GET.get("min_stars"))
+    likes = minimum_count(request.GET.get("min_likes"))
+    sort = request.GET.get("sort", "newest")
+    sort = sort if sort in ("newest", "stars", "likes") else "newest"
     if query:
         projects = projects.filter(
             Q(title__icontains=query) | Q(description__icontains=query) | Q(author__icontains=query)
         )
-    if category in Category.values:
+    if stars is not None:
+        projects = projects.filter(github_stars__gte=stars)
+    if likes is not None:
+        projects = projects.filter(x_likes__gte=likes)
+    # Each facet counts the current search and the other facet, not itself.
+    category_base = projects.filter(source_filter(source)).distinct() if source else projects
+    source_base = projects.filter(category=category) if category else projects
+    categories = [
+        (value, label, category_base.filter(category=value).distinct().count())
+        for value, label in Category.choices
+    ]
+    sources = [
+        (value, label, source_base.filter(source_filter(value)).distinct().count())
+        for value, label in SourceKind.choices
+    ]
+    all_categories = category_base.distinct().count()
+    all_sources = source_base.distinct().count()
+    if category:
         projects = projects.filter(category=category)
-    if source in SourceKind.values:
-        projects = projects.filter(sources__kind=source).distinct()
-    page = Paginator(projects, 24).get_page(request.GET.get("page"))
+    if source:
+        projects = projects.filter(source_filter(source)).distinct()
+    ordering = ["-featured", "-published_at", "-created_at", "pk"]
+    if sort in ("stars", "likes"):
+        field = "github_stars" if sort == "stars" else "x_likes"
+        ordering = [F(field).desc(nulls_last=True), "-published_at", "pk"]
+    page = Paginator(projects.order_by(*ordering), 24).get_page(request.GET.get("page"))
     params = request.GET.copy()
     params.pop("page", None)
     return render(
@@ -41,21 +95,36 @@ def index(request):
             "q": query,
             "category": category,
             "source": source,
-            "categories": Category.choices,
-            "sources": SourceKind.choices,
+            "categories": categories,
+            "sources": sources,
             "query_params": params.urlencode(),
+            "all_categories": all_categories,
+            "all_sources": all_sources,
+            "min_stars": stars,
+            "min_likes": likes,
+            "sort": sort,
+            "is_filtered": bool(
+                query or category or source or stars is not None or likes is not None
+            ),
+            "heading": dict(SourceKind.choices).get(source, ""),
         },
     )
 
 
 @require_GET
-def detail(request, pk):
+def detail(request, slug):
     project = get_object_or_404(
         Project.objects.prefetch_related("sources"),
-        pk=pk,
+        slug=slug,
         status=Project.Status.PUBLISHED,
     )
     return render(request, "directory/detail.html", {"project": project})
+
+
+@require_GET
+def legacy_detail(request, pk):
+    project = get_object_or_404(Project, pk=pk, status=Project.Status.PUBLISHED)
+    return redirect(project.get_absolute_url(), permanent=True)
 
 
 def submission_allowed(request):

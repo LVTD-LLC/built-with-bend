@@ -13,6 +13,13 @@ with release sections grouped by ISO 8601 date headings (`## YYYY-MM-DD`).
 **Fixed** for any bug fixes.
 **Security** in case of vulnerabilities.
 
+## 2026-09-24
+
+- Replace UUID project URLs with stable readable slugs; redirect existing public links and update the sitemap.
+- Redesign the catalog with source tabs, a project-type sidebar, compact cards, and Rowset, CiteGuild, TastefulKit, and Djass sponsor links. Remove decorative eyebrows.
+- Store GitHub stars and X likes; add minimum-count filters and popularity sorting, keeping unknown counts distinct from zero.
+- Refresh public GitHub star counts daily through a bounded hourly worker job; allow observed X likes through the private ingestion API and admin.
+
 ## 2026-09-23
 
 - Regenerate via hosted Djass job 34 with every feature enabled except DigitalOcean.

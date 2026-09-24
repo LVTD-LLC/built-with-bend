@@ -210,11 +210,11 @@ class DirectoryTests(TestCase):
 
     def test_sitemap_only_contains_published_projects(self):
         draft = create_project(**self.payload)
-        self.assertNotContains(self.client.get("/sitemap.xml"), str(draft.pk))
+        self.assertNotContains(self.client.get("/sitemap.xml"), draft.get_absolute_url())
         draft.status = Project.Status.PUBLISHED
         draft.full_clean()
         draft.save()
-        self.assertContains(self.client.get("/sitemap.xml"), str(draft.pk))
+        self.assertContains(self.client.get("/sitemap.xml"), draft.get_absolute_url())
 
     def test_bootstrap_does_not_reset_password_or_reenable_revoked_key(self):
         import os

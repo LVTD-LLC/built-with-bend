@@ -10,7 +10,7 @@ empty state. No fabricated entries, audience counts, or sponsorship prices.
 - Card #fffdf9, soft surface #f1ece4, border #e5ddd4.
 - Dark equivalents are defined under html[data-theme=dark] in site.css.
 - System sans-serif for UI, Georgia italic for the Bend wordmark/accent.
-- Container 1200px; desktop side padding 32px, mobile 18px.
+- Container 1440px; desktop side padding 40px, mobile 16px.
 - Small 5–7px corners, simple borders, no shadows or decorative gradients.
 
 Reusable styles live in frontend/src/styles/site.css. No external font or tracker
@@ -18,3 +18,13 @@ requests. JavaScript is optional; search, filters, pagination, and submission al
 work through server-rendered forms. The theme toggle persists locally when storage
 is available. Keep focus rings, skip link, visible labels, reduced-motion handling,
 and equivalent light/dark readability. Test at 390px and 1440px and with long content.
+
+
+## Catalog layout
+
+Source pills sit above the results, with project-type links in the left sidebar
+and the team sponsor block directly underneath. Keep source/type/search/count
+filters combinable and URL-addressable. Use compact bordered cards, subdued
+source footers, and restrained category colors. No decorative eyebrows. On narrow
+screens the type and sponsor sections share a compact two-column area above the
+source tabs. Counts come from published records; unknown popularity stays blank.

@@ -156,3 +156,40 @@ exactly the current PR head. Review errors and skipped runs are not approvals.
 The initial full regeneration is split into dependency/reference and application
 PRs to fit ReviewGate's 1 MB changed-file context budget without excluding files.
 Each prerequisite is reviewed before merging the dependent application change.
+
+
+## Catalog URLs and popularity
+
+Public project URLs are `/projects/{slug}/`. Slugs are generated once from the
+title; collisions receive a short suffix, and renaming a project does not change
+its URL. UUID-shaped titles get a `build-` prefix to reserve legacy redirects.
+The additive migration backfills existing projects before enforcing uniqueness.
+Old `/projects/{uuid}/` links permanently redirect for published records only.
+API identifiers remain UUIDs; API output also includes the slug and both counts.
+
+`Project.github_stars` and `Project.x_likes` are nullable nonnegative integers.
+Unknown is null, not zero. Ingestion accepts both optional fields. An active
+superuser may PATCH `/api/v1/projects/{uuid}/popularity` with `{"x_likes": 42}`;
+explicit null clears it and omission leaves it unchanged. Curators can also edit
+counts in Django admin. X counts are observations supplied by a curator or trusted
+importer: no automatic X refresh or paid X API is enabled.
+
+`python manage.py refresh_github_stars` fetches public GitHub repository metadata
+without a token. Repository selection prefers `repository_url`, then the canonical
+GitHub link, then the first GitHub source. It reads `stargazers_count` from the
+fixed GitHub API host, never arbitrary submitted hosts, and does not follow redirects.
+Each run refreshes up to 30 records not successfully checked in 24 hours, uses
+8-second request timeouts, and preserves existing data on API failures. A shared
+cache lock prevents overlapping jobs; 403/429 stops the batch until the next run.
+
+Deployment installs the named hourly Q2 schedule idempotently via
+`refresh_github_stars --schedule`. Its first run waits 15 minutes for the new worker
+revision. No outbound lookup runs on page views or database migrations. Monitor
+Q2 task results (`updated` / `failed`) and `github_stars_checked_at` in the admin.
+
+Catalog GET parameters: `q`, `source`, `category`, `min_stars`, `min_likes`,
+`sort=newest|stars|likes`, and `page`. Minimum filters exclude unknown counts;
+zero includes recorded zeroes. Popularity sorts place unknown values last.
+Source/type counts respect the other selected filters. Sponsor links are the
+four explicitly selected LVTD projects, not Bend-built directory entries or paid
+placements; Stripe sponsorship checkout remains deferred.

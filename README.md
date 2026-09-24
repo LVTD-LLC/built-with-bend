@@ -8,7 +8,8 @@ Bend 2.
 **[Guides](https://builtwithbend.com/docs/)** ·
 **[Blog](https://builtwithbend.com/blog/)**
 
-Find projects by category, source, or search. Each listing links to its original
+Find projects by type, source, or search. Filter by GitHub stars or X likes, and
+sort by popularity. Each listing links to its original
 sources, with a live site and repository when available. Closed-source projects
 are welcome too.
 
