@@ -31,6 +31,9 @@ source tabs. Counts come from published records; unknown popularity stays blank.
 
 ## Blog
 
+Expose Blog in the main navigation on desktop and mobile. Guides are not linked
+from the public footer; existing documentation URLs remain available.
+
 Keep long-form posts in a centered reading column. Blog prose, metadata and
 listing hover states use the directory color variables in both themes. The
 article template supplies the H1; Markdown bodies start below it.
