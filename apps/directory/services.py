@@ -13,6 +13,7 @@ def create_project(
     category="other",
     website_url="",
     repository_url="",
+    thumbnail_url="",
     sources=(),
     publish=False,
     github_stars=None,
@@ -28,6 +29,7 @@ def create_project(
         category=category,
         website_url=website_url,
         repository_url=repository_url,
+        thumbnail_url=thumbnail_url,
         canonical_url=canonical,
         status=Project.Status.PUBLISHED if publish else Project.Status.DRAFT,
     )
@@ -55,6 +57,7 @@ def approve_submission(submission_id, reviewer):
             category=submission.category,
             website_url=submission.website_url,
             repository_url=submission.repository_url,
+            thumbnail_url=submission.thumbnail_url,
             sources=[submission.source_url],
             publish=True,
         )
@@ -64,6 +67,8 @@ def approve_submission(submission_id, reviewer):
             url=submission.source_url,
             defaults={"kind": source_kind(submission.source_url)},
         )
+        if not project.thumbnail_url and submission.thumbnail_url:
+            project.thumbnail_url = submission.thumbnail_url
         project.status = Project.Status.PUBLISHED
         project.full_clean()
         project.save()

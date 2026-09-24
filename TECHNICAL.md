@@ -59,6 +59,7 @@ sessions also work, with CSRF required. There are no query-string credentials.
   "category": "tools",
   "website_url": "https://example.com",
   "repository_url": "https://github.com/example/project",
+  "thumbnail_url": "https://raw.githubusercontent.com/example/project/main/docs/screenshot.png",
   "sources": ["https://x.com/maker/status/123"],
   "publish": false
 }
@@ -66,10 +67,28 @@ sessions also work, with CSRF required. There are no query-string credentials.
 
 Categories: `apps`, `games`, `tools`, `libraries`, `research`, `other`. URLs are
 optional individually, but at least a website, repository, or source must exist.
-Success is `201` with id/title/status/website/repository. `publish` defaults false;
+Success is `201` with id/title/slug/status, popularity counts, website/repository, and `thumbnail_url`. `publish` defaults false;
 set true only after review. `GET /api/v1/projects/{id}` is also admin-only.
 Invalid input returns `422`; duplicate primary URL returns `422` on validation or
 `409` on a concurrent unique-constraint conflict. No overwriting existing records.
+
+### Optional project thumbnails
+
+`thumbnail_url` is an optional direct public HTTPS image URL (maximum 2000
+characters). Omit it or send `""` for no image; `null` is not accepted. Agents can
+supply a repository example image (use the raw image URL, not GitHub's blob page)
+or an existing site screenshot. The application stores the URL only: it does not
+capture screenshots, fetch URLs server-side, upload files, or verify image content.
+Use a stable image URL that works without authentication and permits embedding.
+HTTP, embedded credentials, and literal private/local hosts are rejected.
+
+The anonymous submission form and both admin forms accept the same field.
+Submitted images stay private until approval. Approving a duplicate project fills
+an empty thumbnail but never overwrites an existing one; curators can edit or clear
+it in Projects admin. API creation and detail responses return `thumbnail_url`.
+Published previews appear on cards and detail pages, preserve image proportions,
+and send no referrer. With JavaScript enabled, unavailable images are hidden and
+the project text/links remain usable. Existing projects need no image or backfill.
 
 ## Bootstrap and credentials
 

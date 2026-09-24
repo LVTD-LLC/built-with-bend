@@ -69,6 +69,20 @@
                 <div class="project-grid">
                     {% for project in page %}
                         <article class="project-card">
+                            {% if project.thumbnail_url %}
+                                <a class="project-thumbnail card-thumbnail"
+                                   data-project-thumbnail
+                                   href="{{ project.get_absolute_url }}"
+                                   aria-label="Explore {{ project.title }}">
+                                    <img src="{{ project.thumbnail_url }}"
+                                         alt=""
+                                         width="640"
+                                         height="360"
+                                         loading="lazy"
+                                         decoding="async"
+                                         referrerpolicy="no-referrer">
+                                </a>
+                            {% endif %}
                             <div class="card-top">
                                 <span class="project-monogram tone-{{ project.category }}"
                                       aria-hidden="true">{{ project.title|first|upper }}{% if project.github_avatar_url %}<img src="{{ project.github_avatar_url }}"

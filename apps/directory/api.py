@@ -43,6 +43,7 @@ class ProjectIn(Schema):
     category: Category = Category.OTHER
     website_url: str = Field(default="", max_length=1000)
     repository_url: str = Field(default="", max_length=1000)
+    thumbnail_url: str = Field(default="", max_length=2000)
     sources: list[str] = Field(default_factory=list, max_length=20)
     github_stars: int | None = Field(default=None, ge=0, le=2147483647)
     x_likes: int | None = Field(default=None, ge=0, le=2147483647)
@@ -58,6 +59,7 @@ class ProjectOut(Schema):
     status: str
     website_url: str
     repository_url: str
+    thumbnail_url: str
 
 
 @api.post("/projects", response={201: ProjectOut})

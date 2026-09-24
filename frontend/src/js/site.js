@@ -4,6 +4,11 @@
     image.addEventListener('error', fallback);
     if (image.complete && !image.naturalWidth) fallback();
   });
+  document.querySelectorAll('[data-project-thumbnail] img').forEach((image) => {
+    const fallback = () => { image.closest('[data-project-thumbnail]').hidden = true; };
+    image.addEventListener('error', fallback);
+    if (image.complete && !image.naturalWidth) fallback();
+  });
   const root = document.documentElement;
   try {
     const saved = localStorage.getItem('bend-theme');

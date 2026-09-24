@@ -13,7 +13,8 @@ sources, with a live site and repository when available. Closed-source projects
 are welcome too.
 
 Anyone can suggest a build without creating an account. Every submission is
-reviewed before it appears, and contact details stay private.
+reviewed before it appears, and contact details stay private. Add an optional
+direct HTTPS image link to show a screenshot or example alongside your build.
 
 An independent project by [LVTD](https://lvtd.dev), not affiliated with the Bend
 team. Learn about the language at [bend-lang.com](https://bend-lang.com/).

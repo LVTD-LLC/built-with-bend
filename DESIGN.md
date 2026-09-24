@@ -37,3 +37,10 @@ from the public footer; existing documentation URLs remain available.
 Keep long-form posts in a centered reading column. Blog prose, metadata and
 listing hover states use the directory color variables in both themes. The
 article template supplies the H1; Markdown bodies start below it.
+
+## Project thumbnails
+
+Optional image previews sit above card content and between detail metadata and
+the description. Use a 16:9 soft-background frame with `object-fit: contain` so
+code examples and screenshots are not cropped. Missing images add no placeholder;
+broken images are hidden by progressive enhancement. Keep existing owner avatars.
