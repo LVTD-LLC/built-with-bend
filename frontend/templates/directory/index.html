@@ -69,12 +69,12 @@
                 <div class="project-grid">
                     {% for project in page %}
                         <article class="project-card">
-                            {% if project.thumbnail_url %}
+                            {% if project.display_thumbnail_url %}
                                 <a class="project-thumbnail card-thumbnail"
                                    data-project-thumbnail
                                    href="{{ project.get_absolute_url }}"
                                    aria-label="Explore {{ project.title }}">
-                                    <img src="{{ project.thumbnail_url }}"
+                                    <img src="{{ project.display_thumbnail_url }}"
                                          alt=""
                                          width="640"
                                          height="360"

@@ -87,6 +87,10 @@ class Project(models.Model):
         validators=[validate_thumbnail_url],
         help_text="Optional direct HTTPS link to a screenshot or example image, not a webpage.",
     )
+    thumbnail_key = models.CharField(max_length=255, blank=True, editable=False)
+    thumbnail_imported_source = models.URLField(max_length=2000, blank=True, editable=False)
+    thumbnail_attempted_at = models.DateTimeField(null=True, blank=True, editable=False)
+    thumbnail_error = models.CharField(max_length=40, blank=True, editable=False)
     canonical_url = models.URLField(max_length=1000, unique=True, validators=[validate_public_url])
     status = models.CharField(max_length=20, choices=Status, default=Status.DRAFT, db_index=True)
     featured = models.BooleanField(default=False)
@@ -126,6 +130,24 @@ class Project(models.Model):
         from django.urls import reverse
 
         return reverse("directory:project", args=[self.slug])
+
+    @property
+    def thumbnail_status(self):
+        if not self.thumbnail_url:
+            return "none"
+        if not settings.THUMBNAIL_R2_ENABLED:
+            return "external"
+        if self.thumbnail_key and self.thumbnail_imported_source == self.thumbnail_url:
+            return "ready"
+        return "failed" if self.thumbnail_error else "pending"
+
+    @property
+    def display_thumbnail_url(self):
+        if not settings.THUMBNAIL_R2_ENABLED:
+            return self.thumbnail_url
+        if self.thumbnail_status == "ready" and self.status == self.Status.PUBLISHED:
+            return f"{settings.THUMBNAIL_R2_PUBLIC_URL}/{self.thumbnail_key}"
+        return ""
 
     @property
     def github_avatar_url(self):

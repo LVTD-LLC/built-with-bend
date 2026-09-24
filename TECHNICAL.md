@@ -72,23 +72,75 @@ set true only after review. `GET /api/v1/projects/{id}` is also admin-only.
 Invalid input returns `422`; duplicate primary URL returns `422` on validation or
 `409` on a concurrent unique-constraint conflict. No overwriting existing records.
 
-### Optional project thumbnails
+### Project thumbnails and R2 hosting
 
-`thumbnail_url` is an optional direct public HTTPS image URL (maximum 2000
-characters). Omit it or send `""` for no image; `null` is not accepted. Agents can
-supply a repository example image (use the raw image URL, not GitHub's blob page)
-or an existing site screenshot. The application stores the URL only: it does not
-capture screenshots, fetch URLs server-side, upload files, or verify image content.
-Use a stable image URL that works without authentication and permits embedding.
-HTTP, embedded credentials, and literal private/local hosts are rejected.
+`thumbnail_url` remains the optional source image URL (maximum 2000 characters):
+omit it or send `""` for no image; `null` is not accepted. Use a stable direct HTTPS
+raster image URL, such as GitHub's raw image URL rather than its blob webpage.
+Anonymous submissions retain the URL privately until review. Duplicate approval
+fills a missing thumbnail but never replaces an existing one. Admins can edit or
+clear the source URL on Projects.
 
-The anonymous submission form and both admin forms accept the same field.
-Submitted images stay private until approval. Approving a duplicate project fills
-an empty thumbnail but never overwrites an existing one; curators can edit or clear
-it in Projects admin. API creation and detail responses return `thumbnail_url`.
-Published previews appear on cards and detail pages, preserve image proportions,
-and send no referrer. With JavaScript enabled, unavailable images are hidden and
-the project text/links remain usable. Existing projects need no image or backfill.
+With R2 enabled, a Django Q2 job copies **published** project images into a separate
+R2 bucket. No download or upload runs in the submission/API request or for drafts.
+The periodic job processes up to five pending images each minute and retries
+failures after fifteen minutes. Existing published source URLs are picked up by
+the same job; no separate backfill is necessary. Edited sources are reconciled;
+clearing a URL immediately removes it from the UI. Source URLs that expire before
+import must be replaced by a curator. Successfully imported images remain hosted
+independently of the original source.
+
+API responses retain `thumbnail_url` as the submitted source and add:
+- `hosted_thumbnail_url`: the R2 public URL when imported and published, otherwise `""`.
+- `thumbnail_status`: `none`, `pending`, `ready`, or `failed`; `external` when R2 is disabled.
+
+The importer resolves and pins public IP addresses, verifies TLS hostnames, and
+revalidates each redirect. It accepts HTTPS port 443 only, rejects local/private
+addresses and credentialed URLs, caps downloads at 5 MiB, and validates image
+content with Pillow. PNG, JPEG, WebP, and GIF are converted to static WebP (first
+frame), capped at 16 million input pixels and 1600×1200 output, without EXIF/ICC
+metadata. SVG and HTML are not accepted. Import failures leave the listing usable
+without an image and expose a content-free error code in admin. No external URL
+fallback is rendered when R2 is enabled.
+
+#### R2 configuration
+
+Use a dedicated bucket (recommended: `built-with-bend-thumbnails`) and connect a
+public custom domain (recommended: `images.builtwithbend.com`). Only reviewed,
+published images are stored here; this is not a private upload bucket. Previously
+published objects remain public if their project is later archived; object
+retention/purging is a separate deliberate operation, not automatic deletion.
+
+Configure both web and worker through protected runtime configuration:
+
+```text
+THUMBNAIL_R2_ENABLED=True
+THUMBNAIL_R2_ENDPOINT_URL=https://<account-id>.r2.cloudflarestorage.com
+THUMBNAIL_R2_BUCKET=built-with-bend-thumbnails
+THUMBNAIL_R2_ACCESS_KEY_ID=<bucket-scoped access key>
+THUMBNAIL_R2_SECRET_ACCESS_KEY=<bucket-scoped secret>
+THUMBNAIL_R2_PUBLIC_URL=https://images.builtwithbend.com
+```
+
+Use `Object Read & Write` credentials scoped to this bucket. The SDK uses region
+`auto` and S3 SigV4. These settings do **not** change the existing `AWS_*` media
+backend or static files. Startup fails clearly if R2 is enabled with incomplete
+configuration. Keep `THUMBNAIL_R2_ENABLED=False` until bucket credentials and public
+image delivery have been verified; disabled mode preserves external thumbnails.
+
+The web entrypoint idempotently installs `refresh_thumbnails --schedule`; first
+execution waits five minutes for worker deployment. Run
+`python manage.py refresh_thumbnails` to process one bounded batch manually. The
+worker uses a shared cache lock and database recheck before upload so an edited
+or unpublished project cannot receive a stale downloaded image. Object keys are
+content-addressed under `projects/<project-id>/<sha256>.webp` and served with
+immutable caching.
+
+Verify with a real image import, an R2 object readback, an unauthenticated GET to
+the configured public image URL, and browser display. A successful configuration
+save alone does not prove R2 authentication, public delivery, or worker operation.
+See [R2 authentication](https://developers.cloudflare.com/r2/api/tokens/) and
+[public buckets](https://developers.cloudflare.com/r2/buckets/public-buckets/).
 
 ## Bootstrap and credentials
 
