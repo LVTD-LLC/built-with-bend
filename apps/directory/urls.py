@@ -1,6 +1,7 @@
 from django.contrib.sitemaps.views import sitemap
 from django.urls import path
 
+from apps.core import sponsorship_views
 from built_with_bend.sitemaps import BlogSitemap, DocumentationSitemap
 
 from . import views
@@ -22,6 +23,9 @@ urlpatterns = [
         name="sitemap",
     ),
     path("", views.index, name="index"),
+    path("sponsor/", sponsorship_views.sponsor, name="sponsor"),
+    path("sponsor/thanks/", sponsorship_views.sponsor_success, name="sponsor_success"),
+    path("sponsor/webhook/", sponsorship_views.sponsor_webhook, name="sponsor_webhook"),
     path("submit/", views.submit, name="submit"),
     path("submitted/", views.submitted, name="submitted"),
     path("projects/<uuid:pk>/", views.legacy_detail, name="legacy_project"),

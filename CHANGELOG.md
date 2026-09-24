@@ -18,6 +18,14 @@ with release sections grouped by ISO 8601 date headings (`## YYYY-MM-DD`).
 - Generate individual project share images on demand with fitted titles, descriptions, categories, and author credits.
 
 - Add branded, self-hosted social preview images and consistent Open Graph/X metadata across public pages, including projects and guides.
+- Fix sponsorship Checkout on Stripe accounts that enable Managed Payments by default.
+
+- Add configurable R2 hosting for reviewed project thumbnails, with background imports, validated raster conversion, hosted URL/status API fields, bounded retries, and separate bucket credentials. R2 activation requires verified account access and runtime configuration.
+
+- Add optional HTTPS project thumbnail URLs to ingestion, reviewed submissions, and admin; display previews on project cards and detail pages with broken-image fallback.
+
+- Add anonymous $100 USD one-week sponsorship Checkout, with verified payment activation, automatic seven-day expiry, refund/dispute removal, and retry-safe fulfillment. Checkout stays closed until the dedicated Stripe account is configured.
+- Add Blog to the main navigation on desktop and mobile, and remove Guides from the footer.
 
 - Publish the first blog post, introducing Bend 2 through five source-checked directory projects.
 - Include the blog index in the sitemap, use the configured public host for directory sitemap URLs, and give blog pages one description with theme-aware reading styles.

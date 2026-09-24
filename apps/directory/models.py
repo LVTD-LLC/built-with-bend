@@ -1,4 +1,5 @@
 import hashlib
+import ipaddress
 import uuid
 from urllib.parse import urlsplit
 
@@ -15,6 +16,21 @@ def validate_public_url(value):
     parsed = urlsplit(value)
     if parsed.username or parsed.password:
         raise ValidationError("Use a public URL without embedded credentials.")
+
+
+def validate_thumbnail_url(value):
+    """Images are browser-loaded HTTPS URLs; never fetched by the application."""
+    URLValidator(schemes=["https"])(value)
+    validate_public_url(value)
+    host = urlsplit(value).hostname.lower().rstrip(".")
+    if "." not in host or host.endswith((".localhost", ".local", ".internal")):
+        raise ValidationError("Use a publicly accessible HTTPS image URL.")
+    try:
+        address = ipaddress.ip_address(host)
+    except ValueError:
+        return
+    if not address.is_global:
+        raise ValidationError("Use a publicly accessible HTTPS image URL.")
 
 
 class Category(models.TextChoices):
@@ -65,6 +81,16 @@ class Project(models.Model):
     category = models.CharField(max_length=20, choices=Category, default=Category.OTHER)
     website_url = models.URLField(max_length=1000, blank=True, validators=[validate_public_url])
     repository_url = models.URLField(max_length=1000, blank=True, validators=[validate_public_url])
+    thumbnail_url = models.URLField(
+        max_length=2000,
+        blank=True,
+        validators=[validate_thumbnail_url],
+        help_text="Optional direct HTTPS link to a screenshot or example image, not a webpage.",
+    )
+    thumbnail_key = models.CharField(max_length=255, blank=True, editable=False)
+    thumbnail_imported_source = models.URLField(max_length=2000, blank=True, editable=False)
+    thumbnail_attempted_at = models.DateTimeField(null=True, blank=True, editable=False)
+    thumbnail_error = models.CharField(max_length=40, blank=True, editable=False)
     canonical_url = models.URLField(max_length=1000, unique=True, validators=[validate_public_url])
     status = models.CharField(max_length=20, choices=Status, default=Status.DRAFT, db_index=True)
     featured = models.BooleanField(default=False)
@@ -104,6 +130,24 @@ class Project(models.Model):
         from django.urls import reverse
 
         return reverse("directory:project", args=[self.slug])
+
+    @property
+    def thumbnail_status(self):
+        if not self.thumbnail_url:
+            return "none"
+        if not settings.THUMBNAIL_R2_ENABLED:
+            return "external"
+        if self.thumbnail_key and self.thumbnail_imported_source == self.thumbnail_url:
+            return "ready"
+        return "failed" if self.thumbnail_error else "pending"
+
+    @property
+    def display_thumbnail_url(self):
+        if not settings.THUMBNAIL_R2_ENABLED:
+            return self.thumbnail_url
+        if self.thumbnail_status == "ready" and self.status == self.Status.PUBLISHED:
+            return f"{settings.THUMBNAIL_R2_PUBLIC_URL}/{self.thumbnail_key}"
+        return ""
 
     @property
     def github_avatar_url(self):
@@ -154,6 +198,12 @@ class Submission(models.Model):
     source_url = models.URLField(max_length=1000, validators=[validate_public_url])
     website_url = models.URLField(max_length=1000, blank=True, validators=[validate_public_url])
     repository_url = models.URLField(max_length=1000, blank=True, validators=[validate_public_url])
+    thumbnail_url = models.URLField(
+        max_length=2000,
+        blank=True,
+        validators=[validate_thumbnail_url],
+        help_text="Optional direct HTTPS link to a screenshot or example image, not a webpage.",
+    )
     contact = models.CharField(
         max_length=250, blank=True, help_text="Private. Never displayed publicly."
     )
@@ -195,3 +245,39 @@ class SubmissionLimit(models.Model):
 
     def __str__(self):
         return f"Submission limit until {self.expires_at}"
+
+
+class Sponsorship(models.Model):
+    """A single paid placement; payment state is only changed by verified Stripe data."""
+
+    class Status(models.TextChoices):
+        PENDING = "pending", "Awaiting payment"
+        PAID = "paid", "Paid"
+        REVOKED = "revoked", "Refunded or disputed"
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    business_name = models.CharField(max_length=80)
+    website_url = models.URLField(max_length=1000, validators=[validate_public_url])
+    tagline = models.CharField(max_length=120)
+    status = models.CharField(max_length=16, choices=Status, default=Status.PENDING)
+    hidden = models.BooleanField(default=False, help_text="Hide an inappropriate placement.")
+    stripe_price_id = models.CharField(max_length=100)
+    checkout_session_id = models.CharField(max_length=255, unique=True, null=True, blank=True)
+    checkout_url = models.URLField(max_length=2048, blank=True)
+    payment_intent_id = models.CharField(max_length=255, blank=True, db_index=True)
+    starts_at = models.DateTimeField(null=True, blank=True)
+    ends_at = models.DateTimeField(null=True, blank=True, db_index=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["starts_at", "created_at"]
+
+    def __str__(self):
+        return self.business_name
+
+    @classmethod
+    def active(cls):
+        now = timezone.now()
+        return cls.objects.filter(
+            status=cls.Status.PAID, hidden=False, starts_at__lte=now, ends_at__gt=now
+        )

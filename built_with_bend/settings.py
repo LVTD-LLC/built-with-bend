@@ -633,6 +633,12 @@ APPRISE_NOTIFICATION_FORMAT = env("APPRISE_NOTIFICATION_FORMAT", default="markdo
 APPRISE_REQUEST_TIMEOUT = env.int("APPRISE_REQUEST_TIMEOUT", default=10)
 
 STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY", default="")
+SPONSORSHIPS_ENABLED = env.bool("SPONSORSHIPS_ENABLED", default=False)
+SPONSORSHIP_STRIPE_SECRET_KEY = env("SPONSORSHIP_STRIPE_SECRET_KEY", default="")
+SPONSORSHIP_STRIPE_ACCOUNT_ID = env("SPONSORSHIP_STRIPE_ACCOUNT_ID", default="")
+SPONSORSHIP_STRIPE_PRICE_ID = env("SPONSORSHIP_STRIPE_PRICE_ID", default="")
+SPONSORSHIP_STRIPE_WEBHOOK_SECRET = env("SPONSORSHIP_STRIPE_WEBHOOK_SECRET", default="")
+SPONSORSHIP_STRIPE_LIVE_MODE = env.bool("SPONSORSHIP_STRIPE_LIVE_MODE", default=True)
 STRIPE_LIVE_MODE = ENVIRONMENT == "prod"
 STRIPE_WEBHOOK_SECRET = env("STRIPE_WEBHOOK_SECRET", default="")
 STRIPE_WEBHOOK_UUID = env("WEBHOOK_UUID", default="")
@@ -670,3 +676,37 @@ TRUST_CAPROVER_PROXY = env.bool("TRUST_CAPROVER_PROXY", default=False)
 DATA_UPLOAD_MAX_MEMORY_SIZE = 65536
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000
 SESSION_COOKIE_AGE = 8 * 60 * 60
+
+# Separate public thumbnail bucket: do not change the app's existing media storage.
+THUMBNAIL_R2_ENABLED = env.bool("THUMBNAIL_R2_ENABLED", default=False)
+THUMBNAIL_R2_ENDPOINT_URL = env("THUMBNAIL_R2_ENDPOINT_URL", default="").rstrip("/")
+THUMBNAIL_R2_BUCKET = env("THUMBNAIL_R2_BUCKET", default="")
+THUMBNAIL_R2_ACCESS_KEY_ID = env("THUMBNAIL_R2_ACCESS_KEY_ID", default="")
+THUMBNAIL_R2_SECRET_ACCESS_KEY = env("THUMBNAIL_R2_SECRET_ACCESS_KEY", default="")
+THUMBNAIL_R2_PUBLIC_URL = env("THUMBNAIL_R2_PUBLIC_URL", default="").rstrip("/")
+if THUMBNAIL_R2_ENABLED:
+    from urllib.parse import urlsplit
+
+    from django.core.exceptions import ImproperlyConfigured
+
+    if not all(
+        (
+            THUMBNAIL_R2_ENDPOINT_URL,
+            THUMBNAIL_R2_BUCKET,
+            THUMBNAIL_R2_ACCESS_KEY_ID,
+            THUMBNAIL_R2_SECRET_ACCESS_KEY,
+            THUMBNAIL_R2_PUBLIC_URL,
+        )
+    ):
+        raise ImproperlyConfigured("Complete the THUMBNAIL_R2 configuration before enabling it.")
+    for thumbnail_endpoint in (THUMBNAIL_R2_ENDPOINT_URL, THUMBNAIL_R2_PUBLIC_URL):
+        parsed_thumbnail_endpoint = urlsplit(thumbnail_endpoint)
+        if (
+            parsed_thumbnail_endpoint.scheme != "https"
+            or not parsed_thumbnail_endpoint.hostname
+            or parsed_thumbnail_endpoint.username
+            or parsed_thumbnail_endpoint.password
+            or parsed_thumbnail_endpoint.query
+            or parsed_thumbnail_endpoint.fragment
+        ):
+            raise ImproperlyConfigured("Thumbnail storage endpoints must be plain HTTPS URLs.")

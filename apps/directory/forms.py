@@ -1,8 +1,10 @@
+import uuid
+
 from django import forms
 from django.core import signing
 from django.utils import timezone
 
-from .models import Submission
+from .models import Sponsorship, Submission
 
 
 class SubmissionForm(forms.ModelForm):
@@ -18,6 +20,7 @@ class SubmissionForm(forms.ModelForm):
             "description",
             "website_url",
             "repository_url",
+            "thumbnail_url",
             "category",
             "author",
             "contact",
@@ -27,6 +30,7 @@ class SubmissionForm(forms.ModelForm):
             "description": "What does it do?",
             "website_url": "Live site or demo URL",
             "repository_url": "Repository URL",
+            "thumbnail_url": "Thumbnail image URL (optional)",
             "contact": "Contact (private, optional)",
         }
         widgets = {"description": forms.Textarea(attrs={"rows": 5})}
@@ -43,6 +47,9 @@ class SubmissionForm(forms.ModelForm):
             {"time": timezone.now().timestamp()}, salt="submission"
         )
         self.fields["source_url"].widget.attrs["placeholder"] = "https://x.com/…/status/…"
+        self.fields["thumbnail_url"].widget.attrs["placeholder"] = (
+            "https://example.com/screenshot.png"
+        )
         self.fields["title"].widget.attrs["placeholder"] = "Give your build a name"
 
     def clean(self):
@@ -52,5 +59,36 @@ class SubmissionForm(forms.ModelForm):
             if timezone.now().timestamp() - token["time"] < 2 or data.get("company"):
                 raise ValueError
         except (signing.BadSignature, ValueError, KeyError):
+            raise forms.ValidationError("Please refresh the form and try again.") from None
+        return data
+
+
+class SponsorshipForm(forms.ModelForm):
+    checkout_token = forms.CharField(widget=forms.HiddenInput)
+    company = forms.CharField(required=False, widget=forms.HiddenInput)
+
+    class Meta:
+        model = Sponsorship
+        fields = ["business_name", "website_url", "tagline"]
+        labels = {"website_url": "Business website", "tagline": "Short description"}
+        help_texts = {"tagline": "Shown beside your link. Up to 120 characters."}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["checkout_token"].initial = signing.dumps(
+            str(uuid.uuid4()), salt="sponsorship-checkout"
+        )
+
+    def clean(self):
+        data = super().clean()
+        try:
+            data["order_id"] = uuid.UUID(
+                signing.loads(
+                    data.get("checkout_token", ""), salt="sponsorship-checkout", max_age=3600
+                )
+            )
+            if data.get("company"):
+                raise ValueError
+        except (signing.BadSignature, ValueError, TypeError):
             raise forms.ValidationError("Please refresh the form and try again.") from None
         return data
