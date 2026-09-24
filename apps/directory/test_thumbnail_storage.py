@@ -346,3 +346,21 @@ def test_sdk_configuration_and_put_contract(r2, settings, png, monkeypatch, proj
         assert storage.import_project_thumbnail(project.pk) == "ready"
         stub.assert_no_pending_responses()
     client.close()
+
+
+@pytest.mark.parametrize("ip", ["93.184.216.34", "::ffff:93.184.216.34", "2606:4700:4700::1111"])
+def test_public_and_ipv4_mapped_public_dns_answers_are_accepted(monkeypatch, ip):
+    monkeypatch.setattr(
+        socket,
+        "getaddrinfo",
+        lambda *a, **k: [
+            (
+                socket.AF_INET6 if ":" in ip else socket.AF_INET,
+                socket.SOCK_STREAM,
+                6,
+                "",
+                (ip, 443),
+            ),
+        ],
+    )
+    assert storage.public_addresses("images.example.com") == [ip]

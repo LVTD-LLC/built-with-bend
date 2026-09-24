@@ -39,12 +39,13 @@ def public_addresses(host):
 
     def allowed(ip):
         address = ipaddress.ip_address(ip)
+        if address.version == 6 and address.ipv4_mapped:
+            address = address.ipv4_mapped
         if not address.is_global or address.is_multicast or address.is_reserved:
             return False
         if address.version == 6:
             return not (
-                address.ipv4_mapped
-                or address.sixtofour
+                address.sixtofour
                 or address.teredo
                 or address in ipaddress.ip_network("64:ff9b::/96")
             )
