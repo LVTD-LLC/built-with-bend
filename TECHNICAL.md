@@ -238,6 +238,11 @@ unpaid and revoked rows: no cron or cache invalidation is needed for expiry.
 Any refund or opened dispute revokes the placement, including out-of-order events.
 Retries cannot extend a placement or restore a revoked payment. Failed fulfillment
 returns an error so Stripe can retry; monitor failed deliveries in Stripe.
+Dispute closure (including a merchant win) does not automatically restore or
+restart a placement. Review those cases manually and arrange a refund or replacement
+with the advertiser; never charge again automatically. Sponsorship attempts have a
+separate rate-limit bucket from free project submissions. Invalid attempts count
+toward the sponsorship limit to bound automated form abuse.
 
 Admin can hide a placement but cannot forge payment status or edit fulfillment
 fields. Process refunds in Stripe; partial refunds also remove the link. Listings

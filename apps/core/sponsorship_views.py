@@ -28,7 +28,7 @@ def sponsor(request):
     if request.method == "POST":
         if not available:
             status = 503
-        elif not submission_allowed(request):
+        elif not submission_allowed(request, scope=":sponsorship"):
             form.add_error(None, "Too many attempts. Please try again in an hour.")
             status = 429
         elif form.is_valid():

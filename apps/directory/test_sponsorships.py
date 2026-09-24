@@ -158,7 +158,15 @@ def test_tampered_form_csrf_and_rate_limit(client, billing):
     for _ in range(9):
         client.post("/sponsor/", data)
     assert client.post("/sponsor/", data).status_code == 429
+    assert client.post("/submit/", {}).status_code == 200
     billing.v1.checkout.sessions.create.assert_not_called()
+
+
+def test_project_submission_limit_does_not_block_payment(client, billing):
+    for _ in range(10):
+        client.post("/submit/", {})
+    assert client.post("/submit/", {}).status_code == 429
+    assert client.post("/sponsor/", payload()).status_code == 303
 
 
 def test_stripe_failure_retries_same_order_and_key(client, billing):
