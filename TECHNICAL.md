@@ -5,7 +5,7 @@
 Generated using the **hosted Djass Go CLI**, `djass generate --payload … --output …`,
 on 2026-09-23. Djass job **34** completed generation, download, and extraction.
 `djass-manifest.json` and `project-metadata.json` preserve the original generation
-options. No direct Cookiecutter invocation was used. Every feature flag is **y**, except `use_digitalocean=n`. The full scaffold is retained alongside the directory. Public signup remains closed; Stripe activation remains deferred.
+options. No direct Cookiecutter invocation was used. Every feature flag is **y**, except `use_digitalocean=n`. The full scaffold is retained alongside the directory. Public signup remains closed; sponsorship checkout has a separate explicit activation gate.
 
 ## Stack and local setup
 
@@ -124,7 +124,7 @@ Behavior tests cover admin-only writes, CSRF, moderation and contact privacy,
 transaction rollback, duplicate handling, unsafe URLs, anti-spam, bootstrap key
 revocation, sitemap visibility, and honest empty/search states. Browser checks
 cover desktop/mobile, themes, search, submission, and admin review interactions.
-Stripe sponsorship products and checkout are intentionally deferred.
+Sponsorship activation requires a dedicated Stripe account and the configuration below.
 
 ## Full-feature regeneration and integrations
 
@@ -135,7 +135,7 @@ The source of truth is `djass-manifest.json` (hosted job 34). All 18 current fea
 - **S3**: dedicated `built-with-bend-prod` bucket and bucket-scoped service account; anonymous reads for public media only. `AWS_S3_BUCKET_NAME` is respected.
 - **Qdrant**: private `built-with-bend-qdrant`, key-authenticated, persistent `/qdrant/storage`; client remains lazy and no unused collections are created.
 - **Background jobs**: private password-protected `built-with-bend-redis`, persistent `/data`; `built-with-bend-workers` runs `manage.py runworker`. Worker readiness requires a current-revision Q2 heartbeat.
-- **Stripe**: checkout, subscription and webhook scaffold retained; do not enable paid sponsorships until the dedicated Stripe account/product is configured.
+- **Stripe**: dedicated one-time sponsorship checkout; generated subscription scaffold remains separate and inactive.
 - **Blog and docs**: public markdown-backed `/blog/` and `/docs/`, original directory branding and app-specific guides.
 - **Telemetry**: dedicated PostHog project and Sentry project. Never set an organization personal API token as the runtime ingestion key.
 - **MJML**: existing private MJML renderer; npm dependency updated to the current compatible major to address audit findings.
@@ -192,4 +192,59 @@ Catalog GET parameters: `q`, `source`, `category`, `min_stars`, `min_likes`,
 zero includes recorded zeroes. Popularity sorts place unknown values last.
 Source/type counts respect the other selected filters. Sponsor links are the
 four explicitly selected LVTD projects, not Bend-built directory entries or paid
-placements; Stripe sponsorship checkout remains deferred.
+placements. Paid sponsorships are displayed separately above them.
+
+
+## One-week sponsorship Checkout
+
+`/sponsor/` accepts a business name, HTTP(S) website URL, and short tagline,
+without an account. One shared directory-sidebar placement costs **$100 USD once**.
+Stripe collects payment details; no customer email or card details are stored locally.
+The receipt page never grants placement based on URL parameters.
+
+Runtime activation requires all six `SPONSORSHIP_*` / `SPONSORSHIPS_ENABLED`
+settings in `.env.example`. Keep the new Built with Bend account separate from
+other businesses. Set `SPONSORSHIP_STRIPE_ACCOUNT_ID=acct_...`; the server explicitly
+sends Stripe-Context, including when using an organization key. Prefer an
+account-scoped restricted runtime key. Never put credentials in browser code.
+`SPONSORSHIP_STRIPE_LIVE_MODE=False` is for an isolated test deployment, not production.
+
+Create an active one-time Price of 10000 minor units, USD, with no recurring
+interval, for “Built with Bend — One-week sponsorship”. Configure an account-level
+webhook destination at `https://builtwithbend.com/sponsor/webhook/`, subscribing to:
+
+- `checkout.session.completed`
+- `checkout.session.async_payment_succeeded`
+- `charge.refunded`
+- `charge.dispute.created`
+
+Store its signing secret in `SPONSORSHIP_STRIPE_WEBHOOK_SECRET`. Deploy the same
+configuration to web and worker, then enable `SPONSORSHIPS_ENABLED=True` only after
+verifying account readiness, price, endpoint signing, and test-mode fulfillment.
+A separate account must be created/activated through the Stripe Dashboard; the
+Connect accounts API is not a replacement for an organization's own business account.
+
+The Checkout uses card payments, no promotion codes, no adaptive pricing, and
+server-selected quantity/Price. Price currency, amount, mode, and active status are
+checked before each new session. A signed, hour-lived form token plus a persisted
+order and Stripe idempotency key prevent duplicate sessions on retries. Start a
+fresh form after 30 minutes; an existing Stripe checkout follows Stripe's expiry.
+
+Signed webhook delivery triggers a fresh Stripe retrieval of the session, line
+items and payment. Exact amount, currency, mode, order, Price and quantity must
+match before a database row lock allows a single activation. The placement starts
+on activation and ends exactly seven days later. Queries exclude expired, hidden,
+unpaid and revoked rows: no cron or cache invalidation is needed for expiry.
+Any refund or opened dispute revokes the placement, including out-of-order events.
+Retries cannot extend a placement or restore a revoked payment. Failed fulfillment
+returns an error so Stripe can retry; monitor failed deliveries in Stripe.
+Dispute closure (including a merchant win) does not automatically restore or
+restart a placement. Review those cases manually and arrange a refund or replacement
+with the advertiser; never charge again automatically. Sponsorship attempts have a
+separate rate-limit bucket from free project submissions. Invalid attempts count
+toward the sponsorship limit to bound automated form abuse.
+
+Admin can hide a placement but cannot forge payment status or edit fulfillment
+fields. Process refunds in Stripe; partial refunds also remove the link. Listings
+are shared placements, not an endorsement or guaranteed traffic. Existing team
+links remain clearly distinguished from paid sponsors.

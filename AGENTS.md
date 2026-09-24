@@ -300,6 +300,6 @@ npm run lint
 - apps/directory owns the directory, moderation, and /api/v1 ingestion API.
 - Preserve the existing directory migration and auth users across deployments.
 - Core Profile keys authenticate generated /api/user and /mcp; directory ingestion keys are separate.
-- Stripe sponsorship activation remains a later step; retain its complete scaffold.
+- Dedicated sponsorship Checkout lives in apps/core/sponsorships.py and sponsorship_views.py; signed events dispatch through stripe_webhooks.py. Keep sponsorship credentials isolated from the retained SaaS scaffold.
 - Deploy both web and workers via app tokens; verify sustained web and worker revision health.
 - Public guides use directory branding, with no generic SaaS signup/sales promises.

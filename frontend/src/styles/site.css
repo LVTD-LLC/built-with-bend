@@ -20,3 +20,5 @@ html[data-theme=dark] .button.secondary{color:var(--accent)}html[data-theme=dark
 /* Blog content follows the same palette in both directory themes. */
 .blog-page{overflow-wrap:anywhere}.blog-page .blog-muted{color:var(--muted)}.blog-page .blog-heading{color:var(--ink)}.blog-page .blog-link{color:var(--accent)}.blog-page .blog-card:hover{background:var(--soft)}
 .blog-page .prose{--tw-prose-body:var(--ink);--tw-prose-headings:var(--ink);--tw-prose-links:var(--accent);--tw-prose-bold:var(--ink);--tw-prose-counters:var(--muted);--tw-prose-bullets:var(--muted);--tw-prose-quotes:var(--ink);--tw-prose-quote-borders:var(--line);--tw-prose-code:var(--ink);--tw-prose-hr:var(--line)}
+
+.sponsor strong,.sponsor small{overflow-wrap:anywhere}

@@ -11,7 +11,7 @@ from django.utils import timezone
 from django.views.decorators.http import require_GET, require_http_methods
 
 from .forms import SubmissionForm
-from .models import Category, Project, SourceKind, SubmissionLimit
+from .models import Category, Project, SourceKind, Sponsorship, SubmissionLimit
 
 
 def source_filter(kind):
@@ -92,6 +92,7 @@ def index(request):
         {
             "page": page,
             "total": total,
+            "paid_sponsors": Sponsorship.active(),
             "q": query,
             "category": category,
             "source": source,
@@ -127,14 +128,15 @@ def legacy_detail(request, pk):
     return redirect(project.get_absolute_url(), permanent=True)
 
 
-def submission_allowed(request):
+def submission_allowed(request, *, scope=""):
     now = timezone.now()
     # REMOTE_ADDR is supplied by the reverse proxy; do not trust client-supplied X-Forwarded-For.
     identity = request.META.get("REMOTE_ADDR", "")
     if settings.TRUST_CAPROVER_PROXY:
         identity = request.META.get("HTTP_X_REAL_IP", identity)
     bucket = now.strftime("%Y%m%d%H")
-    key = hashlib.sha256(f"{settings.SECRET_KEY}:{identity}:{bucket}".encode()).hexdigest()
+    # Keep the original submission bucket; independent flows append their own namespace.
+    key = hashlib.sha256(f"{settings.SECRET_KEY}:{identity}:{bucket}{scope}".encode()).hexdigest()
     with transaction.atomic():
         limit, _ = SubmissionLimit.objects.select_for_update().get_or_create(
             key=key, defaults={"expires_at": now + timedelta(hours=2)}

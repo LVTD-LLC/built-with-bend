@@ -329,3 +329,17 @@ EVENT_HANDLERS = {
     "customer.subscription.deleted": handle_deleted_subscription,
     "checkout.session.completed": handle_checkout_completed,
 }
+
+
+def handle_sponsorship_event(event):
+    from apps.core.sponsorships import fulfill_checkout, revoke_payment
+
+    obj = event["data"]["object"]
+    kind = event["type"]
+    if kind in {"checkout.session.completed", "checkout.session.async_payment_succeeded"}:
+        fulfill_checkout(obj["id"])
+    elif kind == "charge.dispute.created" or (
+        kind == "charge.refunded" and obj.get("amount_refunded", 0) > 0
+    ):
+        if obj.get("payment_intent"):
+            revoke_payment(obj["payment_intent"])

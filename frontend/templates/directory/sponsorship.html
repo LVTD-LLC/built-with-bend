@@ -1,3 +1,55 @@
 {% extends "directory/base.html" %}
-{% block title %}Sponsorships — Built with Bend{% endblock %}
-{% block content %}<section class="page-heading"><h1>Support the <span>builders.</span></h1><p>Sponsorships are not available yet. Browsing and submitting projects are free.</p><a class="button" href="{% url 'directory:index' %}">Explore the collection</a></section>{% endblock %}
+{% block title %}Sponsor Built with Bend — $100 for one week{% endblock %}
+{% block meta %}<link rel="canonical" href="https://builtwithbend.com/sponsor/">{% endblock %}
+{% block content %}
+    <section class="page-heading">
+        <a class="back" href="{% url 'directory:index' %}">← Back to the collection</a>
+        <h1>
+            Your business.
+            <br>
+            <span>Meet the builders.</span>
+        </h1>
+        <p>
+            A sponsored link on the directory for seven days. $100 USD, paid once.
+            <br>
+            No subscription. No account needed.
+        </p>
+    </section>
+    {% if available %}
+        <div class="submission-layout">
+            <form method="post" class="submission-form" novalidate>
+                {% csrf_token %}{{ form.checkout_token }}{{ form.company }}
+                {% if request.GET.cancelled %}<p role="status">Checkout was cancelled. Your link has not been published. You can try again below.</p>{% endif %}
+                {% if form.errors %}<div class="form-alert"
+     role="alert">Please check the details below.{{ form.non_field_errors }}</div>{% endif %}
+                {% for field in form.visible_fields %}
+                    <div class="form-field">
+                        <label for="{{ field.id_for_label }}">{{ field.label }} <span class="required"
+       aria-label="required">*</span></label>
+                        {{ field }}
+                        {% if field.help_text %}<p class="help">{{ field.help_text }}</p>{% endif %}
+                        {{ field.errors }}
+                    </div>
+                {% endfor %}
+                <button class="button" type="submit">Continue to checkout — $100 ↗</button>
+                <p class="help">Secure payment through Stripe. Your seven days start when payment is confirmed and your link goes live.</p>
+            </form>
+            <aside class="guidelines">
+                <h2>
+                    A week in front
+                    <br>
+                    of the Bend community.
+                </h2>
+                <ul>
+                    <li><strong>A name, link, and short description</strong> in the directory’s sponsor section, on desktop and mobile.</li>
+                    <li><strong>Seven full days</strong> from activation, with automatic expiry. No recurring charges.</li>
+                    <li><strong>Your business need not use Bend.</strong> Sponsorships are clearly labelled and separate from curated projects.</li>
+                    <li><strong>Shared placement.</strong> Multiple sponsors can appear together. No guaranteed clicks or impressions.</li>
+                </ul>
+                <p>Use a public business website you are authorized to promote. Misleading, illegal, or abusive links may be removed. For corrections or refund help, contact <a href="mailto:rasul@lvtd.dev">rasul@lvtd.dev</a>.</p>
+            </aside>
+        </div>
+    {% else %}
+        <section class="confirmation"><h2>Sponsorship checkout is opening soon.</h2><p>Browsing and submitting projects are always free.</p><a class="button" href="{% url 'directory:index' %}">Explore the collection</a></section>
+    {% endif %}
+{% endblock %}

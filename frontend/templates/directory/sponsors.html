@@ -1,5 +1,17 @@
 <section class="sponsor-block" aria-labelledby="sponsors-title">
     <h2 id="sponsors-title">Sponsors <span aria-hidden="true">↗</span></h2>
+    {% for sponsor in paid_sponsors %}
+        <a class="sponsor"
+           href="{{ sponsor.website_url }}"
+           target="_blank"
+           rel="noopener noreferrer sponsored nofollow">
+            <span class="sponsor-icon" aria-hidden="true">↗</span>
+            <span><strong>{{ sponsor.business_name }}</strong><small>{{ sponsor.tagline }}</small></span>
+            <span aria-hidden="true">↗</span>
+        </a>
+    {% endfor %}
+    <p><a href="{% url 'directory:sponsor' %}">Sponsor the directory — $100 / week ↗</a></p>
+    <p>From the team behind this directory:</p>
     <a class="sponsor"
        href="https://rowset.lvtd.dev/"
        target="_blank"
@@ -16,5 +28,4 @@
        href="https://djass.dev/"
        target="_blank"
        rel="noopener noreferrer sponsored"><span class="sponsor-icon djass" aria-hidden="true">dj</span><span><strong>Djass</strong><small>Your Django head start.</small></span><span aria-hidden="true">↗</span></a>
-    <p>Projects from the team behind this directory.</p>
 </section>

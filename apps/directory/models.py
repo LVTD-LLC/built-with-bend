@@ -195,3 +195,39 @@ class SubmissionLimit(models.Model):
 
     def __str__(self):
         return f"Submission limit until {self.expires_at}"
+
+
+class Sponsorship(models.Model):
+    """A single paid placement; payment state is only changed by verified Stripe data."""
+
+    class Status(models.TextChoices):
+        PENDING = "pending", "Awaiting payment"
+        PAID = "paid", "Paid"
+        REVOKED = "revoked", "Refunded or disputed"
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    business_name = models.CharField(max_length=80)
+    website_url = models.URLField(max_length=1000, validators=[validate_public_url])
+    tagline = models.CharField(max_length=120)
+    status = models.CharField(max_length=16, choices=Status, default=Status.PENDING)
+    hidden = models.BooleanField(default=False, help_text="Hide an inappropriate placement.")
+    stripe_price_id = models.CharField(max_length=100)
+    checkout_session_id = models.CharField(max_length=255, unique=True, null=True, blank=True)
+    checkout_url = models.URLField(max_length=2048, blank=True)
+    payment_intent_id = models.CharField(max_length=255, blank=True, db_index=True)
+    starts_at = models.DateTimeField(null=True, blank=True)
+    ends_at = models.DateTimeField(null=True, blank=True, db_index=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["starts_at", "created_at"]
+
+    def __str__(self):
+        return self.business_name
+
+    @classmethod
+    def active(cls):
+        now = timezone.now()
+        return cls.objects.filter(
+            status=cls.Status.PAID, hidden=False, starts_at__lte=now, ends_at__gt=now
+        )
