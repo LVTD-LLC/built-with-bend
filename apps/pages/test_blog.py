@@ -32,6 +32,7 @@ def test_blog_index_renders_empty_state(client, blog_posts_dir):
 
     assert response.status_code == 200
     content = response.content.decode()
+    assert content.count('name="description"') == 1
     assert "No blog posts available at the moment." in content
     assert 'href="https://canonical.example/blog/"' in content
     escaped_default_image_url = escape(BLOG_DEFAULT_IMAGE_URL, quote=True)
@@ -63,7 +64,8 @@ def test_blog_post_renders_markdown_and_frontmatter_metadata(client, blog_posts_
     assert response.status_code == 200
     content = response.content.decode()
     assert "<title>Agent-managed workflows | Built with Bend Blog</title>" in content
-    assert '<meta name="description" content="How AI agents keep the app current." />' in content
+    assert content.count('name="description"') == 1
+    assert 'content="How AI agents keep the app current."' in content
     assert (
         '<link rel="canonical" href="https://canonical.example/blog/agent-managed-workflows" />'
         in content

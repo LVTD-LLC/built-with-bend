@@ -1,10 +1,12 @@
 from django.contrib.sitemaps import Sitemap
 from django.urls import reverse
 
+from built_with_bend.sitemaps import ConfiguredSitemapMixin
+
 from .models import Project
 
 
-class ProjectSitemap(Sitemap):
+class ProjectSitemap(ConfiguredSitemapMixin, Sitemap):
     protocol = "https"
     changefreq = "weekly"
 
@@ -15,12 +17,12 @@ class ProjectSitemap(Sitemap):
         return obj.published_at
 
 
-class PageSitemap(Sitemap):
+class PageSitemap(ConfiguredSitemapMixin, Sitemap):
     protocol = "https"
     changefreq = "weekly"
 
     def items(self):
-        return ["directory:index", "directory:submit"]
+        return ["directory:index", "directory:submit", "blog_posts"]
 
     def location(self, item):
         return reverse(item)

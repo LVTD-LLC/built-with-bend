@@ -15,6 +15,9 @@ with release sections grouped by ISO 8601 date headings (`## YYYY-MM-DD`).
 
 ## 2026-09-24
 
+- Publish the first blog post, introducing Bend 2 through five source-checked directory projects.
+- Include the blog index in the sitemap, use the configured public host for directory sitemap URLs, and give blog pages one description with theme-aware reading styles.
+
 - Replace UUID project URLs with stable readable slugs; redirect existing public links and update the sitemap.
 - Redesign the catalog with source tabs, a project-type sidebar, compact cards, and Rowset, CiteGuild, TastefulKit, and Djass sponsor links. Remove decorative eyebrows.
 - Store GitHub stars and X likes; add minimum-count filters and popularity sorting, keeping unknown counts distinct from zero.

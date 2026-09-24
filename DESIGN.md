@@ -28,3 +28,9 @@ filters combinable and URL-addressable. Use compact bordered cards, subdued
 source footers, and restrained category colors. No decorative eyebrows. On narrow
 screens the type and sponsor sections share a compact two-column area above the
 source tabs. Counts come from published records; unknown popularity stays blank.
+
+## Blog
+
+Keep long-form posts in a centered reading column. Blog prose, metadata and
+listing hover states use the directory color variables in both themes. The
+article template supplies the H1; Markdown bodies start below it.
