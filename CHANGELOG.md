@@ -15,6 +15,9 @@ with release sections grouped by ISO 8601 date headings (`## YYYY-MM-DD`).
 
 ## 2026-09-24
 
+- Generate individual project share images on demand with fitted titles, descriptions, categories, and author credits.
+
+- Add branded, self-hosted social preview images and consistent Open Graph/X metadata across public pages, including projects and guides.
 - Fix sponsorship Checkout on Stripe accounts that enable Managed Payments by default.
 
 - Add configurable R2 hosting for reviewed project thumbnails, with background imports, validated raster conversion, hosted URL/status API fields, bounded retries, and separate bucket credentials. R2 activation requires verified account access and runtime configuration.

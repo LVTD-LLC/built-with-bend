@@ -1,4 +1,4 @@
-{% load static %}
+{% load static social %}
 <!DOCTYPE html>
 <html lang="en" class="antialiased">
     <head>
@@ -13,21 +13,8 @@
                   content="A human-reviewed directory of apps, sites, and projects built with Bend 2." />
             <meta name="robots" content="index, follow" />
             <link rel="canonical" href="{{ public_site_url }}/" />
-            <meta property="og:type" content="website" />
-            <meta property="og:title" content="Built with Bend" />
-            <meta property="og:url" content="{{ public_site_url }}/" />
-            <meta property="og:description"
-                  content="A human-reviewed directory of apps, sites, and projects built with Bend 2." />
-            <meta property="og:image"
-                  content="https://osig.app/g?site=meta&style=logo&font=markerfelt&title=Built%20with%20Bend&subtitle=A%20human-reviewed%20directory%20of%20apps%2C%20sites%2C%20and%20projects%20built%20with%20Bend%202." />
-            <meta property="og:locale" content="en_US" />
-            <meta name="twitter:card" content="summary" />
-            <meta name="twitter:title" content="Built with Bend" />
-            <meta name="twitter:description"
-                  content="A human-reviewed directory of apps, sites, and projects built with Bend 2." />
-            <meta name="twitter:image"
-                  content="https://osig.app/g?site=x&style=logo&font=markerfelt&title=Built%20with%20Bend&subtitle=A%20human-reviewed%20directory%20of%20apps%2C%20sites%2C%20and%20projects%20built%20with%20Bend%202." />
         {% endblock meta %}
+        {% social_meta %}
         {% include "components/posthog.html" %}
         <script>
     // Set theme early to avoid a flash of incorrect theme.
