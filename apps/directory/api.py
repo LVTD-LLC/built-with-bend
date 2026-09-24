@@ -60,6 +60,12 @@ class ProjectOut(Schema):
     website_url: str
     repository_url: str
     thumbnail_url: str
+    hosted_thumbnail_url: str
+    thumbnail_status: str
+
+    @staticmethod
+    def resolve_hosted_thumbnail_url(project):
+        return project.display_thumbnail_url if project.thumbnail_status == "ready" else ""
 
 
 @api.post("/projects", response={201: ProjectOut})

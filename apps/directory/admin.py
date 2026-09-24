@@ -26,7 +26,17 @@ class ProjectAdmin(admin.ModelAdmin):
     list_filter = ["status", "category", "featured"]
     search_fields = ["title", "description", "author", "canonical_url"]
     inlines = [SourceInline]
-    readonly_fields = ["id", "slug", "created_at", "github_stars_checked_at"]
+    readonly_fields = [
+        "id",
+        "slug",
+        "created_at",
+        "github_stars_checked_at",
+        "thumbnail_status",
+        "thumbnail_key",
+        "thumbnail_imported_source",
+        "thumbnail_attempted_at",
+        "thumbnail_error",
+    ]
 
 
 @admin.register(Submission)
