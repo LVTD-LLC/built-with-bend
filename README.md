@@ -5,7 +5,6 @@ Bend 2.
 
 **[Explore the collection](https://builtwithbend.com)** ·
 **[Submit a build](https://builtwithbend.com/submit/)** ·
-**[Guides](https://builtwithbend.com/docs/)** ·
 **[Blog](https://builtwithbend.com/blog/)**
 
 Find projects by type, source, or search. Filter by GitHub stars or X likes, and
