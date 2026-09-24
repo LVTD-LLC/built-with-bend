@@ -2,8 +2,10 @@
 
 from django import template
 from django.templatetags.static import static
+from django.urls import reverse
 from django.utils.text import Truncator
 
+from apps.directory.social import project_card_content, project_card_version
 from apps.pages.services import build_absolute_public_url
 
 register = template.Library()
@@ -28,6 +30,11 @@ def social_meta(context):
     if project:
         title = f"{project.title} — Built with Bend"
         description = Truncator(project.description).chars(200)
+        version = project_card_version(project_card_content(project))
+        image = build_absolute_public_url(
+            reverse("directory:project_image", args=[project.slug]) + f"?v={version}"
+        )
+        alt = f"{project.title} — a project built with Bend 2"
     elif post:
         title, description = post.title, post.description
         image, alt = post.image_url, post.image_alt
@@ -71,5 +78,5 @@ def social_meta(context):
         "image": image,
         "image_alt": alt or f"Built with Bend — {card.title()}",
         # Custom editorial images can have their own dimensions and format.
-        "standard_image": image in standard_images,
+        "standard_image": bool(project) or image in standard_images,
     }

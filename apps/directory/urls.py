@@ -25,6 +25,7 @@ urlpatterns = [
     path("submit/", views.submit, name="submit"),
     path("submitted/", views.submitted, name="submitted"),
     path("projects/<uuid:pk>/", views.legacy_detail, name="legacy_project"),
+    path("projects/<slug:slug>/og.png", views.project_image, name="project_image"),
     path("projects/<slug:slug>/", views.detail, name="project"),
     path("health/", views.health, name="health"),
     path("health/workers/", views.worker_health, name="worker_health"),

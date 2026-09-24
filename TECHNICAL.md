@@ -198,8 +198,18 @@ placements; Stripe sponsorship checkout remains deferred.
 
 Both public template shells render `social_meta` from
 `apps/core/templatetags/social.py`. It supplies page-specific titles, descriptions,
-canonical-origin URLs, image alt text, and large X cards. Project pages share the
-directory artwork; guides, submissions, and the blog have dedicated artwork.
+canonical-origin URLs, image alt text, and large X cards. Project pages use dynamically rendered artwork; guides, submissions, and the blog
+have dedicated static artwork.
+
+`/projects/<slug>/og.png` renders a 1200×630 PNG with Pillow and bundled DejaVu
+fonts (license in `apps/directory/fonts/`). Titles wrap and shrink to fit;
+descriptions and author names are truncated to their pixel budget. Rendering
+requires no browser or network access. A bounded per-process LRU holds 64 images.
+The endpoint checks published status before every response, including conditional
+requests. ETags and the metadata URL's content fingerprint change with visible
+project fields; clients must revalidate. Increment `RENDER_VERSION` in
+`apps/directory/social.py` when changing the renderer or fonts. Social platforms
+may retain their own previously fetched previews after a project is edited.
 Blog frontmatter can override `image` and `image_alt`; custom images do not inherit
 assumed dimensions. Missing blog artwork falls back to the local blog card.
 

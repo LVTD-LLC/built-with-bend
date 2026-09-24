@@ -8,7 +8,7 @@ from django.db.models import F, Q
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
-from django.views.decorators.http import require_GET, require_http_methods
+from django.views.decorators.http import require_GET, require_http_methods, require_safe
 
 from .forms import SubmissionForm
 from .models import Category, Project, SourceKind, SubmissionLimit
@@ -207,3 +207,24 @@ def robots(request):
         "User-agent: *\nDisallow: /admin/\nDisallow: /api/\nSitemap: https://builtwithbend.com/sitemap.xml\n",
         content_type="text/plain",
     )
+
+
+@require_safe
+def project_image(request, slug):
+    from django.utils.http import parse_etags
+
+    from .social import project_card_content, project_card_version, render_project_card
+
+    # Check publication on every request, including conditional/cache hits.
+    project = get_object_or_404(Project, slug=slug, status=Project.Status.PUBLISHED)
+    content = project_card_content(project)
+    etag = f'"{project_card_version(content)}"'
+    etags = parse_etags(request.headers.get("If-None-Match", ""))
+    if "*" in etags or etag in [value.removeprefix("W/") for value in etags]:
+        response = HttpResponse(status=304)
+    else:
+        response = HttpResponse(render_project_card(content), content_type="image/png")
+    response["ETag"] = etag
+    response["Cache-Control"] = "public, max-age=0, must-revalidate"
+    response["X-Content-Type-Options"] = "nosniff"
+    return response

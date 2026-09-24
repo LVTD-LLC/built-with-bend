@@ -54,7 +54,8 @@ def assert_preview(response, origin, card):
         assert len(head.metadata[key]) == 1, key
         assert head.metadata[key][0], key
     assert head.metadata["twitter:card"] == ["summary_large_image"]
-    assert head.metadata["og:image"] == [f"{origin}/static/social/{card}.png"]
+    if card:
+        assert head.metadata["og:image"] == [f"{origin}/static/social/{card}.png"]
     assert head.metadata["twitter:image"] == head.metadata["og:image"]
     assert head.metadata["og:url"][0].startswith(origin + "/")
     assert "?" not in head.metadata["og:url"][0]
@@ -103,9 +104,7 @@ def test_project_preview_escapes_content_and_hides_drafts(client, settings):
         canonical_url="https://example.com/build",
         status=Project.Status.PUBLISHED,
     )
-    metadata = assert_preview(
-        client.get(project.get_absolute_url()), settings.SITE_URL, "directory"
-    )
+    metadata = assert_preview(client.get(project.get_absolute_url()), settings.SITE_URL, None)
     assert metadata["og:title"] == [f"{project.title} — Built with Bend"]
     assert len(metadata["og:description"][0]) <= 200
     assert metadata["og:url"] == [settings.SITE_URL + project.get_absolute_url()]

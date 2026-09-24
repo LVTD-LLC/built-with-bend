@@ -15,6 +15,8 @@ with release sections grouped by ISO 8601 date headings (`## YYYY-MM-DD`).
 
 ## 2026-09-24
 
+- Generate individual project share images on demand with fitted titles, descriptions, categories, and author credits.
+
 - Add branded, self-hosted social preview images and consistent Open Graph/X metadata across public pages, including projects and guides.
 
 - Publish the first blog post, introducing Bend 2 through five source-checked directory projects.
