@@ -5,8 +5,9 @@ from urllib.parse import urlsplit
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import URLValidator
-from django.db import models
+from django.db import IntegrityError, models, transaction
 from django.utils import timezone
+from django.utils.text import slugify
 
 
 def validate_public_url(value):
@@ -55,6 +56,10 @@ class Project(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=120)
+    slug = models.SlugField(max_length=160, unique=True, blank=True)
+    github_stars = models.PositiveIntegerField(null=True, blank=True, db_index=True)
+    github_stars_checked_at = models.DateTimeField(null=True, blank=True)
+    x_likes = models.PositiveIntegerField(null=True, blank=True, db_index=True)
     description = models.TextField(max_length=3000)
     author = models.CharField(max_length=120, blank=True)
     category = models.CharField(max_length=20, choices=Category, default=Category.OTHER)
@@ -72,10 +77,50 @@ class Project(models.Model):
     def __str__(self):
         return self.title
 
+    def save(self, *args, **kwargs):
+        if self.slug:
+            return super().save(*args, **kwargs)
+        base = slugify(self.title)[:120] or "project"
+        # Reserve UUID-shaped paths for redirects from the original public URLs.
+        try:
+            uuid.UUID(base)
+        except ValueError:
+            pass
+        else:
+            base = f"build-{base}"
+        self.slug = base
+        if kwargs.get("update_fields") is not None:
+            kwargs["update_fields"] = set(kwargs["update_fields"]) | {"slug"}
+        while True:
+            try:
+                with transaction.atomic():
+                    return super().save(*args, **kwargs)
+            except IntegrityError:
+                if not type(self).objects.filter(slug=self.slug).exclude(pk=self.pk).exists():
+                    raise
+                self.slug = f"{base}-{uuid.uuid4().hex[:8]}"
+
     def get_absolute_url(self):
         from django.urls import reverse
 
-        return reverse("directory:project", args=[self.pk])
+        return reverse("directory:project", args=[self.slug])
+
+    @property
+    def github_avatar_url(self):
+        from .popularity import github_repository
+
+        repository = github_repository(self)
+        if repository:
+            return f"https://github.com/{repository.split('/')[0]}.png?size=80"
+        return ""
+
+    @property
+    def source_kinds(self):
+        kinds = {link.kind for link in self.sources.all()}
+        for url in (self.repository_url, self.website_url, self.canonical_url):
+            if url:
+                kinds.add(source_kind(url))
+        return [(kind, label) for kind, label in SourceKind.choices if kind in kinds]
 
     def clean(self):
         if self.status == self.Status.PUBLISHED and not self.published_at:

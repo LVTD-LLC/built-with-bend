@@ -14,11 +14,19 @@ class SourceInline(admin.TabularInline):
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ["title", "category", "status", "featured", "published_at"]
+    list_display = [
+        "title",
+        "category",
+        "status",
+        "featured",
+        "github_stars",
+        "x_likes",
+        "published_at",
+    ]
     list_filter = ["status", "category", "featured"]
     search_fields = ["title", "description", "author", "canonical_url"]
     inlines = [SourceInline]
-    readonly_fields = ["id", "created_at"]
+    readonly_fields = ["id", "slug", "created_at", "github_stars_checked_at"]
 
 
 @admin.register(Submission)

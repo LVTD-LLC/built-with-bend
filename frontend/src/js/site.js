@@ -1,4 +1,9 @@
 (() => {
+  document.querySelectorAll('.project-monogram img').forEach((image) => {
+    const fallback = () => { image.hidden = true; };
+    image.addEventListener('error', fallback);
+    if (image.complete && !image.naturalWidth) fallback();
+  });
   const root = document.documentElement;
   try {
     const saved = localStorage.getItem('bend-theme');

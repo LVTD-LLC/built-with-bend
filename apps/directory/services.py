@@ -15,10 +15,14 @@ def create_project(
     repository_url="",
     sources=(),
     publish=False,
+    github_stars=None,
+    x_likes=None,
 ):
     canonical = website_url or repository_url or (sources[0] if sources else "")
     project = Project(
         title=title,
+        github_stars=github_stars,
+        x_likes=x_likes,
         description=description,
         author=author,
         category=category,

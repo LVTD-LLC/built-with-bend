@@ -44,12 +44,17 @@ class ProjectIn(Schema):
     website_url: str = Field(default="", max_length=1000)
     repository_url: str = Field(default="", max_length=1000)
     sources: list[str] = Field(default_factory=list, max_length=20)
+    github_stars: int | None = Field(default=None, ge=0, le=2147483647)
+    x_likes: int | None = Field(default=None, ge=0, le=2147483647)
     publish: bool = False
 
 
 class ProjectOut(Schema):
     id: UUID
     title: str
+    slug: str
+    github_stars: int | None
+    x_likes: int | None
     status: str
     website_url: str
     repository_url: str
@@ -72,3 +77,19 @@ def get_project(request, project_id: UUID):
     from django.shortcuts import get_object_or_404
 
     return get_object_or_404(Project, pk=project_id)
+
+
+class PopularityIn(Schema):
+    x_likes: int | None = Field(default=None, ge=0, le=2147483647)
+
+
+@api.patch("/projects/{project_id}/popularity", response=ProjectOut)
+def update_popularity(request, project_id: UUID, payload: PopularityIn):
+    """Record observed X likes, or explicitly clear an unknown count with null."""
+    from django.shortcuts import get_object_or_404
+
+    project = get_object_or_404(Project, pk=project_id)
+    if "x_likes" in payload.model_fields_set:
+        project.x_likes = payload.x_likes
+        project.save(update_fields=["x_likes"])
+    return project
