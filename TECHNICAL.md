@@ -347,3 +347,27 @@ install Playwright locally (`npm install --no-save --package-lock=false playwrig
 and `npx playwright install chromium`), then run
 `node scripts/generate-social-images.mjs`. The generator uses system fonts and
 makes no external font or image requests. Ordinary builds need no browser.
+
+## Navbar traffic and search
+
+The shared directory header searches published project titles, descriptions and
+authors using the existing `q` query parameter. Enter or the search button submits;
+Cmd/Ctrl-K focuses the field. Active directory filters are retained and pagination
+resets; search also works without JavaScript.
+
+`refresh_pageviews --schedule` installs one five-minute Q2 job. The worker queries
+PostHog `$pageview` events in the rolling past 24 hours, restricted to
+`builtwithbend.com` and `www.builtwithbend.com`. These are pageviews, not unique
+visitors or concurrent readers, and reflect PostHog collection/ad-blocking limits.
+Configure `POSTHOG_PERSONAL_API_KEY` (server-only query credential),
+`POSTHOG_PROJECT_ID` and optional `POSTHOG_QUERY_HOST` (default
+`https://us.posthog.com`) on the worker. Never put the query key into
+`POSTHOG_API_KEY`, which is the existing browser ingestion key.
+
+Page rendering only reads the Redis aggregate: no external request or public
+query endpoint. Refreshes run with bounded HTTP timeouts; failed queries preserve
+the cache without extending its 15-minute expiry. Missing/stale data hides the
+badge, whereas a measured zero displays zero. Initial schedule execution is
+delayed 15 minutes for worker rollout; `python manage.py refresh_pageviews` in the
+new worker can prime the cache immediately. Rollback removes these additions and
+the `directory-pageviews` schedule; it requires no schema/data migration.

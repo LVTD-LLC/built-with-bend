@@ -13,6 +13,10 @@ with release sections grouped by ISO 8601 date headings (`## YYYY-MM-DD`).
 **Fixed** for any bug fixes.
 **Security** in case of vulnerabilities.
 
+## 2026-09-25
+
+- Added a navbar search with keyboard focus shortcut and filter preservation, plus a cached PostHog pageview total for the rolling last 24 hours.
+
 ## 2026-09-24
 
 - Generate individual project share images on demand with fitted titles, descriptions, categories, and author credits.
