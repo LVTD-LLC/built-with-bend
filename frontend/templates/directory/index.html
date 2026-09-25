@@ -1,5 +1,8 @@
 {% extends "directory/base.html" %}
-{% block meta %}<link rel="canonical" href="{{ public_site_url }}/">{% endblock %}
+{% block meta %}
+    <link rel="canonical"
+          href="{{ public_site_url }}/{% if not is_filtered and sort == 'newest' and page.number > 1 %}?page={{ page.number }}{% endif %}">
+{% endblock %}
 {% block content %}
     <section class="directory-hero{% if source %} compact{% endif %}">
         <div>

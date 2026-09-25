@@ -15,6 +15,7 @@ with release sections grouped by ISO 8601 date headings (`## YYYY-MM-DD`).
 
 ## 2026-09-25
 
+- Give unfiltered directory pagination its own canonical URL so later project pages are not treated as copies of the homepage. Preserve existing canonical handling for search, filters, and alternate sort orders.
 - Added a navbar search with keyboard focus shortcut and filter preservation, plus a cached PostHog pageview total for the rolling last 24 hours.
 
 ## 2026-09-24
