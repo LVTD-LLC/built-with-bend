@@ -203,11 +203,43 @@ class DirectoryTests(TestCase):
             self.assertEqual(self.client.get(path).status_code, 404)
         self.assertEqual(self.client.get("/api/v1/docs").status_code, 302)
 
+    @override_settings(SITE_URL="https://builtwithbend.example")
     def test_pagination_and_empty_states(self):
         self.assertContains(self.client.get("/"), "Every collection starts with one build.")
         self.assertContains(self.client.get("/?q=missing"), "No builds match just yet.")
         self.assertEqual(self.client.get("/?page=invalid").status_code, 200)
         self.assertEqual(self.client.get("/health/").json()["status"], "ok")
+        Project.objects.bulk_create(
+            [
+                Project(
+                    title=f"Build {number}",
+                    slug=f"build-{number}",
+                    description="A Bend 2 project.",
+                    canonical_url=f"https://example.com/build-{number}",
+                    status=Project.Status.PUBLISHED,
+                )
+                for number in range(25)
+            ]
+        )
+        for query, canonical in [
+            ("", "/"),
+            ("?page=1", "/"),
+            ("?page=2", "/?page=2"),
+            ("?page=999", "/?page=2"),
+            ("?page=invalid", "/"),
+            ("?page=2&utm_source=test", "/?page=2"),
+            ("?page=2&q=Build", "/"),
+            ("?page=2&category=other", "/"),
+            ("?page=2&sort=stars", "/"),
+        ]:
+            with self.subTest(query=query):
+                response = self.client.get(f"/{query}")
+                self.assertContains(
+                    response,
+                    f'<link rel="canonical" href="https://builtwithbend.example{canonical}">',
+                    count=1,
+                    html=True,
+                )
 
     @override_settings(SITE_URL="https://builtwithbend.example")
     def test_sitemap_only_contains_published_projects(self):

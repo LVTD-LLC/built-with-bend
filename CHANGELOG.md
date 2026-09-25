@@ -13,6 +13,10 @@ with release sections grouped by ISO 8601 date headings (`## YYYY-MM-DD`).
 **Fixed** for any bug fixes.
 **Security** in case of vulnerabilities.
 
+## 2026-09-25
+
+- Give unfiltered directory pagination its own canonical URL so later project pages are not treated as copies of the homepage. Preserve existing canonical handling for search, filters, and alternate sort orders.
+
 ## 2026-09-24
 
 - Generate individual project share images on demand with fitted titles, descriptions, categories, and author credits.
