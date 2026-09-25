@@ -1,4 +1,4 @@
-{% load static social %}
+{% load static social humanize %}
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{% block title %}Built with Bend — A directory of Bend 2 projects{% endblock %}</title><meta name="description"
       content="{% block description %}Discover apps, games, tools, and experiments built with Bend 2. A human-reviewed directory with links to the builds and their sources.{% endblock %}"><meta name="theme-color" content="#fbf8f4"><link rel="icon"
@@ -7,7 +7,16 @@
     <body {% if posthog_pageview_enabled %}data-posthog-pageview-enabled="true" data-posthog-route="{{ posthog_pageview_route }}" data-posthog-content-group="{{ posthog_content_group }}"{% endif %}><a class="skip" href="#main">Skip to content</a><header class="header shell"><a class="brand" href="{% url 'directory:index' %}"><span class="brand-mark" aria-hidden="true">b.</span>builtwithbend</a><nav aria-label="Main navigation"><a href="{% url 'blog_posts' %}">Blog</a><a class="nav-about"
    href="https://bend-lang.com/"
    target="_blank"
-   rel="noopener noreferrer">About Bend ↗</a><a class="nav-submit" href="{% url 'directory:submit' %}">Submit a build <span aria-hidden="true">↗</span></a><button class="theme-toggle" aria-label="Toggle color theme" type="button">◐</button></nav></header>
+   rel="noopener noreferrer">About Bend ↗</a><a class="nav-submit" href="{% url 'directory:submit' %}">Submit a build <span aria-hidden="true">↗</span></a></nav><div class="header-tools">{% if navbar_pageviews is not None %}<span class="traffic-count"
+      title="Pageviews measured by PostHog; refreshed every five minutes"><span aria-hidden="true">●</span> {{ navbar_pageviews|intcomma }} view{{ navbar_pageviews|pluralize }} in the last 24 hours</span>{% endif %}<form class="nav-search"
+      role="search"
+      action="{% url 'directory:index' %}"
+      method="get"><label class="sr-only" for="nav-search">Search builds</label><input id="nav-search"
+       type="search"
+       name="q"
+       value="{{ q }}"
+       placeholder="Search builds…"
+       maxlength="200">{% if category %}<input type="hidden" name="category" value="{{ category }}">{% endif %}{% if source %}<input type="hidden" name="source" value="{{ source }}">{% endif %}{% if min_stars is not None %}<input type="hidden" name="min_stars" value="{{ min_stars }}">{% endif %}{% if min_likes is not None %}<input type="hidden" name="min_likes" value="{{ min_likes }}">{% endif %}{% if sort %}<input type="hidden" name="sort" value="{{ sort }}">{% endif %}<button type="submit" aria-label="Search builds">⌕</button><kbd title="Focus search">⌘/Ctrl K</kbd></form><button class="theme-toggle" aria-label="Toggle color theme" type="button">◐</button></div></header>
         <main id="main" class="shell">
             {% block content %}{% endblock %}
         </main>

@@ -22,6 +22,7 @@ python manage.py migrate --noinput
 python manage.py collectstatic --noinput
 python manage.py refresh_github_stars --schedule
 python manage.py refresh_thumbnails --schedule
+python manage.py refresh_pageviews --schedule
 if [ -n "${BEND_ADMIN_PASSWORD:-}" ]; then
     python manage.py bootstrap_curator
 fi

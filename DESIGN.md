@@ -44,3 +44,10 @@ Optional image previews sit above card content and between detail metadata and
 the description. Use a 16:9 soft-background frame with `object-fit: contain` so
 code examples and screenshots are not cropped. Missing images add no placeholder;
 broken images are hidden by progressive enhancement. Keep existing owner avatars.
+
+## Header utilities
+
+Keep project search in the shared header, with an accessible label, submit button
+and Cmd/Ctrl-K focus shortcut. On small screens the traffic label and search wrap
+below the brand/navigation without horizontal overflow. Traffic is a real cached
+24-hour pageview aggregate, hidden when unavailable; no simulated live audience.

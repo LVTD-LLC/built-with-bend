@@ -9,6 +9,12 @@
     image.addEventListener('error', fallback);
     if (image.complete && !image.naturalWidth) fallback();
   });
+  document.addEventListener('keydown', (event) => {
+    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+      const search = document.getElementById('nav-search');
+      if (search) { event.preventDefault(); search.focus(); search.select(); }
+    }
+  });
   const root = document.documentElement;
   try {
     const saved = localStorage.getItem('bend-theme');
