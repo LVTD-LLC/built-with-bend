@@ -35,14 +35,7 @@
             <form class="catalog-controls" method="get">
                 {% if category %}<input type="hidden" name="category" value="{{ category }}">{% endif %}
                 {% if source %}<input type="hidden" name="source" value="{{ source }}">{% endif %}
-                <div class="catalog-search">
-                    <label class="sr-only" for="search">Search projects</label><input type="search"
-       id="search"
-       name="q"
-       value="{{ q }}"
-       placeholder="Search builds…"
-       maxlength="200">
-                </div>
+                {% if q %}<input type="hidden" name="q" value="{{ q }}"><span class="search-summary">Results for “{{ q }}” <a href="{% querystring q=None page=None %}">Clear search</a></span>{% endif %}
                 <div class="metric-control">
                     <label for="min-stars">Min. stars</label><input id="min-stars"
        type="number"

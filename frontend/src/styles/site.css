@@ -29,3 +29,8 @@ html[data-theme=dark] .button.secondary{color:var(--accent)}html[data-theme=dark
 .project-thumbnail img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:contain}
 .detail-thumbnail{margin-block:24px;max-width:960px}
 .detail-thumbnail img{max-height:540px}
+
+/* Global search and traffic stay usable on narrow screens without hiding navigation. */
+.header{flex-wrap:wrap;padding-block:16px;gap:16px}.header nav{gap:16px}.header-tools{display:flex;align-items:center;justify-content:flex-end;gap:14px;flex:1;min-width:0}.traffic-count{font:11px/1.5 ui-monospace,monospace;color:var(--muted);white-space:nowrap}.traffic-count>span{color:var(--accent)}.nav-search{display:flex;align-items:center;border:1px solid var(--line);border-radius:6px;background:var(--card);width:230px;min-width:0}.nav-search input{width:100%;min-width:0;border:0;background:transparent;padding:9px 10px;font-size:13px}.nav-search button{border:0;background:transparent;color:var(--muted);padding:6px;font-size:22px}.nav-search kbd{font:9px ui-monospace,monospace;white-space:nowrap;color:var(--muted);padding-right:9px}.header-tools .theme-toggle{flex-shrink:0}.search-summary{font-size:12px;overflow-wrap:anywhere;max-width:100%}.search-summary a{text-decoration:underline;margin-left:8px}
+@media(max-width:1200px){.header-tools{flex-basis:100%}.nav-search{width:260px}}
+@media(max-width:750px){.header{gap:12px}.header nav{margin-left:auto;gap:12px}.header-tools{flex-wrap:wrap;gap:10px}.traffic-count{flex-basis:100%;text-align:right}.nav-search{flex:1}.nav-search kbd{display:none}}

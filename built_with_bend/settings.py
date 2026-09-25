@@ -87,6 +87,10 @@ SENTRY_DJANGO_CACHE_SPANS = env.bool("SENTRY_DJANGO_CACHE_SPANS", default=True)
 POSTHOG_API_KEY = env("POSTHOG_API_KEY", default="")
 POSTHOG_HOST = env("POSTHOG_HOST", default="https://us.i.posthog.com").rstrip("/")
 POSTHOG_BROWSER_HOST = env("POSTHOG_BROWSER_HOST", default="").strip() or POSTHOG_HOST
+# Server-only query credentials; never reuse the browser ingestion setting.
+POSTHOG_PERSONAL_API_KEY = env("POSTHOG_PERSONAL_API_KEY", default="")
+POSTHOG_PROJECT_ID = env("POSTHOG_PROJECT_ID", default="")
+POSTHOG_QUERY_HOST = env("POSTHOG_QUERY_HOST", default="https://us.posthog.com").rstrip("/")
 POSTHOG_LOGS_ENDPOINT = f"{POSTHOG_HOST}/i/v1/logs"
 POSTHOG_LOGS_ENABLED = env.bool(
     "POSTHOG_LOGS_ENABLED",
@@ -214,6 +218,7 @@ TEMPLATES = [
                 "apps.core.context_processors.mfa_recovery_codes_settings",
                 "apps.core.context_processors.public_site_url",
                 "apps.core.context_processors.posthog_api_key",
+                "apps.directory.traffic.traffic_context",
                 "apps.core.context_processors.chatwoot_config",
                 "apps.core.context_processors.mjml_url",
                 "apps.core.context_processors.available_social_providers",
