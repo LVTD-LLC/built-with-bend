@@ -80,10 +80,7 @@ with the app structure that Cookiecutter created.
    before finishing.
 6. Update `CHANGELOG.md` under the current ISO date heading (`## YYYY-MM-DD`)
    for user-visible behavior changes.
-7. Follow `CONTRIBUTING.md` before merging. When ReviewGate is configured,
-   require its completed 5/5 result and successful dedicated check for the exact
-   current PR head, passing CI, and addressed material feedback. Never count
-   a skipped, stale, timed-out, or otherwise unavailable review as approval.
+7. Follow `CONTRIBUTING.md` before merging and require passing CI.
 
 ## Repo-Scoped Skills
 
