@@ -1,0 +1,13 @@
+# Private script projections: durable records live in Rowset.
+health/
+gsc/
+census/
+competitors/
+serp/
+backlinks/
+evidence/
+keyword-research.json
+content-ledger.md
+outcomes.json
+priors.json
+seasonality.json

@@ -1,3 +1,4 @@
+import { publicContentProperties } from "./posthog-public-content.js";
 import { posthogAttribution } from "./posthog-attribution.js";
 
 const campaignPropertyPattern =
@@ -53,6 +54,8 @@ function sanitizeProperties(properties, locationProperties) {
   if (!properties) return properties;
 
   const sanitized = { ...properties };
+  delete sanitized.public_content_path;
+  delete sanitized.public_content_type;
   Object.entries(urlPropertyNames).forEach(([property, safeValue]) => {
     if (!(property in sanitized)) return;
     const value = safeValue ? locationProperties[safeValue] : "";
@@ -81,7 +84,11 @@ export function sanitizePosthogEvent(event) {
   const locationProperties = safeLocationProperties();
   return {
     ...event,
-    properties: sanitizeProperties(event.properties, locationProperties),
+    properties: {
+      ...sanitizeProperties(event.properties, locationProperties),
+      ...(["$pageview", "$pageleave", "built_with_bend_project_outbound_clicked"].includes(event.event)
+        ? publicContentProperties() : {}),
+    },
     ...(event.$set && { $set: sanitizeProperties(event.$set, locationProperties) }),
     ...(event.$set_once && {
       $set_once: sanitizeProperties(event.$set_once, locationProperties),
