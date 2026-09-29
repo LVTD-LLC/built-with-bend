@@ -119,7 +119,15 @@ def detail(request, slug):
         slug=slug,
         status=Project.Status.PUBLISHED,
     )
-    return render(request, "directory/detail.html", {"project": project})
+    return render(
+        request,
+        "directory/detail.html",
+        {
+            "project": project,
+            "posthog_public_content_path": project.get_absolute_url(),
+            "posthog_public_content_type": "project",
+        },
+    )
 
 
 @require_GET

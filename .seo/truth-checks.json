@@ -1,0 +1,20 @@
+[
+  {
+    "claim": "Guide distinguishes Bend versions and proof files",
+    "paths": [
+      "apps/pages/posts/bend-programming-language.md"
+    ],
+    "must_match": [
+      "Bend 1",
+      "Bend 2",
+      "LAWS.bend",
+      "PROOF.bend"
+    ],
+    "must_not_match": [
+      "TODO",
+      "INSERT CHART",
+      "guaranteed bug-free"
+    ],
+    "flags": "i"
+  }
+]

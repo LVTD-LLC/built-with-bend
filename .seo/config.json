@@ -1,0 +1,261 @@
+{
+  "site": {
+    "domain": "https://builtwithbend.com",
+    "name": "Built with Bend",
+    "aliases": [
+      "builtwithbend"
+    ],
+    "locale": {
+      "country": "United States",
+      "language": "en"
+    },
+    "repo_kind": "both",
+    "sitemap_url": "https://builtwithbend.com/sitemap.xml",
+    "brand_regex": null
+  },
+  "stack": {
+    "kind": "django",
+    "marketing_controller": "apps/directory/views.py",
+    "pages_dir": "frontend/templates",
+    "data_dir": null,
+    "routes_file": "built_with_bend/urls.py",
+    "sitemap_path": "built_with_bend/sitemaps.py",
+    "robots_path": "apps/directory/views.py",
+    "llms_txt_path": null,
+    "header_component": "frontend/templates/directory/base.html",
+    "footer_component": "frontend/templates/directory/base.html",
+    "content_store": {
+      "type": "files",
+      "platform": "Django Markdown blog",
+      "read_method": "apps/pages/services.py",
+      "write_method": "branch + PR + deploy",
+      "body_format": "Markdown/frontmatter",
+      "directory_note": "Project catalog is database-backed in apps/directory/models.py; blog is file-backed."
+    },
+    "content_dir": "apps/pages/posts",
+    "content_layout": "frontend/templates/pages/blog/blog_post.html",
+    "output_url_prefix": "/blog",
+    "cms": null,
+    "figure_style": {
+      "tokens": "DESIGN.md",
+      "dark_mode": "data-theme",
+      "notes": "Terracotta #ba442b, warm neutral backgrounds, system sans and Georgia."
+    }
+  },
+  "gsc": {
+    "site_url": "sc-domain:builtwithbend.com"
+  },
+  "bing": {
+    "api_key_env": null,
+    "site_url": null
+  },
+  "openseo": {
+    "project_id": "d2b99d70-9e76-45de-8981-7acb7f033595",
+    "tracker_id": null
+  },
+  "ga4": {
+    "property_id": null
+  },
+  "competitors": [],
+  "content_surfaces": [
+    "apps/pages/posts/",
+    "frontend/templates/directory/"
+  ],
+  "priority_pages": [
+    "https://builtwithbend.com/",
+    "https://builtwithbend.com/blog/bend-programming-language"
+  ],
+  "crawl_hubs": [
+    "/",
+    "/blog/"
+  ],
+  "authority": {
+    "dr": null,
+    "dr_source": "none",
+    "kd_ceiling": "easy",
+    "kd_source": "dataforseo",
+    "last_read": null
+  },
+  "budget": {
+    "per_run_usd": 2,
+    "ai_panel_cadence_days": 14,
+    "health_diff_cadence_days": 1,
+    "claim_reverify_sample": 3,
+    "link_check_cadence_days": 7
+  },
+  "select": {
+    "floor": 9
+  },
+  "paths": {
+    "roadmap": ".seo/roadmap.md",
+    "ledger": ".seo/content-ledger.md",
+    "truth": ".seo/truth.md",
+    "needs_you": ".seo/needs-you.md",
+    "runs": ".seo/runs/",
+    "health": ".seo/health/",
+    "briefs": ".seo/briefs/",
+    "evidence": ".seo/evidence/"
+  },
+  "logs": {
+    "path": null,
+    "format": "none"
+  },
+  "tools_detected": {
+    "gsc": true,
+    "bing_webmaster": false,
+    "dfs": false,
+    "openseo": true,
+    "answer_engine_data": false,
+    "brand_tracking": false,
+    "crawl_audit": false,
+    "python3": true,
+    "ga4": false,
+    "psi": true,
+    "logs": false,
+    "community_search": false,
+    "social_posting": false,
+    "browser": false,
+    "git": true,
+    "rowset": true,
+    "posthog": true,
+    "citeguild": false,
+    "reddit": false
+  },
+  "tools_declined": [],
+  "cache": {
+    "domain_rating": {
+      "value": null,
+      "read": null
+    },
+    "keyword_volumes": {
+      "read": null
+    },
+    "competitor_gap": {
+      "read": null
+    },
+    "ai_panel": {
+      "read": null
+    },
+    "health_fingerprint": {
+      "read": null
+    }
+  },
+  "sampling": {
+    "p1": {
+      "variants": 6,
+      "platforms": 4,
+      "n": 3
+    },
+    "p2": {
+      "variants": 3,
+      "platforms": 2,
+      "n": 2
+    },
+    "p3": {
+      "variants": 1,
+      "platforms": 1,
+      "n": 1
+    }
+  },
+  "initialized": true,
+  "radar": {
+    "seeds": [
+      "bend programming language",
+      "bend2",
+      "Bend projects",
+      "Bend examples",
+      "Bend proof workflow"
+    ],
+    "communities": [
+      "github.com/bendlang/bend/discussions",
+      "reddit.com/r/bend"
+    ],
+    "cadence_days": 7
+  },
+  "speed": {
+    "psi_api_key_env": "PSI_API_KEY",
+    "top_pages": 10,
+    "cadence_days": 7
+  },
+  "cadence": {
+    "gsc_hours": 20,
+    "health_hours": 6,
+    "link_check_hours": 20,
+    "radar_free_hours": 20,
+    "bing_hours": 20,
+    "outcomes_hours": 20,
+    "competitor_hours": 168,
+    "serp_hours": 168,
+    "backlinks_hours": 168,
+    "link_opportunities_hours": 168,
+    "seasonality_hours": 720,
+    "site_search_hours": 168
+  },
+  "git": {
+    "mode": "pr",
+    "merge_policy": "autonomous",
+    "first_run_hold": {
+      "date": "2026-09-29",
+      "status": "active",
+      "scope": "First daily operator PR must remain unmerged until explicit user release; no production/CMS publishing."
+    }
+  },
+  "repo": {
+    "watch_paths": [
+      "CHANGELOG.md",
+      "apps/directory/**",
+      "apps/pages/posts/**",
+      "built_with_bend/urls.py"
+    ]
+  },
+  "serp": {
+    "top_queries": 20
+  },
+  "distribute": {
+    "social_skill": "postiz",
+    "window_days": 14
+  },
+  "posthog": {
+    "host": "https://us.posthog.com",
+    "project_id": 625196,
+    "production_hosts": [
+      "builtwithbend.com",
+      "www.builtwithbend.com"
+    ],
+    "timezone": "UTC",
+    "success_events": [],
+    "site_search_events": [],
+    "web_vitals_enabled": null
+  },
+  "research_store": {
+    "backend": "rowset",
+    "project_key": "837a92ee-7ce0-4b29-a5a4-b72ca2e51567",
+    "seo_section_key": "ecf076c4-e7b1-4a42-bfb9-972eac622f2d",
+    "datasets": {
+      "history": "b58a6ab0-0a6c-425d-8335-3386b99ecd8b"
+    },
+    "schema_version": 1,
+    "last_sync_at": "2026-09-29T08:12:24.423340+00:00"
+  },
+  "community": {
+    "reddit_enabled": true,
+    "subreddits": [],
+    "max_results_per_query": 10
+  },
+  "citations": {
+    "citeguild_enabled": true,
+    "max_results": 10
+  },
+  "tool_evidence": {
+    "gsc": "2026-09-29 audit, finalized Aug30\u2013Sep26 Pacific",
+    "posthog": "2026-09-29 host-filtered aggregate",
+    "psi": "2026-09-29 homepage mobile/desktop lab",
+    "rowset": "2026-09-29 private history schema readback"
+  },
+  "version": "2.2",
+  "run_policy": {
+    "timezone": "Europe/Istanbul",
+    "one_shipment_per_date": true,
+    "resume_pending": true
+  }
+}

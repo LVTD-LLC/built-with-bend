@@ -13,6 +13,10 @@ with release sections grouped by ISO 8601 date headings (`## YYYY-MM-DD`).
 **Fixed** for any bug fixes.
 **Security** in case of vulnerabilities.
 
+## 2026-09-29
+
+- Add privacy-safe public project/article analytics identities and bounded outbound project-link events; preserve sanitized routes and disable session replay. Establish non-secret SEO configuration with private research continuity.
+
 ## 2026-09-25
 
 - Give unfiltered directory pagination its own canonical URL so later project pages are not treated as copies of the homepage. Preserve existing canonical handling for search, filters, and alternate sort orders.

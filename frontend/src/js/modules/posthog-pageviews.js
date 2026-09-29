@@ -1,3 +1,4 @@
+import { publicContentProperties } from "./posthog-public-content.js";
 import { posthogAttribution } from "./posthog-attribution.js";
 
 const capturedHtmxRequests = new WeakSet();
@@ -11,6 +12,8 @@ function contextSnapshot() {
     contentGroup: dataset.posthogContentGroup || "",
     enabled: dataset.posthogPageviewEnabled === "true",
     route: dataset.posthogRoute || "",
+    publicContentPath: dataset.posthogPublicContentPath || "",
+    publicContentType: dataset.posthogPublicContentType || "",
   };
 }
 
@@ -64,7 +67,7 @@ function capturePosthogPageview(force = false) {
   }
 
   const campaign = campaignProperties(window.location.search);
-  const captureKey = JSON.stringify([context.route, context.contentGroup, campaign]);
+  const captureKey = JSON.stringify([context.route, context.contentGroup, publicContentProperties(context), campaign]);
   if (force !== true && captureKey === lastCaptureKey) return false;
 
   const currentUrl = `${window.location.origin}${context.route}`;
@@ -82,6 +85,7 @@ function capturePosthogPageview(force = false) {
     $pathname: context.route,
     ...referrer,
     content_group: context.contentGroup,
+    ...publicContentProperties(context),
     environment: analytics.environment || "unknown",
     event_version: 1,
     route: context.route,
@@ -109,6 +113,8 @@ function restoreContext() {
   else delete dataset.posthogRoute;
   if (context.contentGroup) dataset.posthogContentGroup = context.contentGroup;
   else delete dataset.posthogContentGroup;
+  dataset.posthogPublicContentPath = context.publicContentPath || "";
+  dataset.posthogPublicContentType = context.publicContentType || "";
   syncPrivacyContext();
   return true;
 }
@@ -131,12 +137,16 @@ function updateContextFromHtmxResponse(event) {
     dataset.posthogPageviewEnabled = "true";
     dataset.posthogRoute = responseContext.posthogRoute || "";
     dataset.posthogContentGroup = responseContext.posthogContentGroup || "";
+    dataset.posthogPublicContentPath = responseContext.posthogPublicContentPath || "";
+    dataset.posthogPublicContentType = responseContext.posthogPublicContentType || "";
     syncPrivacyContext();
     return "eligible";
   }
   dataset.posthogPageviewEnabled = "false";
   delete dataset.posthogRoute;
   delete dataset.posthogContentGroup;
+  delete dataset.posthogPublicContentPath;
+  delete dataset.posthogPublicContentType;
   syncPrivacyContext();
   return "disabled";
 }

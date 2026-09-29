@@ -1,3 +1,4 @@
+import { initPosthogOutbound } from "./posthog-public-content.js";
 import { initPosthogIdentity } from "./posthog-identity.js";
 import { initPosthogCtas } from "./posthog-ctas.js";
 import { initPosthogPageviews } from "./posthog-pageviews.js";
@@ -14,6 +15,7 @@ export function initPosthog() {
   initPosthogIdentity();
   initPosthogCtas();
   initPosthogPageviews();
+  initPosthogOutbound();
 
   document.addEventListener("submit", (event) => {
     if (event.target.matches("form[data-posthog-reset]")) {

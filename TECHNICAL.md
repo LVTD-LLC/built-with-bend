@@ -371,3 +371,28 @@ badge, whereas a measured zero displays zero. Initial schedule execution is
 delayed 15 minutes for worker rollout; `python manage.py refresh_pageviews` in the
 new worker can prime the cache immediately. Rollback removes these additions and
 the `directory-pageviews` schedule; it requires no schema/data migration.
+
+## Public-content engagement analytics
+
+Published project and blog detail views provide `public_content_path` and
+`public_content_type` from the loaded public object, never request query parameters.
+`$pageview` and `$pageleave` retain existing templated URL/route properties and gain
+this separate identity. UUID aliases, drafts, missing pages, hubs and private
+routes have no public-content identity. HTMX full-page changes and history
+restoration replace or clear identity alongside route context. The sanitizer
+strips caller-provided identity and reinstates only validated view context; it
+never stores these fields in person properties. Session replay is disabled.
+
+Project website, repository and source links emit
+`built_with_bend_project_outbound_clicked` with `destination_kind` limited to
+`website`, `repository`, or `source`. No destination URL, project database ID,
+link text, query string or fragment is recorded by this event. These are click
+intent signals, not successful visits, signups or revenue. The public 24-hour
+pageview counter is unchanged. Historical templated traffic cannot be reconstructed
+per project. Acquisition-to-engagement reporting must still verify session-entry
+attribution and filter test/agent traffic.
+
+The `.seo/config.json` locator points to private Rowset history. Measurements and
+run/action state remain there; do not commit hydrated projections. Daily runs use
+Europe/Istanbul dates, resume pending PRs and publish at most one coherent change
+per date after exact-head automated review and CI.
