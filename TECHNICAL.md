@@ -211,23 +211,12 @@ The source of truth is `djass-manifest.json` (hosted job 34). All 18 current fea
 - **Telemetry**: dedicated PostHog project and Sentry project. Never set an organization personal API token as the runtime ingestion key.
 - **MJML**: existing private MJML renderer; npm dependency updated to the current compatible major to address audit findings.
 - **Chatwoot / Apprise / Healthchecks pings**: generated integrations retained; external widgets/notifications/pings require their project-specific settings. No unsolicited notification destinations are created. Database/cache and worker health endpoints are active.
-- **ReviewGate**: enabled using the repository OpenRouter secret; require completed 5/5 review on the current PR head.
 
 Web and worker deployments use separate app tokens and the same immutable commit archive. CI first verifies 12 consecutive web revision probes, then deploys and verifies the worker. The local container healthcheck tests the actual process dependencies. Swarm's app-specific update policy continues after a failed transient task instead of leaving old and new tasks indefinitely after a pause; sustained revision probes remain the deployment success gate.
 
 The existing PostgreSQL database, auth users, directory tables and migrations are preserved. Core/Allauth/Q2/MCP migrations add their own tables. The generated initial extension migration was adapted **before its first deployment** to enable only available PostgreSQL extensions; Qdrant supplies vector storage, and no application model requires pgvector. No existing historical directory migration is rewritten. Take a database dump before the additive migration rollout.
 
 Original stack reference (some generic account-oriented examples) is retained at `docs/maintainers/generated-stack-reference.md`; this guide and AGENTS.md define actual production behavior.
-
-## ReviewGate AI reviews
-
-The OpenRouter repository secret enables `.github/workflows/reviewgate.yml`.
-Require the successful dedicated ReviewGate check and a completed 5/5 review on
-exactly the current PR head. Review errors and skipped runs are not approvals.
-The initial full regeneration is split into dependency/reference and application
-PRs to fit ReviewGate's 1 MB changed-file context budget without excluding files.
-Each prerequisite is reviewed before merging the dependent application change.
-
 
 ## Catalog URLs and popularity
 
