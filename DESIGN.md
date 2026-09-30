@@ -31,6 +31,10 @@ source tabs. Counts come from published records; unknown popularity stays blank.
 
 ## Blog
 
+The unfiltered first directory page introduces the existing Bend 2 project guide
+with an underlined, theme-aware link below the hero description. Keep the official
+language link and leave filtered/search/paginated views focused on the catalog.
+
 Expose Blog in the main navigation on desktop and mobile. Guides are not linked
 from the public footer; existing documentation URLs remain available.
 

@@ -6,7 +6,8 @@
 {% block content %}
     <section class="directory-hero{% if source %} compact{% endif %}">
         <div>
-            {% if source %}<h1>{{ heading }}</h1>{% else %}<h1>{{ total }} build{{ total|pluralize }}.<br>All made with <span>Bend.</span></h1><p>Explore what people are making with Bend 2.</p>{% endif %}
+            {% if source %}<h1>{{ heading }}</h1>{% else %}<h1>{{ total }} build{{ total|pluralize }}.<br>All made with <span>Bend.</span></h1><p>Explore what people are making with Bend 2.{% if not is_filtered and sort == "newest" and page.number == 1 %}<br>New to Bend? <a class="guide-link"
+    href="{% url 'blog_post' slug='bend-programming-language' %}">Explore five Bend 2 projects →</a>{% endif %}</p>{% endif %}
         </div>
         {% if not source %}<a class="language-note"
    href="https://bend-lang.com/"
