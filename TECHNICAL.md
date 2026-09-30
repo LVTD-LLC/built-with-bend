@@ -384,4 +384,7 @@ attribution and filter test/agent traffic.
 The `.seo/config.json` locator points to private Rowset history. Measurements and
 run/action state remain there; do not commit hydrated projections. Daily runs use
 Europe/Istanbul dates, resume pending PRs and publish at most one coherent change
-per date after exact-head automated review and CI.
+per date after CI and deployment verification. The first-run hold was released
+on 2026-09-29; ReviewGate is waived for this SEO workflow under the owner's
+standing authorization, not recorded as passed. ReviewGate integration was
+subsequently removed in PR16; application checks remain required.

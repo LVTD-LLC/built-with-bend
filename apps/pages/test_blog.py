@@ -43,6 +43,16 @@ def test_blog_index_renders_empty_state(client, blog_posts_dir):
     assert f'name="twitter:image" content="{escaped_default_image_url}"' in content
 
 
+def test_homepage_guide_link_resolves_without_changing_filtered_discovery(client):
+    guide_url = reverse("blog_post", kwargs={"slug": "bend-programming-language"})
+    homepage = client.get("/").content.decode()
+    assert f'href="{guide_url}"' in homepage
+    assert 'href="https://bend-lang.com/"' in homepage
+    assert client.get(guide_url).status_code == 200
+    for query in ("?source=github", "?q=example", "?sort=stars"):
+        assert 'class="guide-link"' not in client.get("/" + query).content.decode()
+
+
 def test_blog_post_renders_markdown_and_frontmatter_metadata(client, blog_posts_dir):
     write_post(
         blog_posts_dir,

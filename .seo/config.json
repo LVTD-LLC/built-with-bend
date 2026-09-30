@@ -196,8 +196,18 @@
     "merge_policy": "autonomous",
     "first_run_hold": {
       "date": "2026-09-29",
-      "status": "active",
-      "scope": "First daily operator PR must remain unmerged until explicit user release; no production/CMS publishing."
+      "status": "released",
+      "scope": "First daily operator PR must remain unmerged until explicit user release; no production/CMS publishing.",
+      "released_at": "2026-09-29",
+      "source": "Rasul Slack1790676924.153589",
+      "merged_pr": 15,
+      "merge_sha": "f4fd3b89c2b9b00eeccb404f2dbb0883acc2ced3"
+    },
+    "reviewgate": {
+      "status": "waived",
+      "scope": "SEO PRs",
+      "source": "Rasul Slack1790676924.153589, 2026-09-29",
+      "note": "Never passed; CI/tests/live verification remain required. Integration removed by PR16."
     }
   },
   "repo": {

@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-09-30
+
+- Link the homepage introduction directly to the existing five-project Bend 2 guide, while preserving the official language link and focused search/filter views. Reconcile SEO continuity with the released first-run hold and standing review waiver.
+
 ## 2026-09-29
 
 ### Removed
