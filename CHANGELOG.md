@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-01
+
+- Give the project submission page its own search description, explaining public links, human review, and account-free submission instead of repeating the directory homepage.
+
 ## 2026-09-30
 
 - Link the homepage introduction directly to the existing five-project Bend 2 guide, while preserving the official language link and focused search/filter views. Reconcile SEO continuity with the released first-run hold and standing review waiver.
