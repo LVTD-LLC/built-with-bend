@@ -2,6 +2,8 @@
 
 ## 2026-10-06
 
+- Correct Rowset and CiteGuild sponsor destinations and replace all four team sponsor placeholders with locally served official logos.
+
 - Add same-category project links so visitors can keep exploring published builds without returning to the catalog.
 
 ## 2026-10-01
