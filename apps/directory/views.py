@@ -119,11 +119,23 @@ def detail(request, slug):
         slug=slug,
         status=Project.Status.PUBLISHED,
     )
+    siblings = (
+        Project.objects.filter(status=Project.Status.PUBLISHED, category=project.category)
+        .exclude(pk=project.pk)
+        .only("title", "slug", "description")
+        .order_by("slug")
+    )
+    # Walk the category in stable slug order, wrapping so older entries are not
+    # stranded behind a newest/popular-only recommendation list.
+    related_projects = list(siblings.filter(slug__gt=project.slug)[:3])
+    if len(related_projects) < 3:
+        related_projects.extend(siblings.filter(slug__lt=project.slug)[: 3 - len(related_projects)])
     return render(
         request,
         "directory/detail.html",
         {
             "project": project,
+            "related_projects": related_projects,
             "posthog_public_content_path": project.get_absolute_url(),
             "posthog_public_content_type": "project",
         },

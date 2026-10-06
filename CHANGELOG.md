@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-06
+
+- Add same-category project links so visitors can keep exploring published builds without returning to the catalog.
+
 ## 2026-10-01
 
 - Give the project submission page its own search description, explaining public links, human review, and account-free submission instead of repeating the directory homepage.

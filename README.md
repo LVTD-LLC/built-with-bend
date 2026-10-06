@@ -10,7 +10,7 @@ Bend 2.
 Find projects by type, source, or search. Filter by GitHub stars or X likes, and
 sort by popularity. Each listing links to its original
 sources, with a live site and repository when available. Closed-source projects
-are welcome too.
+are welcome too. Project pages also link to more published builds of the same type.
 
 Anyone can suggest a build without creating an account. Every submission is
 reviewed before it appears, and contact details stay private. Add an optional
