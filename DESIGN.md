@@ -55,3 +55,9 @@ Keep project search in the shared header, with an accessible label, submit butto
 and Cmd/Ctrl-K focus shortcut. On small screens the traffic label and search wrap
 below the brand/navigation without horizontal overflow. Traffic is a real cached
 24-hour pageview aggregate, hidden when unavailable; no simulated live audience.
+
+## Related project browsing
+
+Detail pages offer up to three published builds of the same type below the sources.
+Use a compact text list with a title and short description, shared theme tokens,
+and visible keyboard focus. Do not imply a quality ranking or add nested cards.
