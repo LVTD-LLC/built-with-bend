@@ -83,7 +83,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: steps.latest.outputs.current == 'true'
         with:
-          name: indexnow-before-${{ github.sha }}
+          name: indexnow-before-${{ github.sha }}-${{ github.run_attempt }}
           path: /tmp/indexnow-before.json
           retention-days: 30
       - name: Create immutable deployment archive
