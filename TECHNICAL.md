@@ -395,3 +395,26 @@ The weekly Bend newsletter uses a separate Listmonk instance with Mailgun SMTP.
 See [newsletter operations](docs/newsletter.md) for credentials, consent, deployment,
 verification and rollback. The website needs only `NEWSLETTER_LISTMONK_URL` and
 `NEWSLETTER_LIST_UUID`; empty configuration disables signup.
+
+## IndexNow notifications
+
+The public `/indexnow-key.txt` route proves ownership. Production CI snapshots
+public URLs before deployment, retains the snapshot as a 30-day artifact, then
+submits current plus previous URLs after web/worker verification and an exact
+revision check on the key endpoint. No repository variable or new credential is needed.
+
+`IndexNow directory changes` runs daily at 08:23 UTC (GitHub may delay schedules)
+and supports manual dispatch. It compares sitemap URLs and lastmod values with its
+last successful Actions-cache checkpoint. Unchanged URLs are skipped. A missing or
+evicted cache causes a full baseline. Failures never advance the checkpoint and
+remain visible in Actions; notification failure does not roll back the site.
+HTTP 200 is receipt, 202 is receipt with key validation pending, not indexing proof.
+
+Project lastmod currently reflects publication, not every database edit. Existing
+project description/image-only edits need a manual notification using
+`python apps/pages/indexnow.py --site-url https://builtwithbend.com`, or the next
+deployment. New API-published projects and removals are covered by the daily check.
+For failed deployment notifications download the snapshot artifact and use
+`--previous <snapshot-file>` to preserve removed URLs; do not redeploy just to retry.
+The generated-stack reference describes upstream defaults; this section and the
+actual workflows describe this site's wiring.

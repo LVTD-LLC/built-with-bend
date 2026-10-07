@@ -77,7 +77,7 @@ def validate_urls(site_url, urls):
     return sorted(set(urls))
 
 
-def sitemap_urls(site_url):
+def sitemap_state(site_url):
     status, body, _ = request(f"{site_url}/sitemap.xml")
     if status != 200:
         raise IndexNowError(f"Sitemap returned HTTP {status}")
@@ -91,7 +91,15 @@ def sitemap_urls(site_url):
     urls = [node.text or "" for node in root.findall(f"{ns}url/{ns}loc")]
     if not urls:
         raise IndexNowError("Refusing an empty sitemap")
-    return validate_urls(site_url, urls)
+    validate_urls(site_url, urls)
+    return {
+        node.findtext(f"{ns}loc"): node.findtext(f"{ns}lastmod", default="")
+        for node in root.findall(f"{ns}url")
+    }
+
+
+def sitemap_urls(site_url):
+    return sorted(sitemap_state(site_url))
 
 
 def deployment_key(site_url, expected_revision=""):
@@ -120,6 +128,13 @@ def submit(site_url, previous_urls=(), expected_revision="", dry_run=False):
     urls = validate_urls(site_url, sitemap_urls(site_url) + list(previous_urls))
     if dry_run:
         return f"Dry run: {len(urls)} public URLs; no submission sent"
+    return submit_urls(site_url, key, urls)
+
+
+def submit_urls(site_url, key, urls):
+    urls = validate_urls(site_url, urls)
+    if not urls:
+        return "No changed public URLs; no submission sent"
     statuses = []
     for start in range(0, len(urls), 10_000):
         payload = {
@@ -139,6 +154,28 @@ def submit(site_url, previous_urls=(), expected_revision="", dry_run=False):
     )
 
 
+def submit_changes(site_url, state_path, expected_revision="", dry_run=False):
+    """Advance the checkpoint only after every notification batch succeeds."""
+    key = deployment_key(site_url, expected_revision)
+    current = sitemap_state(site_url)
+    previous = json.loads(state_path.read_text()) if state_path.exists() else {}
+    if not isinstance(previous, dict):
+        raise IndexNowError("Invalid sitemap checkpoint")
+    validate_urls(site_url, list(previous))
+    changed = sorted(
+        url
+        for url in current.keys() | previous.keys()
+        if url not in current or url not in previous or current[url] != previous[url]
+    )
+    if dry_run:
+        return f"Dry run: {len(changed)} changed public URLs; no submission sent"
+    result = submit_urls(site_url, key, changed)
+    temporary = state_path.with_suffix(".tmp")
+    temporary.write_text(json.dumps(current, sort_keys=True), encoding="utf-8")
+    temporary.replace(state_path)
+    return result
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--site-url", required=True)
@@ -150,11 +187,14 @@ def main():
     )
     parser.add_argument("--expected-revision", default="")
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--state", type=Path, help="Submit sitemap changes since last success")
     args = parser.parse_args()
     try:
         site_url = args.site_url.rstrip("/")
         validate_urls(site_url, [])
-        if args.snapshot:
+        if args.state:
+            print(submit_changes(site_url, args.state, args.expected_revision, args.dry_run))
+        elif args.snapshot:
             urls = sitemap_urls(site_url)
             args.snapshot.write_text(json.dumps(urls), encoding="utf-8")
             print(f"Saved {len(urls)} pre-deployment public URLs")

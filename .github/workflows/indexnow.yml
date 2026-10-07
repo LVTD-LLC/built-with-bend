@@ -1,0 +1,28 @@
+name: IndexNow directory changes
+on:
+  schedule:
+    - cron: '23 8 * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: built-with-bend-indexnow-daily
+  cancel-in-progress: false
+jobs:
+  notify:
+    if: github.repository == 'LVTD-LLC/built-with-bend'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/cache/restore@v4
+        with:
+          path: indexnow-state.json
+          key: indexnow-state-v1-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: indexnow-state-v1-
+      - name: Submit new, removed and lastmod-changed public URLs
+        run: python apps/pages/indexnow.py --site-url https://builtwithbend.com --state indexnow-state.json --expected-revision "$GITHUB_SHA"
+      - uses: actions/cache/save@v4
+        with:
+          path: indexnow-state.json
+          key: indexnow-state-v1-${{ github.run_id }}-${{ github.run_attempt }}
