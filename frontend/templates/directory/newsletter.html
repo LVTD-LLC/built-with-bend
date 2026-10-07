@@ -1,0 +1,15 @@
+{% extends "directory/base.html" %}
+{% block title %}Weekly Bend newsletter — Built with Bend{% endblock %}
+{% block meta %}<meta name="robots" content="noindex">{% endblock %}
+{% block content %}
+    <section class="newsletter-page">
+        <a class="back" href="{% url 'directory:index' %}">← Back to the collection</a>
+        <h1>Bend, once a week.</h1>
+        <p>The latest Bend news and projects, in one weekly email.</p>
+        {% if rate_limited %}<p class="form-alert"
+   role="alert">Too many attempts. Please try again in an hour.</p>{% endif %}
+        {% if service_error %}<p class="form-alert"
+   role="alert">We couldn’t complete your signup. Please try again in a few minutes.</p>{% endif %}
+        {% include "directory/newsletter_form.html" %}
+    </section>
+{% endblock %}

@@ -715,3 +715,7 @@ if THUMBNAIL_R2_ENABLED:
             or parsed_thumbnail_endpoint.fragment
         ):
             raise ImproperlyConfigured("Thumbnail storage endpoints must be plain HTTPS URLs.")
+
+# Empty configuration keeps the newsletter signup hidden until Listmonk is ready.
+NEWSLETTER_LISTMONK_URL = env("NEWSLETTER_LISTMONK_URL", default="")
+NEWSLETTER_LIST_UUID = env("NEWSLETTER_LIST_UUID", default="")

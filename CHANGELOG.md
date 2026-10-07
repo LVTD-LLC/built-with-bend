@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-07
+
+- Add a weekly Bend news/projects newsletter signup with email confirmation, accessible no-JavaScript forms, rate limiting and recoverable provider errors.
+
+
 ## 2026-10-06
 
 - Correct Rowset and CiteGuild sponsor destinations and replace all four team sponsor placeholders with locally served official logos.

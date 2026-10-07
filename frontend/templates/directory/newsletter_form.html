@@ -1,0 +1,15 @@
+<form method="post"
+      action="{% url 'directory:newsletter' %}"
+      class="newsletter-form">
+    {% csrf_token %}
+    {{ form.company }}
+    <div class="form-field">
+        <label for="{{ form.email.id_for_label }}">Email address</label>
+        <div class="newsletter-input-row">
+            {{ form.email }}
+            <button class="button" type="submit">Get the weekly email</button>
+        </div>
+        {{ form.email.errors }}
+    </div>
+    <p class="help">Confirm by email to subscribe. Unsubscribe anytime. <a href="{% url 'privacy_policy' %}">Privacy policy</a>.</p>
+</form>

@@ -61,3 +61,10 @@ below the brand/navigation without horizontal overflow. Traffic is a real cached
 Detail pages offer up to three published builds of the same type below the sources.
 Use a compact text list with a title and short description, shared theme tokens,
 and visible keyboard focus. Do not imply a quality ranking or add nested cards.
+
+## Newsletter
+
+The first, unfiltered directory page has a compact weekly Bend newsletter signup
+between the hero and catalog. Keep it secondary to browsing, with a visible email
+label, native form, consent copy and privacy link. Stack input/button on phones;
+use the same light/dark tokens. Hide it until the double-opt-in list is configured.

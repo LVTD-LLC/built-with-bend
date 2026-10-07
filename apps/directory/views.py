@@ -42,6 +42,8 @@ def minimum_count(value):
 
 @require_GET
 def index(request):
+    from .newsletter import NewsletterForm, enabled
+
     published = Project.objects.filter(status=Project.Status.PUBLISHED)
     total = published.count()
     projects = published.prefetch_related("sources")
@@ -91,6 +93,8 @@ def index(request):
         "directory/index.html",
         {
             "page": page,
+            "newsletter_enabled": enabled(),
+            "newsletter_form": NewsletterForm(),
             "total": total,
             "paid_sponsors": Sponsorship.active(),
             "q": query,
