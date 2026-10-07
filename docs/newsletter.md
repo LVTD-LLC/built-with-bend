@@ -64,7 +64,9 @@ restore into a disposable database passed. The existing `restic-main` nightly
 backup discovers PostgreSQL containers automatically, creates logical dumps,
 and includes `/docker`, `/captain`, and Docker volumes. The new services match
 that discovery; the first scheduled offsite backup after provisioning is still
-pending. Do not treat the local bootstrap dump as host-loss protection.
+pending. The bootstrap dump has also been uploaded to the existing encrypted
+offsite Restic repository (snapshot `82c2bebb`, tag
+`builtwithbend-listmonk-bootstrap`).
 
 ## Verification and rollback
 
