@@ -162,3 +162,36 @@ def test_short_rate_limit_respects_retry_after(monkeypatch):
     monkeypatch.setattr(indexnow.time, "sleep", delays.append)
     assert indexnow.request(indexnow.ENDPOINT, {"urlList": [SITE + "/"]})[0] == 200
     assert delays == [12]
+
+
+def test_incremental_checkpoint_new_removed_changed_and_unchanged(monkeypatch, tmp_path):
+    state = tmp_path / "state.json"
+    state.write_text(json.dumps({SITE + "/old/": "1", SITE + "/edit/": "1", SITE + "/": "1"}))
+    posts = transport(monkeypatch, [SITE + "/"], revisions=("new", "new"))
+    current = {SITE + "/new/": "2", SITE + "/edit/": "2", SITE + "/": "1"}
+    monkeypatch.setattr(indexnow, "sitemap_state", lambda _: current)
+    assert "HTTP 200" in indexnow.submit_changes(SITE, state)
+    assert posts[0]["urlList"] == [SITE + "/edit/", SITE + "/new/", SITE + "/old/"]
+    assert json.loads(state.read_text()) == current
+    assert "No changed" in indexnow.submit_changes(SITE, state)
+    assert len(posts) == 1
+
+
+def test_incremental_failure_and_dry_run_preserve_checkpoint(monkeypatch, tmp_path):
+    state = tmp_path / "state.json"
+    state.write_text("{}")
+    posts = transport(monkeypatch, [SITE + "/"], statuses=(403,), revisions=("new", "new"))
+    assert "Dry run" in indexnow.submit_changes(SITE, state, dry_run=True)
+    assert state.read_text() == "{}"
+    assert not posts
+    with pytest.raises(indexnow.IndexNowError):
+        indexnow.submit_changes(SITE, state)
+    assert state.read_text() == "{}"
+
+
+def test_incremental_missing_checkpoint_submits_baseline(monkeypatch, tmp_path):
+    state = tmp_path / "state.json"
+    posts = transport(monkeypatch, [SITE + "/"])
+    indexnow.submit_changes(SITE, state)
+    assert posts[0]["urlList"] == [SITE + "/"]
+    assert json.loads(state.read_text()) == {SITE + "/": ""}

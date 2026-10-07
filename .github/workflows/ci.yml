@@ -77,6 +77,15 @@ jobs:
           else
             echo 'A newer main revision exists; skipping this deployment.'
           fi
+      - name: Snapshot public URLs before deployment
+        if: steps.latest.outputs.current == 'true'
+        run: python apps/pages/indexnow.py --site-url https://builtwithbend.com --snapshot /tmp/indexnow-before.json
+      - uses: actions/upload-artifact@v4
+        if: steps.latest.outputs.current == 'true'
+        with:
+          name: indexnow-before-${{ github.sha }}
+          path: /tmp/indexnow-before.json
+          retention-days: 30
       - name: Create immutable deployment archive
         if: steps.latest.outputs.current == 'true' 
         run: |
@@ -100,3 +109,6 @@ jobs:
           WORKERS_APP_TOKEN: ${{ secrets.WORKERS_APP_TOKEN }}
           PRODUCTION_URL: https://builtwithbend.com
         run: node scripts/deploy-caprover.mjs /tmp/bend-deploy.tar "$GITHUB_SHA"
+      - name: Notify IndexNow after verified deployment
+        if: steps.latest.outputs.current == 'true'
+        run: python apps/pages/indexnow.py --site-url https://builtwithbend.com --previous /tmp/indexnow-before.json --expected-revision "$GITHUB_SHA"
