@@ -21,3 +21,6 @@ team. Learn about the language at [bend-lang.com](https://bend-lang.com/).
 
 For development and the curator API, see [TECHNICAL.md](TECHNICAL.md).
 Contributions: [CONTRIBUTING.md](CONTRIBUTING.md).
+
+Get a weekly email with the latest Bend news and projects by subscribing on the
+homepage. Confirm your email to join; unsubscribe anytime.

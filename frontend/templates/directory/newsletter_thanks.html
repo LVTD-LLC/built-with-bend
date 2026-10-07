@@ -1,0 +1,14 @@
+{% extends "directory/base.html" %}
+{% block title %}Check your inbox — Built with Bend{% endblock %}
+{% block meta %}<meta name="robots" content="noindex">{% endblock %}
+{% block content %}
+    <section class="confirmation">
+        <h1>Check your inbox.</h1>
+        <p>
+            If your address needs confirmation, you’ll receive an email with a link to subscribe.
+            <br>
+            Already subscribed? You’re all set. Check your spam folder if you don’t see it.
+        </p>
+        <a class="button" href="{% url 'directory:index' %}">Back to the collection</a>
+    </section>
+{% endblock %}

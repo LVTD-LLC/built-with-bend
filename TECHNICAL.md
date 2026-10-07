@@ -388,3 +388,10 @@ per date after CI and deployment verification. The first-run hold was released
 on 2026-09-29; ReviewGate is waived for this SEO workflow under the owner's
 standing authorization, not recorded as passed. ReviewGate integration was
 subsequently removed in PR16; application checks remain required.
+
+## Newsletter
+
+The weekly Bend newsletter uses a separate Listmonk instance with Mailgun SMTP.
+See [newsletter operations](docs/newsletter.md) for credentials, consent, deployment,
+verification and rollback. The website needs only `NEWSLETTER_LISTMONK_URL` and
+`NEWSLETTER_LIST_UUID`; empty configuration disables signup.

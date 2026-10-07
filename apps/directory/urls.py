@@ -4,7 +4,7 @@ from django.urls import path
 from apps.core import sponsorship_views
 from built_with_bend.sitemaps import BlogSitemap, DocumentationSitemap
 
-from . import views
+from . import newsletter, views
 from .sitemaps import PageSitemap, ProjectSitemap
 
 app_name = "directory"
@@ -23,6 +23,8 @@ urlpatterns = [
         name="sitemap",
     ),
     path("", views.index, name="index"),
+    path("newsletter/", newsletter.subscribe, name="newsletter"),
+    path("newsletter/thanks/", newsletter.thanks, name="newsletter_thanks"),
     path("sponsor/", sponsorship_views.sponsor, name="sponsor"),
     path("sponsor/thanks/", sponsorship_views.sponsor_success, name="sponsor_success"),
     path("sponsor/webhook/", sponsorship_views.sponsor_webhook, name="sponsor_webhook"),
