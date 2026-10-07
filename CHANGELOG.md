@@ -2,6 +2,8 @@
 
 ## 2026-10-07
 
+- Preserve separate IndexNow snapshots for deployment retries so artifact-name conflicts cannot block a rerun.
+
 - Activate IndexNow after verified deployments and daily for new, removed or sitemap-date-changed public pages, with retryable checkpoints.
 
 - Add a weekly Bend news/projects newsletter signup with email confirmation, accessible no-JavaScript forms, rate limiting and recoverable provider errors.
