@@ -66,7 +66,8 @@ and includes `/docker`, `/captain`, and Docker volumes. The new services match
 that discovery; the first scheduled offsite backup after provisioning is still
 pending. The bootstrap dump has also been uploaded to the existing encrypted
 offsite Restic repository (snapshot `82c2bebb`, tag
-`builtwithbend-listmonk-bootstrap`).
+`builtwithbend-listmonk-bootstrap`). Restoring that offsite snapshot produced
+a byte-for-byte SHA-256 match with the dump used in the database restore check.
 
 ## Verification and rollback
 
