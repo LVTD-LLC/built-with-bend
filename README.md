@@ -12,6 +12,9 @@ sort by popularity. Each listing links to its original
 sources, with a live site and repository when available. Closed-source projects
 are welcome too. Project pages also link to more published builds of the same type.
 
+Want to keep exploring? Opt into the weekly Bend newsletter from the directory,
+project pages, or guides. Confirm by email to subscribe; unsubscribe anytime.
+
 Anyone can suggest a build without creating an account. Every submission is
 reviewed before it appears, and contact details stay private. Add an optional
 direct HTTPS image link to show a screenshot or example alongside your build.

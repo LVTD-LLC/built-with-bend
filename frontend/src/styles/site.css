@@ -45,4 +45,4 @@ html[data-theme=dark] .button.secondary{color:var(--accent)}html[data-theme=dark
 @media(max-width:900px){.newsletter-signup{grid-template-columns:1fr;gap:18px}.newsletter-signup h2{font-size:24px}}
 @media(max-width:500px){.newsletter-input-row{flex-direction:column}.newsletter-input-row .button{width:100%}}
 
-.project-detail .newsletter-signup{grid-template-columns:1fr;gap:18px;margin:36px 0 0}
+.project-detail .newsletter-signup,.blog-page .newsletter-signup{grid-template-columns:1fr;gap:18px;margin:36px 0 0}

@@ -2,6 +2,7 @@
 title: "Bend Programming Language: What You Can Build with Bend 2"
 description: "Explore the Bend programming language through five Bend 2 projects: a Doom recreation, an SVG editor, a database, a fractal explorer, and an HTTP server."
 published_at: 2026-09-24
+updated_at: 2026-10-08
 keywords: [Bend programming language, Bend 2, Bend 2 projects]
 topics: [Bend 2, Project examples]
 author: Built with Bend

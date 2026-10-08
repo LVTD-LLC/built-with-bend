@@ -72,3 +72,6 @@ use the same light/dark tokens. Hide it until the double-opt-in list is configur
 Project detail pages reuse the newsletter signup below related builds. Stack the
 copy above the form in the narrower reading column, preserving the same configured
 list gate, consent copy, and native submission flow as the homepage.
+
+Blog posts reuse the same optional signup after the complete article, outside the
+prose block. Keep reading and project links primary; never gate the guide.

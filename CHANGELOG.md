@@ -2,6 +2,7 @@
 
 ## 2026-10-08
 
+- Let guide readers opt into the existing weekly Bend newsletter below the article, using the same configuration gate, consent copy, and double-opt-in flow as the directory.
 - Add the weekly newsletter signup to every published project page, reusing the homepage form and double-opt-in flow.
 
 ## 2026-10-07
