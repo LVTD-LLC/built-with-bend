@@ -158,9 +158,24 @@ Production credentials are kept in Infisical Openclaw/prod at
 
 CapRover at `https://captain.cr.lvtd.dev` (138.201.126.181):
 
-- `built-with-bend`: port 8000, two Gunicorn ASGI workers, one web replica.
-- `built-with-bend-postgres`: private PostgreSQL 17, no host ports, persistent
+- `builtwithbend`: port 8000, two Gunicorn ASGI workers, one web replica.
+- `builtwithbend-postgres`: private PostgreSQL 17, no host ports, persistent
   `built-with-bend-postgres-data` volume at `/var/lib/postgresql/data`.
+- `builtwithbend-workers`, `builtwithbend-redis`, `builtwithbend-qdrant`,
+  `builtwithbend-listmonk-db`, and `builtwithbend-mjml`: private services.
+- `builtwithbend-listmonk`: port 9000, serves `newsletter.builtwithbend.com`.
+
+All eight services join `builtwithbend-private`. Only `builtwithbend` and
+`builtwithbend-listmonk` also join `captain-overlay-network` for Nginx ingress.
+These attachments are persisted in each app's CapRover `serviceUpdateOverride`
+under `TaskTemplate.Networks`; preserve the override on configuration updates.
+The original PostgreSQL, Redis, Qdrant, and Listmonk volume names are retained.
+Private DNS aliases retain the former `built-with-bend` service names.
+Web and worker connection URLs use the new service names, including the
+project-owned renderer at `http://builtwithbend-mjml:15500`.
+
+CI uses `CAPROVER_APP_NAME=builtwithbend`; the deployment script derives
+`builtwithbend-workers` and uses its separate `WORKERS_APP_TOKEN`.
 
 The `CI and deploy` workflow tests PRs and main pushes, builds the Docker image on
 both, and deploys **only this repository's main** after checks pass. Deployments
@@ -181,7 +196,8 @@ DNS-only, so this header identifies the visitor rather than a CDN proxy. Arbitra
 Provision DNS A apex → 138.201.126.181 and www CNAME → apex, attach both domains,
 issue TLS, then enable forced HTTPS. Both are served, with apex canonical URLs.
 `/health/` tests the DB and reports revision. The container runs as non-root.
-No file uploads are accepted; PostgreSQL is the only persistent app state.
+The stack also retains Redis persistence, Qdrant storage, and Listmonk database
+and upload volumes.
 
 To roll back, redeploy a previously passing git revision using the supported
 CapRover API. Database migrations must remain backward-compatible; inspect each

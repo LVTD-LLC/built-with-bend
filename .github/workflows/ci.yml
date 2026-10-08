@@ -104,7 +104,7 @@ jobs:
         if: steps.latest.outputs.current == 'true' 
         env:
           CAPROVER_SERVER: https://captain.cr.lvtd.dev
-          CAPROVER_APP_NAME: built-with-bend
+          CAPROVER_APP_NAME: builtwithbend
           CAPROVER_APP_TOKEN: ${{ secrets.APP_TOKEN }}
           WORKERS_APP_TOKEN: ${{ secrets.WORKERS_APP_TOKEN }}
           PRODUCTION_URL: https://builtwithbend.com
