@@ -118,6 +118,8 @@ def index(request):
 
 @require_GET
 def detail(request, slug):
+    from .newsletter import NewsletterForm, enabled
+
     project = get_object_or_404(
         Project.objects.prefetch_related("sources"),
         slug=slug,
@@ -140,6 +142,8 @@ def detail(request, slug):
         {
             "project": project,
             "related_projects": related_projects,
+            "newsletter_enabled": enabled(),
+            "newsletter_form": NewsletterForm(),
             "posthog_public_content_path": project.get_absolute_url(),
             "posthog_public_content_type": "project",
         },

@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-08
+
+- Add the weekly newsletter signup to every published project page, reusing the homepage form and double-opt-in flow.
+
 ## 2026-10-07
 
 - Preserve separate IndexNow snapshots for deployment retries so artifact-name conflicts cannot block a rerun.

@@ -68,3 +68,7 @@ The first, unfiltered directory page has a compact weekly Bend newsletter signup
 between the hero and catalog. Keep it secondary to browsing, with a visible email
 label, native form, consent copy and privacy link. Stack input/button on phones;
 use the same light/dark tokens. Hide it until the double-opt-in list is configured.
+
+Project detail pages reuse the newsletter signup below related builds. Stack the
+copy above the form in the narrower reading column, preserving the same configured
+list gate, consent copy, and native submission flow as the homepage.
