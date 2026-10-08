@@ -23,6 +23,27 @@ def test_landing_signup_and_filtered_catalog(client):
     assert 'action="/newsletter/"' not in client.get("/?q=compiler").content.decode()
 
 
+@pytest.mark.parametrize("configured", [True, False])
+@patch("apps.directory.newsletter.requests.post")
+def test_guide_signup_is_optional_and_does_not_subscribe_on_read(
+    post, client, settings, configured
+):
+    if not configured:
+        settings.NEWSLETTER_LIST_UUID = ""
+    response = client.get("/blog/bend-programming-language")
+    assert response.status_code == 200
+    html = response.content.decode()
+    assert "Five Bend 2 projects worth exploring" in html
+    assert ('action="/newsletter/"' in html) is configured
+    post.assert_not_called()
+    if configured:
+        assert html.count('class="newsletter-form"') == 1
+        assert 'type="email"' in html
+        assert 'name="csrfmiddlewaretoken"' in html
+        assert "Confirm by email to subscribe" in html
+        assert html.index("Submit your build") < html.index('class="newsletter-signup"')
+
+
 @patch("apps.directory.newsletter.requests.post")
 def test_signup_uses_public_double_optin_not_admin_api(post, client):
     post.return_value = Mock(status_code=200)

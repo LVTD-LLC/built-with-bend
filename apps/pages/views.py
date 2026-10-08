@@ -133,6 +133,8 @@ def blog_posts_view(request):
 
 
 def blog_post_view(request, slug):
+    from apps.directory.newsletter import NewsletterForm, enabled
+
     try:
         blog_post = get_blog_post(slug)
     except (BlogPostNotFound, BlogPostValidationError) as exc:
@@ -147,6 +149,8 @@ def blog_post_view(request, slug):
             "posthog_public_content_type": "article",
             "canonical_url": blog_post.canonical_url,
             "schema_json": json_ld(blog_post_schema(blog_post)),
+            "newsletter_enabled": enabled(),
+            "newsletter_form": NewsletterForm(),
         },
     )
 
