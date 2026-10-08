@@ -4,6 +4,8 @@ import pytest
 import requests
 from django.test import Client
 
+from .models import Category, Project
+
 pytestmark = pytest.mark.django_db
 
 
@@ -95,3 +97,28 @@ def test_csrf_required():
         .status_code
         == 403
     )
+
+
+@pytest.mark.parametrize("category", Category.values)
+@pytest.mark.parametrize("configured", [True, False])
+def test_project_signup_respects_configuration(client, settings, category, configured):
+    project = Project.objects.create(
+        title="A Bend build",
+        slug="bend-build",
+        description="A useful project.",
+        canonical_url="https://example.com/build",
+        category=category,
+        status=Project.Status.PUBLISHED,
+    )
+    if not configured:
+        settings.NEWSLETTER_LIST_UUID = ""
+    response = client.get(project.get_absolute_url())
+    assert response.status_code == 200
+    html = response.content.decode()
+    assert ('action="/newsletter/"' in html) is configured
+    if configured:
+        assert html.count('class="newsletter-form"') == 1
+        assert 'type="email"' in html
+        assert 'name="csrfmiddlewaretoken"' in html
+        assert "The latest Bend news and projects" in html
+        assert "Confirm by email to subscribe" in html
