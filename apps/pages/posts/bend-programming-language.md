@@ -2,7 +2,7 @@
 title: "Bend Programming Language: What You Can Build with Bend 2"
 description: "Explore the Bend programming language through five Bend 2 projects: a Doom recreation, an SVG editor, a database, a fractal explorer, and an HTTP server."
 published_at: 2026-09-24
-updated_at: 2026-10-08
+updated_at: 2026-10-09
 keywords: [Bend programming language, Bend 2, Bend 2 projects]
 topics: [Bend 2, Project examples]
 author: Built with Bend
@@ -16,7 +16,7 @@ If you've been reading about the **Bend programming language** and wondering wha
 
 First, one distinction matters: this article covers **Bend 2**. The current [official Bend repository](https://github.com/bendlang/bend#limitations) explicitly says that Bend 1 programs and HVM do not carry over. An older tutorial may describe a different language and toolchain from the one these projects use.
 
-*Sources checked on September 24, 2026. Project descriptions are based on their repositories and documentation, not independent runtime benchmarks.*
+*Project descriptions checked on September 24, 2026; toolchain check updated October 9, 2026. Project descriptions are based on their repositories and documentation, not independent runtime benchmarks.*
 
 ## What is the Bend programming language?
 
@@ -27,6 +27,32 @@ The practical idea is to state a rule your program should obey, then supply a pr
 For a developer, the important question becomes: **which behavior have we actually specified and checked?** A proof of one property is not a promise that every part of an application is correct. An incomplete specification can leave important behavior uncovered.
 
 Bend also targets parallel computation. Its current compiler supports C, Metal, CUDA, and JavaScript, although the JavaScript target runs sequentially. The [official limitations](https://github.com/bendlang/bend#limitations) describe a young toolchain, including restrictions on parallelism and unresolved compiler and proof-system concerns. That makes concrete projects especially valuable: they show the implementation choices behind the headline capabilities.
+
+## Check your Bend version before trying a project
+
+**Bend 2 is a different language from the earlier HVM-based Bend.** Before copying a tutorial's commands, compare its toolchain with the project's README. A `.bend` filename alone doesn't establish compatibility.
+
+For example, the archived [Bend 0.2.38 README](https://docs.rs/crate/bend-lang/0.2.38/source/README.md) installs HVM2 and the `bend-lang` Cargo package. Those instructions belong to the older toolchain; they are not the installation instructions for these Bend 2 projects. HVM2's “2” does not mean Bend 2.
+
+Start with the [current official installation instructions](https://github.com/bendlang/bend#1-install), then check your local executable. We checked these commands with Bend 2.0.35 on October 9, 2026; `bend guide` prints the guide bundled with that installation:
+
+```sh
+bend version
+bend guide
+```
+
+Once the version matches the project's requirements, try this small check before debugging a whole application. Save it as `check.bend`. It uses the typed definitions documented in the official [Bend 2.0.35 guide](https://github.com/bendlang/bend/blob/v2.0.35/guide/GUIDE.md#types-and-functions):
+
+```bend
+import Base
+
+def main() -> U32:
+  42
+```
+
+Run `bend check.bend`, using that guide's [file-execution command](https://github.com/bendlang/bend/blob/v2.0.35/guide/GUIDE.md#tooling). In our Bend 2.0.35 check it printed `42`. This is a basic toolchain check, not a benchmark or proof that a larger project will build. A value-returning `main` is normalized by the checker; native applications can use a different execution path.
+
+If this works but a project does not, check its pinned Bend release, platform requirements, and native dependencies next. Don't assume a successful tiny program establishes GPU support. Then choose one of the projects below and follow its own setup instructions.
 
 ## Five Bend 2 projects worth exploring
 
