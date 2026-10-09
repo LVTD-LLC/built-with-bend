@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-09
+
+- Add a tested Bend 2 toolchain check to the project guide, helping readers recognize older HVM tutorials before trying a directory project.
+
 ## 2026-10-08
 
 - Point production deployments at the renamed `builtwithbend` web and worker apps and document their private network.
