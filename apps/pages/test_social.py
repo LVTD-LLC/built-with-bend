@@ -21,14 +21,21 @@ class HeadParser(HTMLParser):
         super().__init__()
         self.metadata = {}
         self.titles = 0
+        self.svg_depth = 0
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
-        if tag == "title":
+        if tag == "svg":
+            self.svg_depth += 1
+        if tag == "title" and not self.svg_depth:
             self.titles += 1
         if tag == "meta":
             key = attrs.get("property") or attrs.get("name")
             self.metadata.setdefault(key, []).append(attrs.get("content"))
+
+    def handle_endtag(self, tag):
+        if tag == "svg":
+            self.svg_depth -= 1
 
 
 def assert_preview(response, origin, card):

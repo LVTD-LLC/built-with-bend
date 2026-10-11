@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-11
+
+- Make article links and table-of-contents links visibly underlined in both themes with keyboard-focus outlines.
+
+- Add a Bend 2 editor-tools guide comparing VS Code and language-server choices, with a contextual link from the introductory project guide.
+
 ## 2026-10-09
 
 - Add a tested Bend 2 toolchain check to the project guide, helping readers recognize older HVM tutorials before trying a directory project.

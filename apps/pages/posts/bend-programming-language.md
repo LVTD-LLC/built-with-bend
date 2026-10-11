@@ -2,7 +2,7 @@
 title: "Bend Programming Language: What You Can Build with Bend 2"
 description: "Explore the Bend programming language through five Bend 2 projects: a Doom recreation, an SVG editor, a database, a fractal explorer, and an HTTP server."
 published_at: 2026-09-24
-updated_at: 2026-10-09
+updated_at: 2026-10-11
 keywords: [Bend programming language, Bend 2, Bend 2 projects]
 topics: [Bend 2, Project examples]
 author: Built with Bend
@@ -133,6 +133,8 @@ You don't need to understand the entire repository to learn something useful fro
 ## Where to go next
 
 For language syntax and installation, start with the [official Bend site](https://bend-lang.com/) and its linked guide. For project setup, follow the chosen repository's own requirements: examples may depend on a particular toolchain version or operating system.
+
+Before reading or changing a project's source, [compare Bend 2 editor tools for VS Code and other LSP clients](/blog/bend-2-editor-tools). The guide separates editor integration from the compiler so you can choose a setup that fits your workflow.
 
 For more applications to read, [browse the Built with Bend directory](https://builtwithbend.com/). It links builds to their sources so you can move from “someone made this” to “here is how it works.”
 
