@@ -53,6 +53,36 @@ def test_homepage_guide_link_resolves_without_changing_filtered_discovery(client
         assert 'class="guide-link"' not in client.get("/" + query).content.decode()
 
 
+def test_editor_guide_has_metadata_discovery_and_sitemap_entry(client, settings):
+    settings.SITE_URL = "https://builtwithbend.com"
+    post = get_blog_post("bend-2-editor-tools")
+    url = reverse("blog_post", kwargs={"slug": post.slug})
+    response = client.get(url)
+
+    assert url == "/blog/bend-2-editor-tools"
+    assert response.status_code == 200
+    content = response.content.decode()
+    assert f"<title>{post.title} | Built with Bend Blog</title>" in content
+    assert content.count('name="description"') == 1
+    assert f'content="{escape(post.description, quote=True)}"' in content
+    assert f'<link rel="canonical" href="https://builtwithbend.com{url}" />' in content
+    assert 'content="index, follow"' in content
+
+    schema = json.loads(post_schema_json(post))
+    assert schema["@type"] == "BlogPosting"
+    assert schema["url"] == f"https://builtwithbend.com{url}"
+    assert schema["datePublished"] == "2026-10-11T00:00:00+00:00"
+
+    intro_url = reverse("blog_post", kwargs={"slug": "bend-programming-language"})
+    for discovery_url in (reverse("blog_posts"), intro_url):
+        assert f'href="{url}"' in client.get(discovery_url).content.decode()
+
+    sitemap = BlogSitemap()
+    sitemap_post = next(item for item in sitemap.items() if item.slug == post.slug)
+    assert sitemap.location(sitemap_post) == url
+    assert sitemap.lastmod(sitemap_post) == post.updated_at
+
+
 def test_blog_post_renders_markdown_and_frontmatter_metadata(client, blog_posts_dir):
     write_post(
         blog_posts_dir,

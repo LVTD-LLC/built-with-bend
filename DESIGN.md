@@ -41,6 +41,8 @@ from the public footer; existing documentation URLs remain available.
 Keep long-form posts in a centered reading column. Blog prose, metadata and
 listing hover states use the directory color variables in both themes. The
 article template supplies the H1; Markdown bodies start below it.
+Keep in-article links underlined and accent-colored, including the table of
+contents, with a visible keyboard-focus outline in both themes.
 
 ## Project thumbnails
 
