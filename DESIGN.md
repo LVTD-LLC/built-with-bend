@@ -77,3 +77,10 @@ list gate, consent copy, and native submission flow as the homepage.
 
 Blog posts reuse the same optional signup after the complete article, outside the
 prose block. Keep reading and project links primary; never gate the guide.
+
+## Contextual guides
+
+Project listings covered by an editorial guide may link to it below the original
+sources and above related builds. Use a short task-oriented heading, explanatory
+copy, and an underlined theme-aware link. Keep this curated rather than assigning
+a guide to an entire category; project/source actions stay primary.
