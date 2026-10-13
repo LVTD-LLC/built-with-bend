@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-13
+
+- Help visitors to the Nuxyel and bend2-lsp listings compare editor/compiler setups with a contextual link to the Bend 2 editor guide; keep source actions primary and record the listings' content-change date in the sitemap.
+
 ## 2026-10-11
 
 - Make article links and table-of-contents links visibly underlined in both themes with keyboard-focus outlines.
