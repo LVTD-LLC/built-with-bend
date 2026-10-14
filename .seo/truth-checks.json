@@ -16,5 +16,21 @@
       "guaranteed bug-free"
     ],
     "flags": "i"
+  },
+  {
+    "claim": "Knot published package with retained limitations",
+    "urls": [
+      "/projects/knot/"
+    ],
+    "must_match": [
+      "@matheusbbarni/knot",
+      "0\\.0\\.1",
+      "not type-checking",
+      "test runner remains design-only"
+    ],
+    "must_not_match": [
+      "no installable release"
+    ],
+    "flags": "i"
   }
 ]
