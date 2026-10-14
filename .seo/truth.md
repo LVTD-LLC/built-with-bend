@@ -7,3 +7,14 @@ Verified 2026-09-29. Private dated evidence is in the configured Rowset history.
 - LAWS.bend describes laws; PROOF.bend supplies checked proofs. This does not guarantee unmodeled requirements.
 Primary sources: https://bend-lang.com/ and https://github.com/bendlang/bend .
 Published article: /blog/bend-programming-language (slashless).
+
+## Knot release availability — verified 2026-10-14
+
+Knot 0.0.1 is published on npm as `@matheusbbarni/knot`. This verifies package
+availability, not install compatibility or production readiness. Upstream still
+marks the test runner planned and distinguishes transpilation from type-checking.
+Sources: https://github.com/MatheusBBarni/knot-node-tooling/blob/b914a71bbca46b7e2fe447d19a7a182e2b9ff715/README.md
+and https://www.npmjs.com/package/@matheusbbarni/knot/v/0.0.1 .
+The listing retains its original title, capabilities, source links and publication
+date; the correction’s fixed content date drives sitemap lastmod. Reverify the
+release caveat on 2026-10-21 before expanding installation guidance.

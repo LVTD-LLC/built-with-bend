@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-14
+
+- Correct Knot’s directory listing to identify its published npm package, retaining the TypeScript and planned-test-runner caveats; update only its sitemap content date.
+
 ## 2026-10-13
 
 - Help visitors to the Nuxyel and bend2-lsp listings compare editor/compiler setups with a contextual link to the Bend 2 editor guide; keep source actions primary and record the listings' content-change date in the sitemap.
