@@ -18,3 +18,15 @@ and https://www.npmjs.com/package/@matheusbbarni/knot/v/0.0.1 .
 The listing retains its original title, capabilities, source links and publication
 date; the correction’s fixed content date drives sitemap lastmod. Reverify the
 release caveat on 2026-10-21 before expanding installation guidance.
+
+## Bend HTTP Server compatibility — checked 2026-10-15
+
+The unmodified source at revision `66a9258100f1d55e5cabc37f8c30774e20061b69`
+fails `bend main.bend --check-only` with Bend 2.0.35 at `TCP.listen(port())`
+(expected String, observed U32). Its separate `bend PROOF.bend --verdict`
+passes. Do not infer server-build, socket, HTTP or GPU correctness from those
+computation laws, or describe the first failure as a complete migration recipe.
+No runtime or benchmark was performed; other compiler versions are untested.
+Sources and reproducible checks: `.seo/evidence/2026-10-15-http-server.md`.
+The dated listing note is bound to its exact repository and slug. Recheck
+October 22 or after a relevant upstream change.

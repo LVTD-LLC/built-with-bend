@@ -3,7 +3,13 @@ from django.urls import reverse
 
 from built_with_bend.sitemaps import ConfiguredSitemapMixin
 
-from .editorial import EDITOR_GUIDE_ADDED_AT, EDITOR_GUIDE_PROJECTS, KNOT_RELEASE_CORRECTED_AT
+from .editorial import (
+    EDITOR_GUIDE_ADDED_AT,
+    EDITOR_GUIDE_PROJECTS,
+    HTTP_SERVER_CHECKED_AT,
+    KNOT_RELEASE_CORRECTED_AT,
+    has_http_server_note,
+)
 from .models import Project
 
 
@@ -15,6 +21,12 @@ class ProjectSitemap(ConfiguredSitemapMixin, Sitemap):
         return Project.objects.filter(status=Project.Status.PUBLISHED)
 
     def lastmod(self, obj):
+        if has_http_server_note(obj):
+            return (
+                max(obj.published_at, HTTP_SERVER_CHECKED_AT)
+                if obj.published_at
+                else HTTP_SERVER_CHECKED_AT
+            )
         if obj.slug == "knot":
             return (
                 max(obj.published_at, KNOT_RELEASE_CORRECTED_AT)

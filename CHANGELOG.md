@@ -1,3 +1,7 @@
+## 2026-10-15
+
+- Add a dated Bend HTTP Server compatibility check and pinned source-reading links, distinguishing passing computation proofs from server build compatibility.
+
 # Changelog
 
 ## 2026-10-14
