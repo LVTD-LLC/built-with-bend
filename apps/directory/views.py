@@ -10,7 +10,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.decorators.http import require_GET, require_http_methods, require_safe
 
-from .editorial import EDITOR_GUIDE_PROJECTS
+from .editorial import EDITOR_GUIDE_PROJECTS, has_http_server_note
 from .forms import SubmissionForm
 from .models import Category, Project, SourceKind, Sponsorship, SubmissionLimit
 
@@ -144,6 +144,7 @@ def detail(request, slug):
             "project": project,
             "related_projects": related_projects,
             "show_editor_guide": project.slug in EDITOR_GUIDE_PROJECTS,
+            "show_http_server_note": has_http_server_note(project),
             "newsletter_enabled": enabled(),
             "newsletter_form": NewsletterForm(),
             "posthog_public_content_path": project.get_absolute_url(),

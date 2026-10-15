@@ -1,0 +1,25 @@
+<section class="project-guide" aria-labelledby="http-server-note-heading">
+    <h2 id="http-server-note-heading">Before you run this HTTP server</h2>
+    <p>Built with Bend checked source revision <a href="https://github.com/iamsahilsonawane/bend2-http-server/tree/66a9258100f1d55e5cabc37f8c30774e20061b69"
+    data-posthog-outbound="source"
+    target="_blank"
+    rel="noopener noreferrer nofollow">66a9258</a> with Bend 2.0.35 on <time datetime="2026-10-15">October 15, 2026</time>. It needs compatibility work before it can run with that compiler.</p>
+    <p><code>bend main.bend --check-only</code> stops at <code>TCP.listen(port())</code> in <a href="https://github.com/iamsahilsonawane/bend2-http-server/blob/66a9258100f1d55e5cabc37f8c30774e20061b69/src/server.bend#L199"
+    data-posthog-outbound="source"
+    target="_blank"
+    rel="noopener noreferrer nofollow">the server entry point</a>: the checker expects a string but receives a U32. The <a href="https://github.com/bendlang/bend/blob/v2.0.35/guide/GUIDE.md#io-and-concurrency"
+    data-posthog-outbound="source"
+    target="_blank"
+    rel="noopener noreferrer nofollow">Bend 2.0.35 guide</a> specifies <code>TCP.listen(host, port)</code>. This is the first failure, not a verified one-line fix.</p>
+    <p>The separate <code>bend PROOF.bend --verdict</code> check passes. Those laws cover the computation and its bound, not socket behavior, HTTP correctness, or a successful server build. We did not run or benchmark the server, test GPU execution, or establish compatibility with other compiler versions.</p>
+    <p>For source study, follow <a href="https://github.com/iamsahilsonawane/bend2-http-server/blob/66a9258100f1d55e5cabc37f8c30774e20061b69/src/http.bend"
+    data-posthog-outbound="source"
+    target="_blank"
+    rel="noopener noreferrer nofollow">request parsing</a> into <a href="https://github.com/iamsahilsonawane/bend2-http-server/blob/66a9258100f1d55e5cabc37f8c30774e20061b69/src/route.bend"
+    data-posthog-outbound="source"
+    target="_blank"
+    rel="noopener noreferrer nofollow">routing and response formatting</a>, then compare the <a href="https://github.com/iamsahilsonawane/bend2-http-server/blob/66a9258100f1d55e5cabc37f8c30774e20061b69/LAWS.bend"
+    data-posthog-outbound="source"
+    target="_blank"
+    rel="noopener noreferrer nofollow">stated laws</a> with the socket-handling code.</p>
+</section>

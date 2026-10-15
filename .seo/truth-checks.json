@@ -32,5 +32,19 @@
       "no installable release"
     ],
     "flags": "i"
+  },
+  {
+    "claim": "HTTP server compatibility note separates compile and proof checks",
+    "urls": [
+      "/projects/bend-http-server/"
+    ],
+    "must_match": [
+      "Bend 2\\.0\\.35",
+      "66a9258",
+      "not a verified one-line fix",
+      "separate.*PROOF\\.bend.*check passes",
+      "did not run or benchmark"
+    ],
+    "flags": "is"
   }
 ]

@@ -49,4 +49,4 @@ html[data-theme=dark] .button.secondary{color:var(--accent)}html[data-theme=dark
 
 .project-detail .newsletter-signup,.blog-page .newsletter-signup{grid-template-columns:1fr;gap:18px;margin:36px 0 0}
 
-.project-guide{margin-top:40px;padding-top:30px;border-top:1px solid var(--line)}.project-guide h2{font-size:25px;margin-bottom:12px}.project-guide p{color:var(--muted);max-width:65ch}.project-guide a{color:var(--accent);text-decoration:underline;text-underline-offset:3px}.project-guide a:hover{color:var(--ink)}
+.project-guide{margin-top:40px;padding-top:30px;border-top:1px solid var(--line)}.project-guide h2{font-size:25px;margin-bottom:12px}.project-guide p{color:var(--muted);max-width:65ch}.project-guide p+p{margin-top:12px}.project-guide a{color:var(--accent);text-decoration:underline;text-underline-offset:3px}.project-guide a:hover{color:var(--ink)}

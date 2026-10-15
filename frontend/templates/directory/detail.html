@@ -12,7 +12,7 @@
    href="{{ project.repository_url }}"
    data-posthog-outbound="repository"
    target="_blank"
-   rel="noopener noreferrer nofollow">View repository ↗</a>{% endif %}</div><section class="sources"><h2>The sources</h2><p>Explore the original posts and links behind this build.</p>{% for source in project.sources.all %}<a href="{{ source.url }}"
+   rel="noopener noreferrer nofollow">View repository ↗</a>{% endif %}</div>{% if show_http_server_note %}{% include "directory/http_server_note.html" %}{% endif %}<section class="sources"><h2>The sources</h2><p>Explore the original posts and links behind this build.</p>{% for source in project.sources.all %}<a href="{{ source.url }}"
    data-posthog-outbound="source"
    target="_blank"
    rel="noopener noreferrer nofollow"><span>{{ source.get_kind_display }}</span><span>{{ source.url|truncatechars:75 }} ↗</span></a>{% empty %}<a href="{{ project.canonical_url }}"
