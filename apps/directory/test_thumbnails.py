@@ -122,10 +122,9 @@ def test_submission_image_stays_private_until_review(client, curator, image):
     assert approve_submission(submission.pk, curator).pk == project.pk
     for path in ["/", project.get_absolute_url()]:
         html = client.get(path).content.decode()
-        assert ("data-project-thumbnail" in html) == bool(image)
+        assert "data-project-thumbnail" not in html
         if image:
-            assert image in html
-            assert 'referrerpolicy="no-referrer"' in html
+            assert image not in html
 
 
 @pytest.mark.django_db
@@ -158,9 +157,9 @@ def test_submission_form_exposes_optional_image_and_admin_can_edit(client, curat
 
 
 @pytest.mark.django_db
-def test_image_attribute_is_escaped(client):
+def test_image_url_is_not_rendered(client):
     image = 'https://example.com/image.png?label="quoted"&width=640'
     project = create_project(**payload(thumbnail_url=image), publish=True)
     html = client.get(project.get_absolute_url()).content.decode()
-    assert "label=&quot;quoted&quot;&amp;width=640" in html
+    assert "label=&quot;quoted&quot;&amp;width=640" not in html
     assert 'label="quoted"&width=640' not in html

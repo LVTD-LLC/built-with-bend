@@ -46,10 +46,9 @@ contents, with a visible keyboard-focus outline in both themes.
 
 ## Project thumbnails
 
-Optional image previews sit above card content and between detail metadata and
-the description. Use a 16:9 soft-background frame with `object-fit: contain` so
-code examples and screenshots are not cropped. Missing images add no placeholder;
-broken images are hidden by progressive enhancement. Keep existing owner avatars.
+Project cards and detail pages are text-first: do not render project screenshots
+or thumbnail previews. Keep stored images and social-sharing metadata available
+for sharing, and retain existing owner avatars.
 
 ## Header utilities
 
