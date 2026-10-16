@@ -2,7 +2,7 @@
 title: "Bend Programming Language: What You Can Build with Bend 2"
 description: "Explore the Bend programming language through five Bend 2 projects: a Doom recreation, an SVG editor, a database, a fractal explorer, and an HTTP server."
 published_at: 2026-09-24
-updated_at: 2026-10-11
+updated_at: 2026-10-16
 keywords: [Bend programming language, Bend 2, Bend 2 projects]
 topics: [Bend 2, Project examples]
 author: Built with Bend
@@ -25,6 +25,10 @@ Bend 2 combines a programming language with a proof-checking workflow. Its Pytho
 The practical idea is to state a rule your program should obey, then supply a proof that the implementation satisfies it. Bend's official workflow uses `LAWS.bend` for those rules and `PROOF.bend` for their proofs. The [Bend website](https://bend-lang.com/) demonstrates this with a game rule that must remain true after the code changes.
 
 For a developer, the important question becomes: **which behavior have we actually specified and checked?** A proof of one property is not a promise that every part of an application is correct. An incomplete specification can leave important behavior uncovered.
+
+Want to see a proof check before installing a compiler? [Bend, Explained](/projects/bend-explained/) offers a [browser demo with editable code](https://raunak-11.github.io/bend-explainer/v4/#works-play). Choose **Original**, then **Run the checks**; repeat with **Refactor slip**. In our October 16 check, the original passed and the faulty refactor failed. **Raise the limit to 1500** passed too: changing code does not necessarily break a law.
+
+The demo bundles Bend 2.0.25's ordinary checker, not the separate `--verdict` kernel check. Its animated CPU/GPU rounds are illustrations, not speed measurements. See the [demo's version and limitations](https://github.com/raunak-11/bend-explainer/blob/84c04b02bbd3be2c5ee1b5622a1490e41e730391/README.md#limitations) before treating it as a development tool.
 
 Bend also targets parallel computation. Its current compiler supports C, Metal, CUDA, and JavaScript, although the JavaScript target runs sequentially. The [official limitations](https://github.com/bendlang/bend#limitations) describe a young toolchain, including restrictions on parallelism and unresolved compiler and proof-system concerns. That makes concrete projects especially valuable: they show the implementation choices behind the headline capabilities.
 

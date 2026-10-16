@@ -30,3 +30,13 @@ No runtime or benchmark was performed; other compiler versions are untested.
 Sources and reproducible checks: `.seo/evidence/2026-10-15-http-server.md`.
 The dated listing note is bound to its exact repository and slug. Recheck
 October 22 or after a relevant upstream change.
+
+## Browser proof demo — checked 2026-10-16
+
+Bend, Explained v4 is a browser learning resource pinned to Bend 2.0.25's
+ordinary checker. It is not the independent `--verdict` kernel check.
+On October 16, its Original and Raise the limit to 1500 presets passed;
+Refactor slip failed. The parallel-work animations are not benchmarks.
+Source: https://github.com/raunak-11/bend-explainer/blob/84c04b02bbd3be2c5ee1b5622a1490e41e730391/README.md
+Live interaction: https://raunak-11.github.io/bend-explainer/v4/#works-play
+No external LLM call or key was used. Recheck October 23 before expanding claims.

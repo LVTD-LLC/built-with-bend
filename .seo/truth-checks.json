@@ -46,5 +46,18 @@
       "did not run or benchmark"
     ],
     "flags": "is"
+  },
+  {
+    "claim": "Browser proof example preserves version and benchmark limits",
+    "paths": [
+      "apps/pages/posts/bend-programming-language.md"
+    ],
+    "must_match": [
+      "Bend 2\\.0\\.25",
+      "not the separate.*--verdict",
+      "illustrations, not speed measurements",
+      "Refactor slip"
+    ],
+    "flags": "is"
   }
 ]
