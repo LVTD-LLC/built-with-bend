@@ -6,6 +6,8 @@
 
 ## 2026-10-16
 
+- Link the Bend introduction to a browser-based proof demo, with checked pass/fail examples and explicit compiler-version and simulation limits.
+
 - Remove project screenshot/thumbnail previews from catalog cards and project detail pages; preserve social-sharing images and owner avatars.
 
 ## 2026-10-14
