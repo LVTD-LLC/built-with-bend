@@ -218,7 +218,7 @@ def test_r2_import_retains_source_and_publishes_hosted_image(r2, project, transp
     assert s3.put_object.call_count == 1
     for path in ["/", project.get_absolute_url()]:
         html = client.get(path).content.decode()
-        assert project.display_thumbnail_url in html
+        assert project.display_thumbnail_url not in html
         assert SOURCE not in html
 
 

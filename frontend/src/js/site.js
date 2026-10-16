@@ -4,11 +4,6 @@
     image.addEventListener('error', fallback);
     if (image.complete && !image.naturalWidth) fallback();
   });
-  document.querySelectorAll('[data-project-thumbnail] img').forEach((image) => {
-    const fallback = () => { image.closest('[data-project-thumbnail]').hidden = true; };
-    image.addEventListener('error', fallback);
-    if (image.complete && !image.naturalWidth) fallback();
-  });
   document.addEventListener('keydown', (event) => {
     if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
       const search = document.getElementById('nav-search');

@@ -4,6 +4,10 @@
 
 # Changelog
 
+## 2026-10-16
+
+- Remove project screenshot/thumbnail previews from catalog cards and project detail pages; preserve social-sharing images and owner avatars.
+
 ## 2026-10-14
 
 - Correct Knot’s directory listing to identify its published npm package, retaining the TypeScript and planned-test-runner caveats; update only its sitemap content date.
