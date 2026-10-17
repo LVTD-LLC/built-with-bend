@@ -12,6 +12,18 @@ KNOT_RELEASE_CORRECTED_AT = datetime(2026, 10, 14, tzinfo=UTC)
 HTTP_SERVER_REPOSITORY = "https://github.com/iamsahilsonawane/bend2-http-server"
 HTTP_SERVER_CHECKED_AT = datetime(2026, 10, 15, tzinfo=UTC)
 
+JENDHUB_REPOSITORY = "https://github.com/LeeeeT/JendHub"
+JENDHUB_WEBSITE = "https://jend.leeeet.dev/"
+JENDHUB_DESTINATIONS_RESTORED_AT = datetime(2026, 10, 17, tzinfo=UTC)
+
+
+def has_jendhub_destinations(project):
+    return (
+        project.slug == "jendhub"
+        and project.repository_url == JENDHUB_REPOSITORY
+        and project.website_url == JENDHUB_WEBSITE
+    )
+
 
 def has_http_server_note(project):
     """Keep the source-specific check off unrelated or repurposed listings."""
