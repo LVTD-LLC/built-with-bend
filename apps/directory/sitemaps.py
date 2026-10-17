@@ -7,8 +7,10 @@ from .editorial import (
     EDITOR_GUIDE_ADDED_AT,
     EDITOR_GUIDE_PROJECTS,
     HTTP_SERVER_CHECKED_AT,
+    JENDHUB_DESTINATIONS_RESTORED_AT,
     KNOT_RELEASE_CORRECTED_AT,
     has_http_server_note,
+    has_jendhub_destinations,
 )
 from .models import Project
 
@@ -21,6 +23,12 @@ class ProjectSitemap(ConfiguredSitemapMixin, Sitemap):
         return Project.objects.filter(status=Project.Status.PUBLISHED)
 
     def lastmod(self, obj):
+        if has_jendhub_destinations(obj):
+            return (
+                max(obj.published_at, JENDHUB_DESTINATIONS_RESTORED_AT)
+                if obj.published_at
+                else JENDHUB_DESTINATIONS_RESTORED_AT
+            )
         if has_http_server_note(obj):
             return (
                 max(obj.published_at, HTTP_SERVER_CHECKED_AT)

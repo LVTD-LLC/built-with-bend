@@ -1,3 +1,7 @@
+## 2026-10-17
+
+- Restore the JendHub listing’s live search link and replace its dead implementation source with a pinned current source; preserve its original description and publication date.
+
 ## 2026-10-15
 
 - Add a dated Bend HTTP Server compatibility check and pinned source-reading links, distinguishing passing computation proofs from server build compatibility.
