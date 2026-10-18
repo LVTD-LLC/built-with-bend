@@ -1,3 +1,7 @@
+## 2026-10-18
+
+- Added a source-backed Bend 2 package-import walkthrough with a checked ASCII hex example, exact compiler/package boundaries, and contextual discovery from the editor guide.
+
 ## 2026-10-17
 
 - Restore the JendHub listing’s live search link and replace its dead implementation source with a pinned current source; preserve its original description and publication date.

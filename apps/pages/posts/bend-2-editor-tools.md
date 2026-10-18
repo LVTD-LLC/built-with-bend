@@ -2,7 +2,7 @@
 title: "Bend 2 Editors: VS Code and LSP"
 description: "Choose Bend 2 editor tools by compiler setup: compare VS Code extensions, the standalone language server, version limits, and checks before you build."
 published_at: 2026-10-11
-updated_at: 2026-10-11
+updated_at: 2026-10-18
 keywords: [Bend 2 editor, Bend VS Code, Bend language server]
 topics: [Bend 2, Editor tools]
 author: Built with Bend
@@ -91,7 +91,7 @@ The standalone package declares **Node.js 26.9 or newer**. It bundles a Bend com
 
 Two limits affect what you should expect. Compiler analysis applies to saved `file:` documents; an untitled buffer still gets more limited features such as lexical diagnostics and syntax hover. Save the file before judging whether compiler checking is working. Also, the server deliberately does not provide inferred local-variable type hover. Silence over a local variable is not necessarily a broken connection.
 
-Bundled analysis does not mean every project can be checked offline. Missing hash-package imports may be downloaded and cached using the compiler's package configuration. Check that behavior against your environment before opening a project with external package imports.
+Bundled analysis does not mean every project can be checked offline. Missing hash-package imports may be downloaded and cached using the compiler's package configuration. Check that behavior against your environment before opening a project with external package imports. For the package side of that check, follow [how to find and check a Bend 2 package import](/blog/bend-2-package-imports).
 
 <span id="troubleshooting"></span>
 

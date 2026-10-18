@@ -1,4 +1,5 @@
 import json
+import re
 from html import escape
 
 import pytest
@@ -53,13 +54,22 @@ def test_homepage_guide_link_resolves_without_changing_filtered_discovery(client
         assert 'class="guide-link"' not in client.get("/" + query).content.decode()
 
 
-def test_editor_guide_has_metadata_discovery_and_sitemap_entry(client, settings):
+@pytest.mark.parametrize(
+    "slug,published_at,discovery_slug",
+    [
+        ("bend-2-editor-tools", "2026-10-11", "bend-programming-language"),
+        ("bend-2-package-imports", "2026-10-18", "bend-2-editor-tools"),
+    ],
+)
+def test_checked_in_guide_has_metadata_discovery_and_sitemap_entry(
+    client, settings, slug, published_at, discovery_slug
+):
     settings.SITE_URL = "https://builtwithbend.com"
-    post = get_blog_post("bend-2-editor-tools")
+    post = get_blog_post(slug)
     url = reverse("blog_post", kwargs={"slug": post.slug})
     response = client.get(url)
 
-    assert url == "/blog/bend-2-editor-tools"
+    assert url == f"/blog/{slug}"
     assert response.status_code == 200
     content = response.content.decode()
     assert f"<title>{post.title} | Built with Bend Blog</title>" in content
@@ -71,16 +81,34 @@ def test_editor_guide_has_metadata_discovery_and_sitemap_entry(client, settings)
     schema = json.loads(post_schema_json(post))
     assert schema["@type"] == "BlogPosting"
     assert schema["url"] == f"https://builtwithbend.com{url}"
-    assert schema["datePublished"] == "2026-10-11T00:00:00+00:00"
+    assert schema["datePublished"] == f"{published_at}T00:00:00+00:00"
 
-    intro_url = reverse("blog_post", kwargs={"slug": "bend-programming-language"})
-    for discovery_url in (reverse("blog_posts"), intro_url):
+    related_url = reverse("blog_post", kwargs={"slug": discovery_slug})
+    for discovery_url in (reverse("blog_posts"), related_url):
         assert f'href="{url}"' in client.get(discovery_url).content.decode()
 
     sitemap = BlogSitemap()
     sitemap_post = next(item for item in sitemap.items() if item.slug == post.slug)
     assert sitemap.location(sitemap_post) == url
     assert sitemap.lastmod(sitemap_post) == post.updated_at
+
+    if slug == "bend-2-package-imports":
+        schemas = [
+            json.loads(value)
+            for value in re.findall(
+                r'<script type="application/ld\+json">(.*?)</script>', content, re.DOTALL
+            )
+        ]
+        howto = next(item for item in schemas if item.get("@type") == "HowTo")
+        assert howto["name"] == post.title
+        assert len(howto["step"]) >= 2
+        for step in howto["step"]:
+            assert step["@type"] == "HowToStep"
+            assert step["text"].strip()
+            assert step["name"].strip()
+            assert step["url"].startswith(f"https://builtwithbend.com{url}#")
+            anchor = step["url"].split("#", 1)[1]
+            assert f'id="{anchor}"' in content
 
 
 def test_blog_post_renders_markdown_and_frontmatter_metadata(client, blog_posts_dir):
