@@ -1,3 +1,7 @@
+## 2026-10-21
+
+- Connect the JendHub and Bend Packages listings to the checked package-import walkthrough, with scoped content dates and original project links kept primary.
+
 ## 2026-10-18
 
 - Added a source-backed Bend 2 package-import walkthrough with a checked ASCII hex example, exact compiler/package boundaries, and contextual discovery from the editor guide.

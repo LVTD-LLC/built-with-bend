@@ -9,8 +9,10 @@ from .editorial import (
     HTTP_SERVER_CHECKED_AT,
     JENDHUB_DESTINATIONS_RESTORED_AT,
     KNOT_RELEASE_CORRECTED_AT,
+    PACKAGE_GUIDE_ADDED_AT,
     has_http_server_note,
     has_jendhub_destinations,
+    has_package_guide,
 )
 from .models import Project
 
@@ -23,6 +25,12 @@ class ProjectSitemap(ConfiguredSitemapMixin, Sitemap):
         return Project.objects.filter(status=Project.Status.PUBLISHED)
 
     def lastmod(self, obj):
+        if has_package_guide(obj):
+            return (
+                max(obj.published_at, PACKAGE_GUIDE_ADDED_AT)
+                if obj.published_at
+                else PACKAGE_GUIDE_ADDED_AT
+            )
         if has_jendhub_destinations(obj):
             return (
                 max(obj.published_at, JENDHUB_DESTINATIONS_RESTORED_AT)
