@@ -56,4 +56,5 @@ def test_published_article_uses_slashless_identity(client, settings):
     assert f'data-posthog-public-content-path="{path}"' in response.text
     assert 'data-posthog-route="/blog/:slug"' in response.text
     assert "disable_session_recording: true" in response.text
+    assert "capture_exceptions: false" in response.text
     assert "data-posthog-public-content-path" not in client.get("/blog/missing").text
