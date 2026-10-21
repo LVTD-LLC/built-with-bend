@@ -59,5 +59,18 @@
       "Refactor slip"
     ],
     "flags": "is"
+  },
+  {
+    "claim": "Package-discovery links preserve checked-example limits",
+    "urls": [
+      "/projects/jendhub/",
+      "/projects/bend-packages/"
+    ],
+    "must_match": [
+      "worked ASCII bytes-to-hex example",
+      "Bend 2\\.0\\.35 and 2\\.0\\.37",
+      "not a package-wide compatibility guarantee"
+    ],
+    "flags": "i"
   }
 ]

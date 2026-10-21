@@ -83,3 +83,7 @@ Project listings covered by an editorial guide may link to it below the original
 sources and above related builds. Use a short task-oriented heading, explanatory
 copy, and an underlined theme-aware link. Keep this curated rather than assigning
 a guide to an entire category; project/source actions stay primary.
+
+The JendHub and Bend Packages listings link to the checked package-import walkthrough
+after their original sources. Bind that connection to each listing’s repository,
+not its category, and retain the worked example’s compiler/compatibility limits.

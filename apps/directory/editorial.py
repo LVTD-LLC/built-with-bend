@@ -16,6 +16,20 @@ JENDHUB_REPOSITORY = "https://github.com/LeeeeT/JendHub"
 JENDHUB_WEBSITE = "https://jend.leeeet.dev/"
 JENDHUB_DESTINATIONS_RESTORED_AT = datetime(2026, 10, 17, tzinfo=UTC)
 
+# The walkthrough uses these two discovery tools, not every package or tool.
+PACKAGE_GUIDE_REPOSITORIES = {
+    "jendhub": JENDHUB_REPOSITORY,
+    "bend-packages": "https://github.com/777genius/bend-packages",
+}
+PACKAGE_GUIDE_ADDED_AT = datetime(2026, 10, 21, tzinfo=UTC)
+
+
+def has_package_guide(project):
+    return bool(
+        project.repository_url
+        and PACKAGE_GUIDE_REPOSITORIES.get(project.slug) == project.repository_url
+    )
+
 
 def has_jendhub_destinations(project):
     return (

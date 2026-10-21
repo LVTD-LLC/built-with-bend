@@ -40,3 +40,17 @@ Refactor slip failed. The parallel-work animations are not benchmarks.
 Source: https://github.com/raunak-11/bend-explainer/blob/84c04b02bbd3be2c5ee1b5622a1490e41e730391/README.md
 Live interaction: https://raunak-11.github.io/bend-explainer/v4/#works-play
 No external LLM call or key was used. Recheck October 23 before expanding claims.
+
+## Package-discovery guide links — verified 2026-10-21
+
+JendHub and Bend Packages are discovery tools covered by the existing package-import
+walkthrough. Link only their exact repository-bound listings to that guide; keep
+original source/project actions primary. The ASCII example was checked October18
+on Bend2.0.35 and2.0.37; that is not package-wide compatibility certification.
+Primary discovery sources: https://jend.leeeet.dev/llms.txt and
+https://777genius.github.io/bend-packages/ . Worked-example source:
+`apps/pages/posts/bend-2-package-imports.md`. No new compiler test today.
+
+Knot release/source review October21: README b914a71 remains unchanged and npm
+still identifies0.0.1; type-checking and planned-runner caveats remain supported.
+No installation/runtime/platform certification. Next source review October28.
