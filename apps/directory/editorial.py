@@ -11,6 +11,7 @@ KNOT_RELEASE_CORRECTED_AT = datetime(2026, 10, 14, tzinfo=UTC)
 
 HTTP_SERVER_REPOSITORY = "https://github.com/iamsahilsonawane/bend2-http-server"
 HTTP_SERVER_CHECKED_AT = datetime(2026, 10, 15, tzinfo=UTC)
+HTTP_SERVER_DEMO_ADDED_AT = datetime(2026, 10, 22, tzinfo=UTC)
 
 JENDHUB_REPOSITORY = "https://github.com/LeeeeT/JendHub"
 JENDHUB_WEBSITE = "https://jend.leeeet.dev/"

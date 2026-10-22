@@ -87,3 +87,7 @@ a guide to an entire category; project/source actions stay primary.
 The JendHub and Bend Packages listings link to the checked package-import walkthrough
 after their original sources. Bind that connection to each listing’s repository,
 not its category, and retain the worked example’s compiler/compatibility limits.
+
+The exact-repository HTTP Server listing offers a separately checked official local
+demo after the original sources. Keep its local-only scope and failed proof-check
+boundary visible; original project actions and compatibility warning stay primary.

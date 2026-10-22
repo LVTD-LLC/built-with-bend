@@ -27,6 +27,13 @@ class HttpServerNoteTests(TestCase):
         project = self.project()
         response = self.client.get(project.get_absolute_url())
         self.assertContains(response, "Before you run this HTTP server")
+        self.assertContains(response, "Try a smaller, local HTTP example")
+        self.assertContains(response, "A running HTTP response is not a passing proof")
+        self.assertContains(response, "79df8d9c40722ee9507a1e253f283b51025f9d6c")
+        self.assertLess(
+            response.content.index(b'class="sources"'),
+            response.content.index(b'id="http-server-demo-heading"'),
+        )
         self.assertContains(response, 'datetime="2026-10-15"')
         self.assertContains(response, "Bend 2.0.35")
         self.assertContains(response, "not a verified one-line fix")
@@ -55,17 +62,20 @@ class HttpServerNoteTests(TestCase):
                 self.assertNotContains(
                     self.client.get(project.get_absolute_url()), "http-server-note-heading"
                 )
+                self.assertNotContains(
+                    self.client.get(project.get_absolute_url()), "http-server-demo-heading"
+                )
                 self.assertEqual(sitemap.lastmod(project), project.published_at)
 
     def test_content_date_does_not_change_publication_or_hide_newer_content(self):
         project = self.project()
-        self.assertEqual(ProjectSitemap().lastmod(project), datetime(2026, 10, 15, tzinfo=UTC))
+        self.assertEqual(ProjectSitemap().lastmod(project), datetime(2026, 10, 22, tzinfo=UTC))
         project.refresh_from_db()
         self.assertEqual(project.published_at, datetime(2026, 9, 24, tzinfo=UTC))
-        project.published_at = datetime(2026, 10, 20, tzinfo=UTC)
+        project.published_at = datetime(2026, 10, 25, tzinfo=UTC)
         self.assertEqual(ProjectSitemap().lastmod(project), project.published_at)
         project.published_at = None
-        self.assertEqual(ProjectSitemap().lastmod(project), datetime(2026, 10, 15, tzinfo=UTC))
+        self.assertEqual(ProjectSitemap().lastmod(project), datetime(2026, 10, 22, tzinfo=UTC))
 
     def test_note_does_not_make_draft_project_public(self):
         project = self.project(status=Project.Status.DRAFT)

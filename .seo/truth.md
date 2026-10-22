@@ -54,3 +54,20 @@ https://777genius.github.io/bend-packages/ . Worked-example source:
 Knot release/source review October21: README b914a71 remains unchanged and npm
 still identifies0.0.1; type-checking and planned-runner caveats remain supported.
 No installation/runtime/platform certification. Next source review October28.
+
+## Official HTTP demo discovery — checked 2026-10-22
+
+The original HTTP Server repository remains at 66a9258; its main check still fails
+on Bend 2.0.35 and its separate computation-proof verdict still passes. Keep the
+October 15 visible result, not a new compatibility claim. Next source check October 29.
+
+A separate official Bend 2.0.35 demo at
+https://github.com/bendlang/bend/tree/79df8d9c40722ee9507a1e253f283b51025f9d6c/demos/io_http_server
+built natively without source edits and returned one local HTTP 200/Hello, world!
+response on October 22. It binds 127.0.0.1:8080 and returns a fixed page; it is not
+the listed server, a GPU example, a benchmark or a production recommendation.
+The demo's check-only, ordinary proof and --verdict commands reject unsafe or
+foreign-code dependencies on this compiler; never describe those checks as passing.
+Reproducible public-source evidence: `.seo/evidence/2026-10-22-http-demo.md`.
+Only the exact repository-bound listing receives the source-discovery section and
+October 22 content date; original publication/actions/metadata remain unchanged.

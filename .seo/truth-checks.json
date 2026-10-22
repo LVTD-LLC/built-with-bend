@@ -72,5 +72,19 @@
       "not a package-wide compatibility guarantee"
     ],
     "flags": "i"
+  },
+  {
+    "claim": "Official HTTP demo discovery separates local response from proof results",
+    "urls": [
+      "/projects/bend-http-server/"
+    ],
+    "must_match": [
+      "official Bend 2\\.0\\.35 HTTP demo",
+      "separate starting point, not a fix",
+      "one local smoke check",
+      "rejected unsafe or foreign-code dependencies",
+      "A running HTTP response is not a passing proof"
+    ],
+    "flags": "is"
   }
 ]
