@@ -6,7 +6,7 @@ from built_with_bend.sitemaps import ConfiguredSitemapMixin
 from .editorial import (
     EDITOR_GUIDE_ADDED_AT,
     EDITOR_GUIDE_PROJECTS,
-    HTTP_SERVER_CHECKED_AT,
+    HTTP_SERVER_DEMO_ADDED_AT,
     JENDHUB_DESTINATIONS_RESTORED_AT,
     KNOT_RELEASE_CORRECTED_AT,
     PACKAGE_GUIDE_ADDED_AT,
@@ -39,9 +39,9 @@ class ProjectSitemap(ConfiguredSitemapMixin, Sitemap):
             )
         if has_http_server_note(obj):
             return (
-                max(obj.published_at, HTTP_SERVER_CHECKED_AT)
+                max(obj.published_at, HTTP_SERVER_DEMO_ADDED_AT)
                 if obj.published_at
-                else HTTP_SERVER_CHECKED_AT
+                else HTTP_SERVER_DEMO_ADDED_AT
             )
         if obj.slug == "knot":
             return (

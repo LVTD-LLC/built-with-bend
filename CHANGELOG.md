@@ -1,3 +1,7 @@
+## 2026-10-22
+
+- Link the Bend HTTP Server listing to a separately checked official loopback demo, retaining the original project’s compatibility warning and distinguishing a local HTTP response from passing proofs.
+
 ## 2026-10-21
 
 - Connect the JendHub and Bend Packages listings to the checked package-import walkthrough, with scoped content dates and original project links kept primary.

@@ -1,0 +1,9 @@
+<section class="project-guide" aria-labelledby="http-server-demo-heading">
+    <h2 id="http-server-demo-heading">Try a smaller, local HTTP example</h2>
+    <p>The <a href="https://github.com/bendlang/bend/tree/79df8d9c40722ee9507a1e253f283b51025f9d6c/demos/io_http_server"
+    data-posthog-outbound="source"
+    target="_blank"
+    rel="noopener noreferrer nofollow">official Bend 2.0.35 HTTP demo</a> is a separate starting point, not a fix for the project above. Built with Bend compiled that unmodified demo and received one HTTP 200 response with a Hello, world! body on <time datetime="2026-10-22">October 22, 2026</time>.</p>
+    <p>From that version’s compiler repository, build with <code>bend demos/io_http_server/main.bend -o http_server</code>, run <code>./http_server --threads 1</code>, then request <code>http://127.0.0.1:8080/</code> from another terminal. Stop the process when finished. It binds only to the local machine and returns a fixed page; it does not provide the listed project’s routes or GPU workload.</p>
+    <p>This was one local smoke check, not a benchmark or production-readiness test. The demo’s check-only and proof commands, including <code>--verdict</code>, rejected unsafe or foreign-code dependencies on that compiler. A running HTTP response is not a passing proof.</p>
+</section>
