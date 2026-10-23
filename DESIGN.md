@@ -91,3 +91,7 @@ not its category, and retain the worked example’s compiler/compatibility limit
 The exact-repository HTTP Server listing offers a separately checked official local
 demo after the original sources. Keep its local-only scope and failed proof-check
 boundary visible; original project actions and compatibility warning stay primary.
+
+The exact-repository Bend, Explained listing offers a short no-install exercise
+after its original sources. Keep the demo link and guide link underlined, preserve
+the ordinary-checker/version limits, and leave the optional LLM feature separate.

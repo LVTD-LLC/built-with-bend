@@ -71,3 +71,13 @@ foreign-code dependencies on this compiler; never describe those checks as passi
 Reproducible public-source evidence: `.seo/evidence/2026-10-22-http-demo.md`.
 Only the exact repository-bound listing receives the source-discovery section and
 October 22 content date; original publication/actions/metadata remain unchanged.
+
+## Browser listing exercise — checked 2026-10-23
+
+Upstream remains at 84c04b02bbd3be2c5ee1b5622a1490e41e730391. The live
+v4 Original / Refactor slip / Raise the limit to 1500 presets still return
+pass / fail / pass. The source-bound listing adds a direct exercise link and a
+reverse path to the existing introduction; original sources and publication remain
+unchanged. Ordinary Bend2.0.25 checking is not --verdict, an IO runtime, a hub
+package fetcher, or a benchmark. No AI provider or key was used. Next source
+review October30; existing October16 introduction experiment dates remain intact.

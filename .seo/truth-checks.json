@@ -86,5 +86,21 @@
       "A running HTTP response is not a passing proof"
     ],
     "flags": "is"
+  },
+  {
+    "claim": "Browser listing exercise preserves checker and optional LLM limits",
+    "urls": [
+      "/projects/bend-explained/"
+    ],
+    "must_match": [
+      "October 23",
+      "Bend 2\\.0\\.25",
+      "ordinary checker",
+      "not the independent",
+      "--verdict",
+      "not benchmarks",
+      "optional LLM panel closed"
+    ],
+    "flags": "is"
   }
 ]

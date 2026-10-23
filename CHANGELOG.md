@@ -1,3 +1,7 @@
+## 2026-10-23
+
+- Add a no-install proof-demo exercise and introduction link to the source-bound Bend, Explained listing, with explicit checker and optional-LLM limits.
+
 ## 2026-10-22
 
 - Link the Bend HTTP Server listing to a separately checked official loopback demo, retaining the original project’s compatibility warning and distinguishing a local HTTP response from passing proofs.
