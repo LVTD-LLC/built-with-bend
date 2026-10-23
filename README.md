@@ -12,6 +12,10 @@ sort by popularity. Each listing links to its original
 sources, with a live site and repository when available. Closed-source projects
 are welcome too. Project pages also link to more published builds of the same type.
 
+For a no-install first check, the [Bend, Explained listing](https://builtwithbend.com/projects/bend-explained/)
+links to an editable browser exercise and explains its checker limits. The optional
+AI-provider feature is separate; no key is needed for the exercise.
+
 Want to keep exploring? Opt into the weekly Bend newsletter from the directory,
 project pages, or guides. Confirm by email to subscribe; unsubscribe anytime.
 

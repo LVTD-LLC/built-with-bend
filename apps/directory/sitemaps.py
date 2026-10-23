@@ -4,12 +4,14 @@ from django.urls import reverse
 from built_with_bend.sitemaps import ConfiguredSitemapMixin
 
 from .editorial import (
+    BROWSER_EXERCISE_ADDED_AT,
     EDITOR_GUIDE_ADDED_AT,
     EDITOR_GUIDE_PROJECTS,
     HTTP_SERVER_DEMO_ADDED_AT,
     JENDHUB_DESTINATIONS_RESTORED_AT,
     KNOT_RELEASE_CORRECTED_AT,
     PACKAGE_GUIDE_ADDED_AT,
+    has_browser_exercise,
     has_http_server_note,
     has_jendhub_destinations,
     has_package_guide,
@@ -25,6 +27,12 @@ class ProjectSitemap(ConfiguredSitemapMixin, Sitemap):
         return Project.objects.filter(status=Project.Status.PUBLISHED)
 
     def lastmod(self, obj):
+        if has_browser_exercise(obj):
+            return (
+                max(obj.published_at, BROWSER_EXERCISE_ADDED_AT)
+                if obj.published_at
+                else BROWSER_EXERCISE_ADDED_AT
+            )
         if has_package_guide(obj):
             return (
                 max(obj.published_at, PACKAGE_GUIDE_ADDED_AT)

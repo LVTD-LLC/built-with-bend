@@ -24,6 +24,15 @@ PACKAGE_GUIDE_REPOSITORIES = {
 }
 PACKAGE_GUIDE_ADDED_AT = datetime(2026, 10, 21, tzinfo=UTC)
 
+BROWSER_EXERCISE_REPOSITORY = "https://github.com/raunak-11/bend-explainer"
+BROWSER_EXERCISE_ADDED_AT = datetime(2026, 10, 23, tzinfo=UTC)
+
+
+def has_browser_exercise(project):
+    return (
+        project.slug == "bend-explained" and project.repository_url == BROWSER_EXERCISE_REPOSITORY
+    )
+
 
 def has_package_guide(project):
     return bool(
