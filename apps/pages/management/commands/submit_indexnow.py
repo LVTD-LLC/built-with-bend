@@ -1,10 +1,9 @@
-import json
 from pathlib import Path
 
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 
-from apps.pages.indexnow import IndexNowError, submit, validate_urls
+from apps.pages.indexnow import IndexNowError, read_snapshot, submit
 
 
 class Command(BaseCommand):
@@ -14,13 +13,18 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument("--dry-run", action="store_true")
         parser.add_argument(
-            "--previous", type=Path, help="Pre-deployment sitemap JSON snapshot, for removed URLs"
+            "--previous",
+            type=Path,
+            help="Pre-deployment URL-to-lastmod JSON snapshot for delta notifications",
         )
 
     def handle(self, *args, **options):
         try:
-            previous = json.loads(options["previous"].read_text()) if options["previous"] else []
-            validate_urls(settings.SITE_URL.rstrip("/"), previous)
+            previous = (
+                read_snapshot(settings.SITE_URL, options["previous"])
+                if options["previous"]
+                else None
+            )
             result = submit(settings.SITE_URL, previous, dry_run=options["dry_run"])
         except (IndexNowError, ValueError, OSError) as error:
             raise CommandError(str(error)) from None
