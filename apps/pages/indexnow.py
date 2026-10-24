@@ -121,14 +121,40 @@ def deployment_key(site_url, expected_revision=""):
     raise IndexNowError("Live IndexNow key/revision could not be verified")
 
 
-def submit(site_url, previous_urls=(), expected_revision="", dry_run=False):
+def changed_urls(site_url, current, previous):
+    """Validate a dated snapshot before calculating its public URL delta."""
+    for state in (current, previous):
+        if not isinstance(state, dict) or any(not isinstance(v, str) for v in state.values()):
+            raise IndexNowError(
+                "Expected a URL-to-lastmod snapshot; URL-only snapshots cannot identify edits"
+            )
+        validate_urls(site_url, list(state))
+    return sorted(
+        url
+        for url in current.keys() | previous.keys()
+        if url not in current or url not in previous or current[url] != previous[url]
+    )
+
+
+def submit(site_url, previous_state=None, expected_revision="", dry_run=False):
     site_url = site_url.rstrip("/")
     validate_urls(site_url, [])
     key = deployment_key(site_url, expected_revision)
-    urls = validate_urls(site_url, sitemap_urls(site_url) + list(previous_urls))
+    current = sitemap_state(site_url)
+    urls = (
+        validate_urls(site_url, list(current))
+        if previous_state is None
+        else changed_urls(site_url, current, previous_state)
+    )
     if dry_run:
         return f"Dry run: {len(urls)} public URLs; no submission sent"
     return submit_urls(site_url, key, urls)
+
+
+def read_snapshot(site_url, path):
+    state = json.loads(path.read_text(encoding="utf-8"))
+    changed_urls(site_url.rstrip("/"), {}, state)
+    return state
 
 
 def submit_urls(site_url, key, urls):
@@ -159,14 +185,7 @@ def submit_changes(site_url, state_path, expected_revision="", dry_run=False):
     key = deployment_key(site_url, expected_revision)
     current = sitemap_state(site_url)
     previous = json.loads(state_path.read_text()) if state_path.exists() else {}
-    if not isinstance(previous, dict):
-        raise IndexNowError("Invalid sitemap checkpoint")
-    validate_urls(site_url, list(previous))
-    changed = sorted(
-        url
-        for url in current.keys() | previous.keys()
-        if url not in current or url not in previous or current[url] != previous[url]
-    )
+    changed = changed_urls(site_url, current, previous)
     if dry_run:
         return f"Dry run: {len(changed)} changed public URLs; no submission sent"
     result = submit_urls(site_url, key, changed)
@@ -180,10 +199,12 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--site-url", required=True)
     parser.add_argument(
-        "--snapshot", type=Path, help="Save pre-deployment public URLs, without submitting"
+        "--snapshot", type=Path, help="Save pre-deployment URL-to-lastmod state, without submitting"
     )
     parser.add_argument(
-        "--previous", type=Path, help="Include the pre-deployment URLs, including removed pages"
+        "--previous",
+        type=Path,
+        help="Notify only URLs added, changed or removed since this snapshot",
     )
     parser.add_argument("--expected-revision", default="")
     parser.add_argument("--dry-run", action="store_true")
@@ -195,14 +216,11 @@ def main():
         if args.state:
             print(submit_changes(site_url, args.state, args.expected_revision, args.dry_run))
         elif args.snapshot:
-            urls = sitemap_urls(site_url)
-            args.snapshot.write_text(json.dumps(urls), encoding="utf-8")
-            print(f"Saved {len(urls)} pre-deployment public URLs")
+            state = sitemap_state(site_url)
+            args.snapshot.write_text(json.dumps(state, sort_keys=True), encoding="utf-8")
+            print(f"Saved {len(state)} pre-deployment URL-to-lastmod entries")
         else:
-            previous = (
-                json.loads(args.previous.read_text(encoding="utf-8")) if args.previous else []
-            )
-            validate_urls(site_url, previous)
+            previous = read_snapshot(site_url, args.previous) if args.previous else None
             print(submit(site_url, previous, args.expected_revision, args.dry_run))
     except (IndexNowError, ValueError, OSError) as error:
         parser.exit(1, f"IndexNow failed: {error}\n")

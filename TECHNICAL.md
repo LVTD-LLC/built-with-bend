@@ -415,9 +415,11 @@ verification and rollback. The website needs only `NEWSLETTER_LISTMONK_URL` and
 ## IndexNow notifications
 
 The public `/indexnow-key.txt` route proves ownership. Production CI snapshots
-public URLs before deployment, retains the snapshot as a 30-day artifact, then
-submits current plus previous URLs after web/worker verification and an exact
-revision check on the key endpoint. No repository variable or new credential is needed.
+public URL-to-lastmod state before deployment, retains the snapshot as a 30-day
+artifact, then notifies only added, changed or removed URLs after web/worker
+verification and an exact revision check on the key endpoint. Unchanged URLs
+are skipped; a code-only deployment sends no notifications. No repository variable
+or new credential is needed.
 
 `IndexNow directory changes` runs daily at 08:23 UTC (GitHub may delay schedules)
 and supports manual dispatch. It compares sitemap URLs and lastmod values with its
@@ -428,9 +430,14 @@ HTTP 200 is receipt, 202 is receipt with key validation pending, not indexing pr
 
 Project lastmod currently reflects publication, not every database edit. Existing
 project description/image-only edits need a manual notification using
-`python apps/pages/indexnow.py --site-url https://builtwithbend.com`, or the next
-deployment. New API-published projects and removals are covered by the daily check.
+`python apps/pages/indexnow.py --site-url https://builtwithbend.com`, unless a
+distinct content lastmod is recorded. Same-date edits or edits without a lastmod
+change are not detected by sitemap comparison. New API-published projects and
+removals are covered by the daily check.
 For failed deployment notifications download the snapshot artifact and use
-`--previous <snapshot-file>` to preserve removed URLs; do not redeploy just to retry.
+`--previous <snapshot-file>` to retry the same delta, including removed URLs; do
+not redeploy just to retry. Legacy URL-only snapshots fail explicitly because they
+cannot identify edited pages. The no-argument manual command remains an explicit
+full-sitemap submission, not the automatic deployment path.
 The generated-stack reference describes upstream defaults; this section and the
 actual workflows describe this site's wiring.

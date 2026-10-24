@@ -66,7 +66,7 @@ def test_public_key_route_is_stable_across_settings_changes(client, settings):
 def test_command_submits_current_and_removed_urls(monkeypatch, tmp_path, status):
     posts = transport(monkeypatch, [SITE + "/", SITE + "/docs/new/"], statuses=(status,))
     previous = tmp_path / "before.json"
-    previous.write_text(json.dumps([SITE + "/", SITE + "/docs/removed/"]))
+    previous.write_text(json.dumps({SITE + "/": "", SITE + "/docs/removed/": ""}))
     output = io.StringIO()
     call_command("submit_indexnow", previous=previous, stdout=output)
     assert posts == [
@@ -74,7 +74,7 @@ def test_command_submits_current_and_removed_urls(monkeypatch, tmp_path, status)
             "host": "example.com",
             "key": KEY,
             "keyLocation": SITE + indexnow.KEY_PATH,
-            "urlList": [SITE + "/", SITE + "/docs/new/", SITE + "/docs/removed/"],
+            "urlList": [SITE + "/docs/new/", SITE + "/docs/removed/"],
         }
     ]
     assert ("validation pending" in output.getvalue()) == (status == 202)
@@ -135,7 +135,7 @@ def test_snapshot_cli_is_read_only(monkeypatch, tmp_path):
     snapshot = tmp_path / "before.json"
     monkeypatch.setattr("sys.argv", ["indexnow", "--site-url", SITE, "--snapshot", str(snapshot)])
     indexnow.main()
-    assert json.loads(snapshot.read_text()) == [SITE + "/"]
+    assert json.loads(snapshot.read_text()) == {SITE + "/": ""}
     assert not posts
 
 
@@ -195,3 +195,62 @@ def test_incremental_missing_checkpoint_submits_baseline(monkeypatch, tmp_path):
     indexnow.submit_changes(SITE, state)
     assert posts[0]["urlList"] == [SITE + "/"]
     assert json.loads(state.read_text()) == {SITE + "/": ""}
+
+
+@pytest.mark.parametrize("status", [200, 202])
+def test_deployment_snapshot_delta_and_unchanged_retry(monkeypatch, tmp_path, capsys, status):
+    previous = {SITE + "/": "1", SITE + "/edit/": "1", SITE + "/removed/": "1"}
+    current = {SITE + "/": "1", SITE + "/edit/": "2", SITE + "/new/": "2"}
+    snapshot = tmp_path / "before.json"
+    posts = transport(monkeypatch, [], statuses=(status,), revisions=("new", "new"))
+    monkeypatch.setattr(indexnow, "sitemap_state", lambda _: previous)
+    monkeypatch.setattr("sys.argv", ["indexnow", "--site-url", SITE, "--snapshot", str(snapshot)])
+    indexnow.main()
+    assert not posts
+    assert json.loads(snapshot.read_text()) == previous
+    monkeypatch.setattr(indexnow, "sitemap_state", lambda _: current)
+    monkeypatch.setattr(
+        "sys.argv",
+        ["indexnow", "--site-url", SITE, "--previous", str(snapshot), "--expected-revision", "new"],
+    )
+    indexnow.main()
+    assert posts[0]["urlList"] == [SITE + "/edit/", SITE + "/new/", SITE + "/removed/"]
+    assert "Indexing is not guaranteed" in capsys.readouterr().out
+    assert json.loads(snapshot.read_text()) == previous
+    snapshot.write_text(json.dumps(current))
+    indexnow.main()
+    assert "No changed" in capsys.readouterr().out
+    assert len(posts) == 1
+
+
+@pytest.mark.parametrize(
+    "previous",
+    [
+        [SITE + "/"],
+        {SITE + "/": None},
+        {"https://other.test/": "1"},
+        {SITE + "/?token=private": "1"},
+    ],
+)
+def test_invalid_deployment_snapshot_never_submits(monkeypatch, previous):
+    posts = transport(monkeypatch, [SITE + "/"])
+    with pytest.raises(indexnow.IndexNowError):
+        indexnow.submit(SITE, previous)
+    assert not posts
+
+
+@pytest.mark.parametrize("contents", ["null", "[]", '{"https://example.com/":null}', "not-json"])
+@override_settings(SITE_URL=SITE)
+def test_cli_and_command_reject_invalid_snapshot_without_sending(monkeypatch, tmp_path, contents):
+    from django.core.management.base import CommandError
+
+    posts = transport(monkeypatch, [SITE + "/"])
+    snapshot = tmp_path / "invalid.json"
+    snapshot.write_text(contents)
+    monkeypatch.setattr("sys.argv", ["indexnow", "--site-url", SITE, "--previous", str(snapshot)])
+    with pytest.raises(SystemExit) as error:
+        indexnow.main()
+    assert error.value.code == 1
+    with pytest.raises(CommandError):
+        call_command("submit_indexnow", previous=snapshot)
+    assert not posts

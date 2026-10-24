@@ -1,3 +1,7 @@
+## 2026-10-24
+
+- Limit deployment IndexNow notifications to new, changed and removed sitemap URLs instead of resubmitting unchanged pages.
+
 ## 2026-10-23
 
 - Add a no-install proof-demo exercise and introduction link to the source-bound Bend, Explained listing, with explicit checker and optional-LLM limits.
