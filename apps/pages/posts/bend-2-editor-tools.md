@@ -2,7 +2,7 @@
 title: "Bend 2 Editors: VS Code and LSP"
 description: "Choose Bend 2 editor tools by compiler setup: compare VS Code extensions, the standalone language server, version limits, and checks before you build."
 published_at: 2026-10-11
-updated_at: 2026-10-18
+updated_at: 2026-10-25
 keywords: [Bend 2 editor, Bend VS Code, Bend language server]
 topics: [Bend 2, Editor tools]
 author: Built with Bend
@@ -12,10 +12,10 @@ Choose a **Bend 2 editor** by deciding which compiler should check your code. Nu
 
 That distinction matters more than a screenshot of colored syntax. An editor can recognize a file without checking it with the compiler you use to build the project.
 
-*Sources checked October 11, 2026: Nuxyel 1.0.1, kbrianps 0.1.3 and bend2-lsp 0.1.1. This is a source-and-documentation comparison, not a hands-on compatibility test or a ranking of every Bend extension.*
+*Sources reviewed October 25, 2026: Nuxyel 1.0.1, kbrianps 0.1.3, published bend2-lsp 0.1.1 and the separate bend2-lsp source update described below. This is a source-and-documentation comparison, not a hands-on compatibility test or a ranking of every Bend extension.*
 
 <nav aria-label="On this page">
-<p><strong>In this guide:</strong> <a href="#choose">Choose a path</a> · <a href="#nuxyel">Nuxyel</a> · <a href="#kbrianps">Kbrianps</a> · <a href="#standalone">Standalone LSP</a> · <a href="#troubleshooting">Troubleshooting</a> · <a href="#questions">Questions</a> · <a href="#method">Method</a></p>
+<p><strong>In this guide:</strong> <a href="#choose">Choose a path</a> · <a href="#nuxyel">Nuxyel</a> · <a href="#kbrianps">Kbrianps</a> · <a href="#standalone">Standalone LSP</a> · <a href="#release-check">Check the server release</a> · <a href="#troubleshooting">Troubleshooting</a> · <a href="#questions">Questions</a> · <a href="#method">Method</a></p>
 </nav>
 
 <span id="choose"></span>
@@ -92,6 +92,24 @@ The standalone package declares **Node.js 26.9 or newer**. It bundles a Bend com
 Two limits affect what you should expect. Compiler analysis applies to saved `file:` documents; an untitled buffer still gets more limited features such as lexical diagnostics and syntax hover. Save the file before judging whether compiler checking is working. Also, the server deliberately does not provide inferred local-variable type hover. Silence over a local variable is not necessarily a broken connection.
 
 Bundled analysis does not mean every project can be checked offline. Missing hash-package imports may be downloaded and cached using the compiler's package configuration. Check that behavior against your environment before opening a project with external package imports. For the package side of that check, follow [how to find and check a Bend 2 package import](/blog/bend-2-package-imports).
+
+<span id="release-check"></span>
+
+## Check the server release, not just the repository
+
+**As of October 25, npm's `latest` bend2-lsp is 0.1.1; the repository's 0.2.0 source update is not a published npm release.** The [npm package metadata](https://registry.npmjs.org/bend2-lsp) and the [source manifest at revision ed06027](https://github.com/don2e4/bend2-lsp/blob/ed06027cc5396050459776accf91214f0c433f79/package.json) describe different artifacts. A newer README is not evidence that your installed server includes its changes.
+
+The distinction has a concrete consequence. In [issue 4](https://github.com/don2e4/bend2-lsp/issues/4), the extension maintainer reported editor errors for code accepted by Bend 2.0.35: two-argument `TCP.listen` and `UDP.bind` calls, plus names absent from the older bundled Base. That report is a reason to compare compiler snapshots before rewriting a working program, not proof that every editor error has this cause.
+
+The [October 22 source change](https://github.com/don2e4/bend2-lsp/commit/af933fd975f50f6e37cbc0882cae7e3a6f643ee1) vendors Bend 2.0.38 and adds completion, document symbols and folding. Its [versioned README](https://github.com/don2e4/bend2-lsp/blob/ed06027cc5396050459776accf91214f0c433f79/README.md) also documents named package imports and revised diagnostics. These are source-backed changes, not features we verified in an installed extension. They do not establish that kbrianps 0.1.3 bundles the newer server.
+
+When feedback differs from your terminal:
+
+1. Record the extension version, any custom server path and the compiler version used by the project's own check. Identify which tool produced the first diagnostic.
+2. Compare the **installed server's** package and bundled compiler with the source version you are reading. A repository version bump does not update an installed npm package or VSIX.
+3. If evaluating a source build, follow that revision's build instructions and Node.js requirement. Test a small saved file before relying on it. We have not built or installed this source revision for this comparison.
+
+Keep a separately passing terminal check as evidence for that compiler and file. Do not dismiss a real error—or claim the stronger independent `--verdict` check passed—because a source changelog describes improved diagnostics.
 
 <span id="troubleshooting"></span>
 

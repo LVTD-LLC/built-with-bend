@@ -102,5 +102,34 @@
       "optional LLM panel closed"
     ],
     "flags": "is"
+  },
+  {
+    "claim": "Editor guide separates published server from newer source and untested installs",
+    "paths": [
+      "apps/pages/posts/bend-2-editor-tools.md"
+    ],
+    "must_match": [
+      "latest.*bend2-lsp is 0\\.1\\.1",
+      "0\\.2\\.0 source update is not a published npm release",
+      "Bend 2\\.0\\.38",
+      "We have not built or installed this source revision"
+    ],
+    "flags": "is"
+  },
+  {
+    "claim": "Package walkthrough keeps working search and original tested source after JendHub API change",
+    "paths": [
+      "apps/pages/posts/bend-2-package-imports.md"
+    ],
+    "must_match": [
+      "not a test of 0\\.3\\.3\\.0",
+      "current.*read.*endpoint can open older releases",
+      "originally tested"
+    ],
+    "must_not_match": [
+      "search.txt\\?q=",
+      "jend.leeeet.dev/src/"
+    ],
+    "flags": "is"
   }
 ]

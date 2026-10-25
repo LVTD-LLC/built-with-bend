@@ -81,3 +81,28 @@ reverse path to the existing introduction; original sources and publication rema
 unchanged. Ordinary Bend2.0.25 checking is not --verdict, an IO runtime, a hub
 package fetcher, or a benchmark. No AI provider or key was used. Next source
 review October30; existing October16 introduction experiment dates remain intact.
+
+## Editor server source versus release — verified 2026-10-25
+
+The npm registry still publishes bend2-lsp 0.1.1 as latest. Repository revision
+`ed06027cc5396050459776accf91214f0c433f79` declares 0.2.0; its October22
+source change vendors Bend2.0.38 and adds completion/symbols/folding. Do not
+represent that source version as a published npm release or an installed
+kbrianps extension upgrade. Node>=26.9 remains declared. No source-build,
+extension-install or host compatibility test was performed for this update.
+Primary sources: https://registry.npmjs.org/bend2-lsp ;
+https://github.com/don2e4/bend2-lsp/blob/ed06027cc5396050459776accf91214f0c433f79/package.json ;
+https://github.com/don2e4/bend2-lsp/commit/af933fd975f50f6e37cbc0882cae7e3a6f643ee1 ;
+https://github.com/don2e4/bend2-lsp/issues/4 .
+Nuxyel06bcbaf and kbrianps81ba2c9 sources unchanged. Recheck November1 or on release.
+
+## JendHub walkthrough source paths — verified 2026-10-25
+
+Old search.txt?q returned400; /src/bend-kit-bytes@0.3.2.0/bytes.bend returned404.
+Current /llms.txt documents search.txt?query= and read.txt?path= . Both
+replacement links in the package guide return200. Search now returns bytes0.3.3.0;
+retain the original tested0.3.2.0 import and explicitly avoid claiming a new
+compiler/package test. The pinned read source still exposes to_hex at line631,
+from_string, low-byte conversion, and hash-pinned int dependency. Source pages
+are inspection evidence, not package-wide compatibility or a new execution test.
+Recheck November1 or on upstream change.
