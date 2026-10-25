@@ -1,3 +1,8 @@
+## 2026-10-25
+
+- Restore the package walkthrough’s JendHub search and pinned-source links after its API change, retaining the tested package version.
+- Distinguish the editor guide’s published server from newer source-only changes and explain compiler-mismatch checks.
+
 ## 2026-10-24
 
 - Limit deployment IndexNow notifications to new, changed and removed sitemap URLs instead of resubmitting unchanged pages.
