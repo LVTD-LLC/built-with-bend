@@ -106,3 +106,18 @@ compiler/package test. The pinned read source still exposes to_hex at line631,
 from_string, low-byte conversion, and hash-pinned int dependency. Source pages
 are inspection evidence, not package-wide compatibility or a new execution test.
 Recheck November1 or on upstream change.
+
+## Native Neovim first use — source reviewed 2026-10-27
+
+Bend2.nvim at a67312765430fc8dea4f291ca2ab071f311f1e32 provides native Lua editing
+without Node.js or a separate language-server executable. Editing works without
+Bend; compiler-backed checks, proof workflows, Bend Base completion, builds and runs
+require Bend 2.0.28+ according to its maintainer. Neovim 0.11+ supports lazy.nvim
+and native package layout; vim.pack needs 0.12+ and has an experimental API.
+The published v1.0.0 GitHub release is available. The documented compiler test
+matrix covers 2.0.28 and 2.0.32, not every later compiler. No local plugin install
+or execution was performed. Preserve original listing metadata and sources.
+Primary sources: https://github.com/nuxyel/bend2-nvim/blob/a67312765430fc8dea4f291ca2ab071f311f1e32/README.md
+and https://github.com/nuxyel/bend2-nvim/blob/a67312765430fc8dea4f291ca2ab071f311f1e32/docs/INSTALLATION.md .
+The dated first-use section and sitemap content date match the exact repository
+and slug only. Recheck November 3 or on an upstream release/change.

@@ -10,10 +10,12 @@ from .editorial import (
     HTTP_SERVER_DEMO_ADDED_AT,
     JENDHUB_DESTINATIONS_RESTORED_AT,
     KNOT_RELEASE_CORRECTED_AT,
+    NEOVIM_FIRST_USE_ADDED_AT,
     PACKAGE_GUIDE_ADDED_AT,
     has_browser_exercise,
     has_http_server_note,
     has_jendhub_destinations,
+    has_neovim_first_use,
     has_package_guide,
 )
 from .models import Project
@@ -27,6 +29,12 @@ class ProjectSitemap(ConfiguredSitemapMixin, Sitemap):
         return Project.objects.filter(status=Project.Status.PUBLISHED)
 
     def lastmod(self, obj):
+        if has_neovim_first_use(obj):
+            return (
+                max(obj.published_at, NEOVIM_FIRST_USE_ADDED_AT)
+                if obj.published_at
+                else NEOVIM_FIRST_USE_ADDED_AT
+            )
         if has_browser_exercise(obj):
             return (
                 max(obj.published_at, BROWSER_EXERCISE_ADDED_AT)

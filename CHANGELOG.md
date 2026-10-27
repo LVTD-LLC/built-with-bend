@@ -33,6 +33,12 @@
 
 # Changelog
 
+## 2026-10-27
+
+- Add a source-reviewed first-use path to the Bend 2 for Neovim listing: installation
+  choices, editing versus compiler-backed features, and the maintainer’s proof-workflow
+  example. Preserve original project links and make untested compatibility explicit.
+
 ## 2026-10-16
 
 - Link the Bend introduction to a browser-based proof demo, with checked pass/fail examples and explicit compiler-version and simulation limits.

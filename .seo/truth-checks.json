@@ -131,5 +131,22 @@
       "jend.leeeet.dev/src/"
     ],
     "flags": "is"
+  },
+  {
+    "claim": "Neovim first-use keeps source-reviewed installation and compiler boundaries",
+    "urls": [
+      "/projects/bend-2-for-neovim/"
+    ],
+    "must_match": [
+      "without Node.js",
+      "Editing works without the Bend compiler",
+      "Bend 2\\.0\\.28",
+      "Neovim 0\\.12",
+      "experimental API",
+      ":Bend2CheckWorkspace",
+      "not installed or run this plugin",
+      "not every later version"
+    ],
+    "flags": "is"
   }
 ]
