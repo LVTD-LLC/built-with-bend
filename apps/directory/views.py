@@ -14,6 +14,7 @@ from .editorial import (
     EDITOR_GUIDE_PROJECTS,
     has_browser_exercise,
     has_http_server_note,
+    has_neovim_first_use,
     has_package_guide,
 )
 from .forms import SubmissionForm
@@ -151,6 +152,7 @@ def detail(request, slug):
             "show_editor_guide": project.slug in EDITOR_GUIDE_PROJECTS,
             "show_package_guide": has_package_guide(project),
             "show_browser_exercise": has_browser_exercise(project),
+            "show_neovim_first_use": has_neovim_first_use(project),
             "show_http_server_note": has_http_server_note(project),
             "newsletter_enabled": enabled(),
             "newsletter_form": NewsletterForm(),

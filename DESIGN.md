@@ -95,3 +95,8 @@ boundary visible; original project actions and compatibility warning stay primar
 The exact-repository Bend, Explained listing offers a short no-install exercise
 after its original sources. Keep the demo link and guide link underlined, preserve
 the ordinary-checker/version limits, and leave the optional LLM feature separate.
+
+The exact-repository Bend 2 for Neovim listing offers a source-reviewed first-use
+section after its original sources. Separate editing-only use from compiler-backed
+commands, and distinguish Neovim 0.11 installation choices from experimental
+0.12+ vim.pack. Keep the untested-install and compiler-matrix limits visible.
