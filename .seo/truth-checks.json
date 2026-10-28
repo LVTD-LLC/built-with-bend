@@ -148,5 +148,23 @@
       "not every later version"
     ],
     "flags": "is"
+  },
+  {
+    "claim": "Knot first-use distinguishes install from observed loader failure",
+    "urls": [
+      "/projects/knot/"
+    ],
+    "must_match": [
+      "GLIBC_2\\.38",
+      "glibc 2\\.36",
+      "failed before Knot started",
+      "not a claim that every Linux installation fails",
+      "not tested that build as a workaround",
+      "test runner remains planned"
+    ],
+    "must_not_match": [
+      "tested source.build workaround",
+      "all Linux installations fail"
+    ]
   }
 ]

@@ -1,0 +1,16 @@
+<section class="project-guide" aria-labelledby="knot-first-use-heading">
+    <h2 id="knot-first-use-heading">Before trying the published Knot CLI</h2>
+    <p>The <a href="https://registry.npmjs.org/@matheusbbarni/knot/0.0.1"
+    data-posthog-outbound="source"
+    target="_blank"
+    rel="noopener noreferrer nofollow">npm release metadata for @matheusbbarni/knot 0.0.1</a> lists a Node.js launcher and platform-specific binaries. Installing the package and starting the CLI are separate checks.</p>
+    <p>On October 28, 2026, Built with Bend installed that exact version in an isolated directory with lifecycle scripts disabled. On our Linux x64 host with glibc 2.36 and Node.js 24.21.0, both <code>knot --version</code> and <code>knot --help</code> failed before Knot started: the native binary required <code>GLIBC_2.38</code>, which this host did not provide. The binary’s SHA-256 matched the published wrapper’s expected hash. This is one host result, not a claim that every Linux installation fails or that a newer glibc guarantees success.</p>
+    <p>For the maintainer’s installation options, use the pinned <a href="https://github.com/MatheusBBarni/knot-node-tooling/blob/b914a71bbca46b7e2fe447d19a7a182e2b9ff715/README.md#install"
+    data-posthog-outbound="source"
+    target="_blank"
+    rel="noopener noreferrer nofollow">installation instructions</a>. The separate <a href="https://github.com/MatheusBBarni/knot-node-tooling/blob/b914a71bbca46b7e2fe447d19a7a182e2b9ff715/README.md#build-from-source"
+    data-posthog-outbound="source"
+    target="_blank"
+    rel="noopener noreferrer nofollow">source-build instructions</a> name Node.js 24 LTS, Bend 2.0.24 and a native C compiler. We have not tested that build as a workaround, other platforms, or package operations. Transpilation is not type-checking; the test runner remains planned.</p>
+    <p>Release and sources checked <time datetime="2026-10-28">October 28, 2026</time>. These checks do not certify compatibility, security or production readiness.</p>
+</section>

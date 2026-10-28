@@ -121,3 +121,17 @@ Primary sources: https://github.com/nuxyel/bend2-nvim/blob/a67312765430fc8dea4f2
 and https://github.com/nuxyel/bend2-nvim/blob/a67312765430fc8dea4f291ca2ab071f311f1e32/docs/INSTALLATION.md .
 The dated first-use section and sitemap content date match the exact repository
 and slug only. Recheck November 3 or on an upstream release/change.
+
+## Knot published first use — checked 2026-10-28
+
+README remains b914a71; npm latest remains0.0.1. Isolated prefix install with
+--ignore-scripts succeeded, but --version and --help both failed in the native
+loader on Linuxx64/glibc2.36/Node24.21.0: GLIBC_2.38 not found. Native binary
+SHA256 matched the published wrapper. Knot did not start; no package-operation,
+source-build, macOS,otherlibc,proof,benchmark or security certification.
+Pinned README source-build prerequisites are Node24LTS/Bend2.0.24/nativeCcompiler;
+not a tested workaround. Transpilation/typechecking and planned-runner limits stay.
+Release/source instructions: https://registry.npmjs.org/@matheusbbarni/knot/0.0.1
+and https://github.com/MatheusBBarni/knot-node-tooling/blob/b914a71bbca46b7e2fe447d19a7a182e2b9ff715/README.md .
+Only exact repository-bound Knot listing gets newsection/date, originals retained.
+Recheck November4 or relevant release; prior correction outcomesNov4/11 retained.

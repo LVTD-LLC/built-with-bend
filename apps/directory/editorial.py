@@ -8,6 +8,8 @@ EDITOR_GUIDE_ADDED_AT = datetime(2026, 10, 13, tzinfo=UTC)
 
 # Dated source correction; do not change the original publication/sort date.
 KNOT_RELEASE_CORRECTED_AT = datetime(2026, 10, 14, tzinfo=UTC)
+KNOT_FIRST_USE_REPOSITORY = "https://github.com/MatheusBBarni/knot-node-tooling"
+KNOT_FIRST_USE_ADDED_AT = datetime(2026, 10, 28, tzinfo=UTC)
 
 HTTP_SERVER_REPOSITORY = "https://github.com/iamsahilsonawane/bend2-http-server"
 HTTP_SERVER_CHECKED_AT = datetime(2026, 10, 15, tzinfo=UTC)
@@ -62,3 +64,7 @@ def has_jendhub_destinations(project):
 def has_http_server_note(project):
     """Keep the source-specific check off unrelated or repurposed listings."""
     return project.slug == "bend-http-server" and project.repository_url == HTTP_SERVER_REPOSITORY
+
+
+def has_knot_first_use(project):
+    return project.slug == "knot" and project.repository_url == KNOT_FIRST_USE_REPOSITORY

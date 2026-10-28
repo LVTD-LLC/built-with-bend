@@ -1,3 +1,7 @@
+## 2026-10-28
+
+- Add a source-bound Knot first-use note with versioned npm metadata, pinned installation/source-build links, and the observed Linux x64/glibc startup limit; preserve original listing content, dates and source actions.
+
 ## 2026-10-25
 
 - Restore the package walkthrough’s JendHub search and pinned-source links after its API change, retaining the tested package version.
