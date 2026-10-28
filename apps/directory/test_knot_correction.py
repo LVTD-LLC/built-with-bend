@@ -48,7 +48,7 @@ class KnotCorrectionTests(TestCase):
         self.assertContains(response, "@matheusbbarni/knot")
         self.assertContains(response, "Transpilation is not type-checking")
         self.assertNotContains(response, "no installable release")
-        self.assertEqual(ProjectSitemap().lastmod(project).date().isoformat(), "2026-10-14")
+        self.assertEqual(ProjectSitemap().lastmod(project).date().isoformat(), "2026-10-28")
         correction.backwards(apps, self.editor)
         project.refresh_from_db()
         self.assertEqual(project.description, correction.BEFORE)
@@ -74,7 +74,7 @@ class KnotCorrectionTests(TestCase):
         self.assertFalse(Project.objects.exists())
 
     def test_content_date_preserves_later_publication_and_unrelated_projects(self):
-        later = self.project(published_at=datetime(2026, 10, 20, tzinfo=UTC))
+        later = self.project(published_at=datetime(2026, 10, 30, tzinfo=UTC))
         self.assertEqual(ProjectSitemap().lastmod(later), later.published_at)
         unrelated = self.project(
             id="902a58cf-9de8-46f5-8c3c-e25abc5fed90",

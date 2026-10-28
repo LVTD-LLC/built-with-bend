@@ -14,6 +14,7 @@ from .editorial import (
     EDITOR_GUIDE_PROJECTS,
     has_browser_exercise,
     has_http_server_note,
+    has_knot_first_use,
     has_neovim_first_use,
     has_package_guide,
 )
@@ -153,6 +154,7 @@ def detail(request, slug):
             "show_package_guide": has_package_guide(project),
             "show_browser_exercise": has_browser_exercise(project),
             "show_neovim_first_use": has_neovim_first_use(project),
+            "show_knot_first_use": has_knot_first_use(project),
             "show_http_server_note": has_http_server_note(project),
             "newsletter_enabled": enabled(),
             "newsletter_form": NewsletterForm(),
