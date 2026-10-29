@@ -1,0 +1,13 @@
+{
+  "title": "ezmcp",
+  "description": "A Model Context Protocol library for Bend 2: build tool servers over stdio or stateless Streamable HTTP, or a client for stateless HTTP endpoints. It implements JSON-RPC messages including initialize, ping, tools/list and tools/call. The README documents protocol revisions 2025-03-26, 2025-06-18 and 2025-11-25.\n\nThe source provides a two-tool demo (echo and add), OpenAPI-to-tool-table helpers, versioned hub imports and a specification that distinguishes proved laws, trusted assumptions and pending requirements. Its HTTP transport uses ezhttp.\n\nFirst-use check, October 29, 2026: Built with Bend compiled the unmodified demo at c8d39ce on Linux x64 with Bend 2.0.38. Initialization, tool listing and an add call returning 42 worked over stdio and loopback HTTP. HTTP rejected an untrusted Origin and an unsupported protocol version. This was a bounded local smoke check, not a full conformance run, proof verification, benchmark or production/security certification.\n\nImportant limits: ezmcp does not provide authorization. Keep a local demo on 127.0.0.1; remote access needs an authenticating proxy. Resources, prompts, server-side SSE streams and sessions are not implemented. The HTTP client can read SSE responses but has no sessions. See the pinned README, demo and SPEC below before choosing it for a client or server integration.",
+  "author": "Emerging-Patterns",
+  "category": "libraries",
+  "repository_url": "https://github.com/Emerging-Patterns/ezmcp",
+  "sources": [
+    "https://github.com/Emerging-Patterns/ezmcp/blob/c8d39cebc58c7a967d4b22f0dd8fd97e60f23c45/README.md",
+    "https://github.com/Emerging-Patterns/ezmcp/blob/c8d39cebc58c7a967d4b22f0dd8fd97e60f23c45/examples/demo/main.bend",
+    "https://github.com/Emerging-Patterns/ezmcp/blob/c8d39cebc58c7a967d4b22f0dd8fd97e60f23c45/SPEC.md"
+  ],
+  "publish": true
+}

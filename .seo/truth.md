@@ -135,3 +135,21 @@ Release/source instructions: https://registry.npmjs.org/@matheusbbarni/knot/0.0.
 and https://github.com/MatheusBBarni/knot-node-tooling/blob/b914a71bbca46b7e2fe447d19a7a182e2b9ff715/README.md .
 Only exact repository-bound Knot listing gets newsection/date, originals retained.
 Recheck November4 or relevant release; prior correction outcomesNov4/11 retained.
+
+
+## ezmcp directory entry — checked 2026-10-29
+
+Pinned source c8d39cebc58c7a967d4b22f0dd8fd97e60f23c45 is Bend 2, not
+classic Bend/HVM. Unmodified examples/demo built natively on Linux x64 using
+an isolated official Bend 2.0.38 release (verified release SHA-256). Stdio
+and loopback HTTP initialized, listed tools and returned structured sum 42.
+HTTP rejected an untrusted Origin (403), unsupported protocol version (400)
+and GET (405). One local smoke check is not full conformance, proof, benchmark,
+security or production certification. No global compiler change.
+
+README/SPEC explicitly exclude authorization, resources, prompts, server SSE
+and sessions; distinguish client SSE response reading from server SSE support.
+Keep localhost or an authenticating proxy. Original source links and reviewed
+public copy live in apps/directory/content/ezmcp.json. No popularity invented.
+Next primary-source check November 5; acquisition/source-intent reads November
+19/26 after final data. No clean growth attribution promised.
