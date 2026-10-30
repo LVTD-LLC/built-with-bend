@@ -153,3 +153,8 @@ Keep localhost or an authenticating proxy. Original source links and reviewed
 public copy live in apps/directory/content/ezmcp.json. No popularity invented.
 Next primary-source check November 5; acquisition/source-intent reads November
 19/26 after final data. No clean growth attribution promised.
+
+
+## Bend 2 pocket workshop — checked October 30, 2026
+
+The publication payload at `apps/directory/content/bend-2-pocket-workshop.json` describes [np's browser workshop](https://np.github.io/bend-workshop/), not an official Bend product. Source pin `5c9ed4f4ae2303b042b18196df683e7e5d6ab90d`, compiler pin `d30d7dddae6c40785ef03001455599baa31a8e2d` (2.0.39). Independent live Chromium checks at 390/1440: value42, type-error rejection, open goal, bundled x+0 example checked; no page errors/overflow. This is not a full suite, physical-phone test, performance benchmark or Lean-kernel verification. No AI provider, hub import or Git operation exercised; no code/content copied from upstream. Repository has no detected license; link to sources, do not redistribute its code. Source review November6; discovery/source-intent outcomes November20/27, not a promised uplift.

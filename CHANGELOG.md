@@ -2,6 +2,10 @@
 
 - Add the reviewed ezmcp Bend 2 library listing with pinned original sources, a bounded native-demo check and explicit MCP/authorization limits. Publish through the existing directory service after deployment; no new runtime or analytics behavior.
 
+## 2026-10-30
+
+- Add a reviewed Bend 2 pocket workshop publication payload with checked browser first use, pinned sources and explicit single-core/kernel limits, plus source-identity-guarded app/breadcrumb markup.
+
 ## 2026-10-28
 
 - Add a source-bound Knot first-use note with versioned npm metadata, pinned installation/source-build links, and the observed Linux x64/glibc startup limit; preserve original listing content, dates and source actions.

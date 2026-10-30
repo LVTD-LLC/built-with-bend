@@ -1,0 +1,14 @@
+{
+  "title": "Bend 2 pocket workshop",
+  "description": "Bend 2 pocket workshop is a browser workspace for writing, checking and running Bend 2 programs without installing a compiler. It combines an editor, proof-hole goals, examples, the language guide and compiler output in one page. Its phone-oriented interface also provides keys for symbols that are awkward to type on a touch keyboard.\n\nFirst-use check, October 30, 2026: Built with Bend tried the hosted workshop at 390 px and 1440 px. The page identified Bend 2.0.39, commit d30d7dd. A small program returned 42, a String where U32 was required produced a type error, an unfinished definition showed an open goal, and the bundled x + 0 proof example checked. These are bounded browser observations, not a full test suite or a real-phone certification.\n\nThe repository documents JavaScript, JS-module, C and BendTT output, plus optional assistant and agent features. Those features were not exercised in this check. Running JavaScript in the page uses one core; it does not establish native or GPU performance. The page cannot run the Lean kernel, so its checker verdict is not the CLI's stronger --verdict check. Proof guarantees remain limited to the laws and trusted checking boundary.\n\nTo repeat the proof check, open Examples in the live editor and choose x + 0. Inspect the pinned README, compiler version and known limits below. No AI key was needed for the checked editing and example path. AI-provider calls, hub imports and Git operations are separate, user-triggered features; this check did not enable them.",
+  "author": "np",
+  "category": "tools",
+  "website_url": "https://np.github.io/bend-workshop/",
+  "repository_url": "https://github.com/np/bend-workshop",
+  "sources": [
+    "https://github.com/np/bend-workshop/blob/5c9ed4f4ae2303b042b18196df683e7e5d6ab90d/README.md",
+    "https://github.com/np/bend-workshop/blob/5c9ed4f4ae2303b042b18196df683e7e5d6ab90d/BEND_COMMIT",
+    "https://github.com/np/bend-workshop/blob/5c9ed4f4ae2303b042b18196df683e7e5d6ab90d/AGENTS.md"
+  ],
+  "publish": true
+}

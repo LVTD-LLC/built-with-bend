@@ -98,3 +98,38 @@ def test_empty_description_and_author_render(project):
     project.author = ""
     content = project_card_content(project)
     assert Image.open(BytesIO(render_project_card(content))).size == (1200, 630)
+
+
+@pytest.mark.parametrize("changed_identity", [None, "slug", "repository_url", "website_url"])
+def test_workshop_metadata_is_source_bound_and_script_safe(client, project, changed_identity):
+    import json
+    import re
+
+    project.slug = "bend-2-pocket-workshop"
+    project.repository_url = "https://github.com/np/bend-workshop"
+    project.website_url = "https://np.github.io/bend-workshop/"
+    project.title = "Workshop </script><script>alert(1)</script>"
+    if changed_identity:
+        setattr(
+            project,
+            changed_identity,
+            "other-workshop" if changed_identity == "slug" else "https://example.com/other",
+        )
+    project.save()
+    response = client.get(project.get_absolute_url())
+    assert response.status_code == 200
+    html = response.content.decode()
+    blocks = re.findall(r'<script type="application/ld\+json">(.*?)</script>', html, re.S)
+    if changed_identity:
+        assert not blocks
+        assert response.context["pocket_workshop_metadata"] is None
+        return
+    schema = json.loads(blocks[0])
+    assert [item["@type"] for item in schema] == ["WebApplication", "BreadcrumbList"]
+    assert schema[0]["name"] == project.title
+    assert schema[0]["url"] == project.website_url
+    assert schema[0]["sameAs"] == project.repository_url
+    assert "aggregateRating" not in schema[0] and "softwareVersion" not in schema[0]
+    assert schema[1]["itemListElement"][-1]["item"].endswith(project.get_absolute_url())
+    assert "</script><script>alert(1)" not in html
+    assert len(response.context["pocket_workshop_metadata"]["description"]) <= 155

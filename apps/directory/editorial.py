@@ -1,5 +1,6 @@
 """Curated connections between published projects and our guides."""
 
+import json
 from datetime import UTC, datetime
 
 # Only these listings are covered by the guide; do not match all editor tools.
@@ -68,3 +69,41 @@ def has_http_server_note(project):
 
 def has_knot_first_use(project):
     return project.slug == "knot" and project.repository_url == KNOT_FIRST_USE_REPOSITORY
+
+
+def pocket_workshop_metadata(project, site_url):
+    """Describe only the reviewed browser app, never repurposed catalog rows."""
+    if (
+        project.slug != "bend-2-pocket-workshop"
+        or project.repository_url != "https://github.com/np/bend-workshop"
+        or project.website_url != "https://np.github.io/bend-workshop/"
+    ):
+        return None
+    description = (
+        "Try Bend 2 in a browser editor with examples and proof-hole goals. "
+        "See checked first-use results, compiler version and kernel limits."
+    )
+    page_url = site_url.rstrip("/") + project.get_absolute_url()
+    schema = [
+        {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": project.title,
+            "url": project.website_url,
+            "sameAs": project.repository_url,
+            "description": description,
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Web browser",
+        },
+        {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {"@type": "ListItem", "position": 1, "name": "Built with Bend", "item": site_url},
+                {"@type": "ListItem", "position": 2, "name": project.title, "item": page_url},
+            ],
+        },
+    ]
+    # JSON inside a script element must not let a catalog title close the tag.
+    schema_json = json.dumps(schema, ensure_ascii=False).replace("</", "<\\/")
+    return {"description": description, "schema_json": schema_json}
