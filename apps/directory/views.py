@@ -17,6 +17,7 @@ from .editorial import (
     has_knot_first_use,
     has_neovim_first_use,
     has_package_guide,
+    pocket_workshop_metadata,
 )
 from .forms import SubmissionForm
 from .models import Category, Project, SourceKind, Sponsorship, SubmissionLimit
@@ -150,6 +151,7 @@ def detail(request, slug):
         {
             "project": project,
             "related_projects": related_projects,
+            "pocket_workshop_metadata": pocket_workshop_metadata(project, settings.SITE_URL),
             "show_editor_guide": project.slug in EDITOR_GUIDE_PROJECTS,
             "show_package_guide": has_package_guide(project),
             "show_browser_exercise": has_browser_exercise(project),

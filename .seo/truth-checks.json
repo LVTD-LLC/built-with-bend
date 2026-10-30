@@ -166,5 +166,28 @@
       "tested source.build workaround",
       "all Linux installations fail"
     ]
+  },
+  {
+    "claim": "Workshop listing keeps its checked version and browser/kernel boundaries",
+    "paths": [
+      "apps/directory/content/bend-2-pocket-workshop.json"
+    ],
+    "must_match": [
+      "2\\.0\\.39",
+      "d30d7dd",
+      "one core",
+      "cannot run the Lean kernel",
+      "not a full test suite",
+      "--verdict",
+      "October 30, 2026"
+    ],
+    "must_not_match": [
+      "production ready",
+      "GPU speedup",
+      "official Bend product"
+    ],
+    "urls": [
+      "/projects/bend-2-pocket-workshop/"
+    ]
   }
 ]

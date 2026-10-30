@@ -100,3 +100,7 @@ The exact-repository Bend 2 for Neovim listing offers a source-reviewed first-us
 section after its original sources. Separate editing-only use from compiler-backed
 commands, and distinguish Neovim 0.11 installation choices from experimental
 0.12+ vim.pack. Keep the untested-install and compiler-matrix limits visible.
+
+## Reviewed browser workshop profile
+
+The pocket-workshop listing keeps standard catalog actions and typography. Its focused description and app/breadcrumb metadata apply only to the reviewed slug, repository and website identity; other listings retain their metadata. Do not label the compiler pin as the application version or add invented ratings.
