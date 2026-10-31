@@ -53,14 +53,14 @@ class JendHubDestinationTests(TestCase):
         self.assertContains(response, 'data-posthog-outbound="website"')
         self.assertContains(response, f'href="{repair.NEW_SOURCE}"')
         self.assertNotContains(response, repair.OLD_SOURCE)
-        self.assertEqual(ProjectSitemap().lastmod(project).date().isoformat(), "2026-10-21")
+        self.assertEqual(ProjectSitemap().lastmod(project).date().isoformat(), "2026-10-31")
         repair.backwards(apps, self.editor)
         repair.backwards(apps, self.editor)
         project.refresh_from_db()
         source.refresh_from_db()
         self.assertEqual(project.website_url, "")
         self.assertEqual(source.url, repair.OLD_SOURCE)
-        self.assertEqual(ProjectSitemap().lastmod(project).date().isoformat(), "2026-10-21")
+        self.assertEqual(ProjectSitemap().lastmod(project).date().isoformat(), "2026-10-31")
 
     def test_newer_destination_or_changed_identity_is_preserved_before_any_write(self):
         project, source = self.fixture()
@@ -93,7 +93,7 @@ class JendHubDestinationTests(TestCase):
 
     def test_lastmod_requires_identity_and_preserves_later_publication(self):
         project, _ = self.fixture(website_url=repair.WEBSITE)
-        project.published_at = datetime(2026, 10, 22, tzinfo=UTC)
+        project.published_at = datetime(2026, 11, 2, tzinfo=UTC)
         self.assertEqual(ProjectSitemap().lastmod(project), project.published_at)
         for field, value in (
             ("slug", "another-project"),

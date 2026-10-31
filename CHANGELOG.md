@@ -1,3 +1,7 @@
+## 2026-10-31
+
+- Prefer source-reviewed Bend 2 peers in related builds on six verified tool listings, while retaining the complete category browse ring so classic and unclassified projects remain discoverable. Preserve source actions, publication order and content-specific sitemap dates.
+
 ## 2026-10-29
 
 - Add the reviewed ezmcp Bend 2 library listing with pinned original sources, a bounded native-demo check and explicit MCP/authorization limits. Publish through the existing directory service after deployment; no new runtime or analytics behavior.

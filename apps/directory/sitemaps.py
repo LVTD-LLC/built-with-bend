@@ -3,6 +3,7 @@ from django.urls import reverse
 
 from built_with_bend.sitemaps import ConfiguredSitemapMixin
 
+from .discovery import BEND2_DISCOVERY_ADDED_AT, has_bend2_discovery
 from .editorial import (
     BROWSER_EXERCISE_ADDED_AT,
     EDITOR_GUIDE_ADDED_AT,
@@ -31,6 +32,16 @@ class ProjectSitemap(ConfiguredSitemapMixin, Sitemap):
         return Project.objects.filter(status=Project.Status.PUBLISHED)
 
     def lastmod(self, obj):
+        content_date = self.content_lastmod(obj)
+        if has_bend2_discovery(obj):
+            return (
+                max(content_date, BEND2_DISCOVERY_ADDED_AT)
+                if content_date
+                else BEND2_DISCOVERY_ADDED_AT
+            )
+        return content_date
+
+    def content_lastmod(self, obj):
         if has_knot_first_use(obj):
             return (
                 max(obj.published_at, KNOT_FIRST_USE_ADDED_AT)
