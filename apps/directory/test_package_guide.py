@@ -66,7 +66,7 @@ class PackageGuideTests(TestCase):
             if row.find("s:lastmod", ns) is not None
         }
         for project, expected in (
-            (older, "2026-10-21"),
+            (older, "2026-10-31"),
             (newer, "2026-10-22"),
             (unrelated, "2026-10-09"),
         ):

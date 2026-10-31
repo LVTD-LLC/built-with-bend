@@ -33,7 +33,10 @@ class NeovimFirstUseTests(TestCase):
             response.content.index(b'class="sources"'),
             response.content.index(b'id="neovim-first-use-heading"'),
         )
-        self.assertEqual(ProjectSitemap().lastmod(project), datetime(2026, 10, 27, tzinfo=UTC))
+        self.assertEqual(ProjectSitemap().lastmod(project), datetime(2026, 10, 31, tzinfo=UTC))
+        self.assertEqual(
+            ProjectSitemap().content_lastmod(project), datetime(2026, 10, 27, tzinfo=UTC)
+        )
         project.refresh_from_db()
         self.assertEqual(project.published_at, datetime(2026, 9, 28, tzinfo=UTC))
         for changes in (

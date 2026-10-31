@@ -62,6 +62,10 @@ below the brand/navigation without horizontal overflow. Traffic is a real cached
 Detail pages offer up to three published builds of the same type below the sources.
 Use a compact text list with a title and short description, shared theme tokens,
 and visible keyboard focus. Do not imply a quality ranking or add nested cards.
+For source-reviewed Bend 2 identities, prefer two reviewed Bend 2 peers while
+retaining the next entry in the full category browse ring. Classic and
+unclassified builds remain reachable; other listings keep their original order.
+The evidence and identity contract live in [related project discovery](docs/seo/related-projects.md).
 
 ## Newsletter
 

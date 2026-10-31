@@ -10,6 +10,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.decorators.http import require_GET, require_http_methods, require_safe
 
+from .discovery import related_projects as select_related_projects
 from .editorial import (
     EDITOR_GUIDE_PROJECTS,
     has_browser_exercise,
@@ -137,14 +138,10 @@ def detail(request, slug):
     siblings = (
         Project.objects.filter(status=Project.Status.PUBLISHED, category=project.category)
         .exclude(pk=project.pk)
-        .only("title", "slug", "description")
+        .only("title", "slug", "description", "repository_url")
         .order_by("slug")
     )
-    # Walk the category in stable slug order, wrapping so older entries are not
-    # stranded behind a newest/popular-only recommendation list.
-    related_projects = list(siblings.filter(slug__gt=project.slug)[:3])
-    if len(related_projects) < 3:
-        related_projects.extend(siblings.filter(slug__lt=project.slug)[: 3 - len(related_projects)])
+    related_projects = select_related_projects(project, siblings)
     return render(
         request,
         "directory/detail.html",
