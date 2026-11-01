@@ -2,7 +2,7 @@
 title: "Bend 2 Editors: VS Code and LSP"
 description: "Choose Bend 2 editor tools by compiler setup: compare VS Code extensions, the standalone language server, version limits, and checks before you build."
 published_at: 2026-10-11
-updated_at: 2026-10-25
+updated_at: 2026-11-01
 keywords: [Bend 2 editor, Bend VS Code, Bend language server]
 topics: [Bend 2, Editor tools]
 author: Built with Bend
@@ -15,7 +15,7 @@ That distinction matters more than a screenshot of colored syntax. An editor can
 *Sources reviewed October 25, 2026: Nuxyel 1.0.1, kbrianps 0.1.3, published bend2-lsp 0.1.1 and the separate bend2-lsp source update described below. This is a source-and-documentation comparison, not a hands-on compatibility test or a ranking of every Bend extension.*
 
 <nav aria-label="On this page">
-<p><strong>In this guide:</strong> <a href="#choose">Choose a path</a> · <a href="#nuxyel">Nuxyel</a> · <a href="#kbrianps">Kbrianps</a> · <a href="#standalone">Standalone LSP</a> · <a href="#release-check">Check the server release</a> · <a href="#troubleshooting">Troubleshooting</a> · <a href="#questions">Questions</a> · <a href="#method">Method</a></p>
+<p><strong>In this guide:</strong> <a href="#choose">Choose a path</a> · <a href="#nuxyel">Nuxyel</a> · <a href="#kbrianps">Kbrianps</a> · <a href="#standalone">Standalone LSP</a> · <a href="#release-check">Check the server release</a> · <a href="#other-paths">Neovim or browser</a> · <a href="#troubleshooting">Troubleshooting</a> · <a href="#questions">Questions</a> · <a href="#method">Method</a></p>
 </nav>
 
 <span id="choose"></span>
@@ -27,6 +27,8 @@ That distinction matters more than a screenshot of colored syntax. An editor can
 | Check, build and inspect proofs in VS Code | Nuxyel | Separately installed Bend |
 | Add packaged diagnostics and formatting to VS Code | Kbrianps | Compiler bundled with its language server |
 | Connect another LSP-capable editor | Standalone bend2-lsp | Bundled compiler; separate Node runtime |
+| Stay in Neovim without a Node/LSP server | [Native Bend2.nvim](#other-paths) | Editing without Bend; installed compiler for checks |
+| Try a small program without installing a compiler | [Pocket workshop in the browser](#other-paths) | Browser checker and JavaScript run; no Lean kernel |
 
 The table is a decision aid, not a promise that any particular host works. Check the exact extension ID and release, then the runtime and compiler requirements below. These projects have different settings despite sharing the `.bend` file extension.
 
@@ -111,6 +113,20 @@ When feedback differs from your terminal:
 
 Keep a separately passing terminal check as evidence for that compiler and file. Do not dismiss a real error—or claim the stronger independent `--verdict` check passed—because a source changelog describes improved diagnostics.
 
+<span id="other-paths"></span>
+
+## Neovim or a browser: two different starting points
+
+You do not have to configure the standalone language server to edit Bend 2 in Neovim. [Nuxyel's native Bend2.nvim plugin](/projects/bend-2-for-neovim/) is a separate path. Its [versioned README](https://github.com/nuxyel/bend2-nvim/blob/a67312765430fc8dea4f291ca2ab071f311f1e32/README.md) describes Lua-based editing without Node.js or a language-server executable. Editing remains available without Bend; compiler-backed checks, builds and proof workflows require an installed Bend 2.0.28 or newer. The documented compiler test matrix covers 2.0.28 and 2.0.32, not every later release.
+
+Choose that path if Neovim is already your editor and you want compiler commands there. The linked profile separates Neovim 0.11 installation options from experimental 0.12+ `vim.pack`. We reviewed its sources, not a local plugin installation. A native plugin and an LSP client configuration are alternatives to evaluate, not two required installation steps.
+
+If your immediate task is to **try Bend 2 without installing a compiler**, start with the [Bend 2 pocket workshop](/projects/bend-2-pocket-workshop/). Its [maintainer README](https://github.com/np/bend-workshop/blob/f05af248febee43a589580550dba6ffe243e1fca/README.md) describes a browser editor with the Bend checker, compiler output and proof-hole goals. Our linked profile records the October 30 browser check: a small program returned 42, a wrong type was rejected, and the bundled `x + 0` example checked. That dated check is not a test of every later workshop update.
+
+This differs from VS Code Web's parser-backed editing described above: the workshop runs the Bend checker in the page. Its JavaScript execution uses one core, and it cannot run the Lean kernel for the CLI's stronger `--verdict` check. It is not evidence of native or GPU performance. Follow the profile to its original site, open Examples and try `x + 0`; the checked path needed no AI key. Optional AI-provider features are separate. Use the project's required local toolchain when you move from a browser exercise to building an application.
+
+*Alternative-path sources reviewed November 1, 2026. The VS Code/LSP release comparison above remains the October 25 review; npm's published bend2-lsp was rechecked at 0.1.1 on November 1.*
+
 <span id="troubleshooting"></span>
 
 ## When the editor and terminal disagree
@@ -138,7 +154,7 @@ No. A proof interface helps you inspect or invoke proof-related work. Its presen
 
 ### Are these the only Bend 2 editor options?
 
-No. This comparison follows two VS Code paths and the standalone server that explains one of them. [Browse the developer-tool projects](/?category=tools) for other editors and integrations, then verify each project's current requirements. Built with Bend is an independent directory, not the vendor of these extensions.
+No. Alongside the two VS Code paths and standalone server, this guide points to a native Neovim plugin and a no-install browser workshop. [Browse the developer-tool projects](/?category=tools) for other editors and integrations, then verify each project's current requirements. Built with Bend is an independent directory, not the vendor of these tools.
 
 <span id="method"></span>
 
@@ -149,4 +165,4 @@ We compared release or package metadata with repository documentation and config
 Choose one path, verify it against a small project, then follow the original repository for setup details. If you build another useful Bend 2 tool, [submit your project](/submit/) so other developers can find its source.
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Blog","item":"https://builtwithbend.com/blog/"},{"@type":"ListItem","position":2,"name":"Bend 2 Editors: VS Code and LSP","item":"https://builtwithbend.com/blog/bend-2-editor-tools"}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Does a Bend 2 language server replace the compiler?","acceptedAnswer":{"@type":"Answer","text":"Not for building your application. Don2e4's server bundles a compiler for diagnostic analysis, while Nuxyel calls an installed Bend toolchain for compiler-backed work. Keep the project's own build instructions and compiler requirements as a separate check."}},{"@type":"Question","name":"Does a proof explorer guarantee a verified program?","acceptedAnswer":{"@type":"Answer","text":"No. A proof interface helps you inspect or invoke proof-related work. Its presence does not establish which checker ran, what properties were stated, or whether every required proof passed. Follow the project's proof procedure and inspect its actual result rather than treating an editor panel as the verdict."}},{"@type":"Question","name":"Are these the only Bend 2 editor options?","acceptedAnswer":{"@type":"Answer","text":"No. This comparison follows two VS Code paths and the standalone server that explains one of them. Browse the developer-tool projects for other editors and integrations, then verify each project's current requirements. Built with Bend is an independent directory, not the vendor of these extensions."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Does a Bend 2 language server replace the compiler?","acceptedAnswer":{"@type":"Answer","text":"Not for building your application. Don2e4's server bundles a compiler for diagnostic analysis, while Nuxyel calls an installed Bend toolchain for compiler-backed work. Keep the project's own build instructions and compiler requirements as a separate check."}},{"@type":"Question","name":"Does a proof explorer guarantee a verified program?","acceptedAnswer":{"@type":"Answer","text":"No. A proof interface helps you inspect or invoke proof-related work. Its presence does not establish which checker ran, what properties were stated, or whether every required proof passed. Follow the project's proof procedure and inspect its actual result rather than treating an editor panel as the verdict."}},{"@type":"Question","name":"Are these the only Bend 2 editor options?","acceptedAnswer":{"@type":"Answer","text":"No. Alongside the two VS Code paths and standalone server, this guide points to a native Neovim plugin and a no-install browser workshop. Browse the developer-tool projects for other editors and integrations, then verify each project's current requirements. Built with Bend is an independent directory, not the vendor of these tools."}}]}</script>

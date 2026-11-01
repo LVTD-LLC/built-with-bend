@@ -1,3 +1,7 @@
+## 2026-11-01
+
+- Add source-linked native Neovim and no-install browser paths to the existing Bend 2 editor guide, distinguishing compiler requirements and browser proof limits while retaining its title and publication date.
+
 ## 2026-10-31
 
 - Prefer source-reviewed Bend 2 peers in related builds on six verified tool listings, while retaining the complete category browse ring so classic and unclassified projects remain discoverable. Preserve source actions, publication order and content-specific sitemap dates.
