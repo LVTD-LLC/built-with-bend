@@ -189,5 +189,28 @@
     "urls": [
       "/projects/bend-2-pocket-workshop/"
     ]
+  },
+  {
+    "claim": "Editor alternative paths preserve native/server and browser/kernel boundaries",
+    "paths": [
+      "apps/pages/posts/bend-2-editor-tools.md"
+    ],
+    "urls": [
+      "/blog/bend-2-editor-tools"
+    ],
+    "must_match": [
+      "without Node.js or a language-server executable",
+      "not a local plugin installation",
+      "cannot run the Lean kernel",
+      "not a test of every later workshop update",
+      "Optional AI-provider features are separate",
+      "native Bend2.nvim plugin",
+      "Bend 2 pocket workshop"
+    ],
+    "must_not_match": [
+      "guaranteed compatibility",
+      "verified in the Lean kernel",
+      "GPU speedup"
+    ]
   }
 ]
