@@ -108,3 +108,10 @@ commands, and distinguish Neovim 0.11 installation choices from experimental
 ## Reviewed browser workshop profile
 
 The pocket-workshop listing keeps standard catalog actions and typography. Its focused description and app/breadcrumb metadata apply only to the reviewed slug, repository and website identity; other listings retain their metadata. Do not label the compiler pin as the application version or add invented ratings.
+
+## Checked Bendo first use
+
+The exact-repository Bendo listing offers a compact, source-linked native hello
+path after original sources. Use the existing project-guide typography and focus
+styles. Keep checkout-only scaffolding, the pinned compiler and smoke-test limits
+visible; do not imply production or proof certification.

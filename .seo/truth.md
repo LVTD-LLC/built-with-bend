@@ -158,3 +158,14 @@ Next primary-source check November 5; acquisition/source-intent reads November
 ## Bend 2 pocket workshop — checked October 30, 2026
 
 The publication payload at `apps/directory/content/bend-2-pocket-workshop.json` describes [np's browser workshop](https://np.github.io/bend-workshop/), not an official Bend product. Source pin `5c9ed4f4ae2303b042b18196df683e7e5d6ab90d`, compiler pin `d30d7dddae6c40785ef03001455599baa31a8e2d` (2.0.39). Independent live Chromium checks at 390/1440: value42, type-error rejection, open goal, bundled x+0 example checked; no page errors/overflow. This is not a full suite, physical-phone test, performance benchmark or Lean-kernel verification. No AI provider, hub import or Git operation exercised; no code/content copied from upstream. Repository has no detected license; link to sources, do not redistribute its code. Source review November6; discovery/source-intent outcomes November20/27, not a promised uplift.
+
+## Bendo local first use — checked November 2, 2026
+
+Unmodified a42deb987571aeb6bb35790f787f5f7defb1d5e0 hello built with an isolated
+official Bend2.0.38 release and returned the expected loopback HTTP200 response
+on Linuxx64/glibc2.36. This is a native hello smoke only, not template, proof,
+benchmark, security or production certification. Upstream remains pre-alpha and
+requires checkout-based scaffolding before npm publication. See the reproducible
+public-source check in `.seo/evidence/2026-11-02-bendo-hello.md`.
+The section and content date apply only to the exact repository-bound Bendo
+listing; original publication, actions and metadata remain. Recheck November9.

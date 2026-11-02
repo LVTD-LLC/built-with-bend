@@ -212,5 +212,29 @@
       "verified in the Lean kernel",
       "GPU speedup"
     ]
+  },
+  {
+    "claim": "Bendo checked local first use retains release and proof boundaries",
+    "paths": [
+      "frontend/templates/directory/bendo_first_use.html"
+    ],
+    "urls": [
+      "/projects/bendo/"
+    ],
+    "must_match": [
+      "pre-alpha",
+      "2.0.38",
+      "not published",
+      "November 2, 2026",
+      "smoke check",
+      "not a benchmark, proof-kernel check",
+      "pure-code proofs from IO"
+    ],
+    "must_not_match": [
+      "production-ready",
+      "guaranteed bug-free",
+      "ALL PROOFS CHECK"
+    ],
+    "flags": "i"
   }
 ]
