@@ -1,0 +1,23 @@
+<section class="project-guide" aria-labelledby="bendo-first-use-heading">
+    <h2 id="bendo-first-use-heading">Try Bendo’s local Bend 2 web server</h2>
+    <p>Start with Bendo’s hello example to explore a Bend 2 web framework before adding a frontend. Bendo is pre-alpha: its maintainer has not published the toolkit to npm, and the API can change. Use the checkout instructions, not the prospective <code>bun create bendo</code> command.</p>
+    <p>The <a href="https://github.com/opencoredev/bendo/blob/a42deb987571aeb6bb35790f787f5f7defb1d5e0/README.md#quick-start"
+    data-posthog-outbound="source"
+    target="_blank"
+    rel="noopener noreferrer nofollow">pinned quick start</a> specifies Bend 2.0.38, Bun 1.4.4 and clang. Follow its versioned compiler download rather than assuming the latest Bend installer matches. After cloning, select the checked source with <code>git checkout a42deb9</code>.</p>
+    <ol>
+        <li>In the Bendo checkout, compile <code>bend examples/hello/main.bend -o hello</code>, then start <code>./hello</code>.</li>
+        <li>In a second terminal, run <code>curl http://127.0.0.1:8787/todos/42</code>. Expect <code>Hello from Bendo! You asked for /todos/42</code>. Stop the server when finished.</li>
+    </ol>
+    <p>For a larger starting point, the <a href="https://github.com/opencoredev/bendo/blob/a42deb987571aeb6bb35790f787f5f7defb1d5e0/packages/create-bendo/README.md#before-the-first-npm-release"
+    data-posthog-outbound="source"
+    target="_blank"
+    rel="noopener noreferrer nofollow">checkout-only scaffolder</a> offers an API template or a fullstack template with React and a typed client. Those templates are separate from the hello example tested here.</p>
+    <p>Built with Bend checked the unmodified <a href="https://github.com/opencoredev/bendo/blob/a42deb987571aeb6bb35790f787f5f7defb1d5e0/examples/hello/main.bend"
+    data-posthog-outbound="source"
+    target="_blank"
+    rel="noopener noreferrer nofollow">hello source</a> on <time datetime="2026-11-02">November 2, 2026</time>: it compiled with Bend 2.0.38 on Linux x64 and returned the expected local HTTP response. This was a smoke check, not a benchmark, proof-kernel check, template test or production recommendation. The maintainer’s <a href="https://github.com/opencoredev/bendo/blob/a42deb987571aeb6bb35790f787f5f7defb1d5e0/docs/laws/README.md"
+    data-posthog-outbound="source"
+    target="_blank"
+    rel="noopener noreferrer nofollow">law coverage</a> distinguishes pure-code proofs from IO; this HTTP smoke check did not verify the documented proofs or full IO behavior.</p>
+</section>

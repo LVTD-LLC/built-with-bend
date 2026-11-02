@@ -5,6 +5,7 @@ from built_with_bend.sitemaps import ConfiguredSitemapMixin
 
 from .discovery import BEND2_DISCOVERY_ADDED_AT, has_bend2_discovery
 from .editorial import (
+    BENDO_FIRST_USE_ADDED_AT,
     BROWSER_EXERCISE_ADDED_AT,
     EDITOR_GUIDE_ADDED_AT,
     EDITOR_GUIDE_PROJECTS,
@@ -14,6 +15,7 @@ from .editorial import (
     KNOT_RELEASE_CORRECTED_AT,
     NEOVIM_FIRST_USE_ADDED_AT,
     PACKAGE_GUIDE_ADDED_AT,
+    has_bendo_first_use,
     has_browser_exercise,
     has_http_server_note,
     has_jendhub_destinations,
@@ -42,6 +44,12 @@ class ProjectSitemap(ConfiguredSitemapMixin, Sitemap):
         return content_date
 
     def content_lastmod(self, obj):
+        if has_bendo_first_use(obj):
+            return (
+                max(obj.published_at, BENDO_FIRST_USE_ADDED_AT)
+                if obj.published_at
+                else BENDO_FIRST_USE_ADDED_AT
+            )
         if has_knot_first_use(obj):
             return (
                 max(obj.published_at, KNOT_FIRST_USE_ADDED_AT)

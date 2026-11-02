@@ -13,6 +13,7 @@ from django.views.decorators.http import require_GET, require_http_methods, requ
 from .discovery import related_projects as select_related_projects
 from .editorial import (
     EDITOR_GUIDE_PROJECTS,
+    has_bendo_first_use,
     has_browser_exercise,
     has_http_server_note,
     has_knot_first_use,
@@ -154,6 +155,7 @@ def detail(request, slug):
             "show_browser_exercise": has_browser_exercise(project),
             "show_neovim_first_use": has_neovim_first_use(project),
             "show_knot_first_use": has_knot_first_use(project),
+            "show_bendo_first_use": has_bendo_first_use(project),
             "show_http_server_note": has_http_server_note(project),
             "newsletter_enabled": enabled(),
             "newsletter_form": NewsletterForm(),

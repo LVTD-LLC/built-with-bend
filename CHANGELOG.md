@@ -1,3 +1,7 @@
+## 2026-11-02
+
+- Add a checked, version-pinned local hello path to Bendo’s listing, with checkout-only scaffolding and explicit pre-alpha/proof limits. Preserve original metadata, actions and publication; update only its content date.
+
 ## 2026-11-01
 
 - Add source-linked native Neovim and no-install browser paths to the existing Bend 2 editor guide, distinguishing compiler requirements and browser proof limits while retaining its title and publication date.
