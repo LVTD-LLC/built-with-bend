@@ -143,3 +143,5 @@ Before reading or changing a project's source, [compare Bend 2 editor tools for 
 For more applications to read, [browse the Built with Bend directory](https://builtwithbend.com/). It links builds to their sources so you can move from “someone made this” to “here is how it works.”
 
 Already building something with Bend 2? [Submit your build](https://builtwithbend.com/submit/) so other developers can learn from it.
+
+For a hands-on distinction between a law, an ordinary checker pass and additional kernel validation, try the [Bend 2 proof workflow and its failure controls](/blog/bend-2-proof-workflow). The worked result includes a failed `--verdict` attempt, not a kernel-validation claim.

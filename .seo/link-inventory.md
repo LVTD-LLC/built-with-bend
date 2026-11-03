@@ -6,3 +6,5 @@ The editor comparison at /blog/bend-2-editor-tools owns Bend 2 editor, VS Code a
 Full measured graph/evidence is private in Rowset, not maintained here.
 
 - 2026-10-13: Nuxyel and bend2-lsp project listings link contextually to `/blog/bend-2-editor-tools`; no other editor listings implied to be covered.
+
+- 2026-11-03: `/blog/bend-2-proof-workflow` owns first-law/checker-boundary intent. Inbound: introductory guide, package guide and automatic blog index. Anchor variants: Bend 2 proof workflow; check a Bend 2 law; proof-checking failure controls; check-only versus verdict; read a project proof boundary.
