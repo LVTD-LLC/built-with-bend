@@ -5,7 +5,8 @@ Bend 2.
 
 **[Explore the collection](https://builtwithbend.com)** ·
 **[Submit a build](https://builtwithbend.com/submit/)** ·
-**[Blog](https://builtwithbend.com/blog/)**
+**[Blog](https://builtwithbend.com/blog/)** ·
+**[Newsletter and past issues](https://builtwithbend.com/newsletter/)**
 
 Find projects by type, source, or search. Filter by GitHub stars or X likes, and
 sort by popularity. Each listing links to its original
@@ -17,7 +18,8 @@ links to an editable browser exercise and explains its checker limits. The optio
 AI-provider feature is separate; no key is needed for the exercise.
 
 Want to keep exploring? Opt into the weekly Bend newsletter from the directory,
-project pages, or guides. Confirm by email to subscribe; unsubscribe anytime.
+project pages, or guides. Read past issues in the public archive before joining.
+Confirm by email to subscribe; unsubscribe anytime.
 
 Anyone can suggest a build without creating an account. Every submission is
 reviewed before it appears, and contact details stay private. Add an optional
@@ -28,6 +30,3 @@ team. Learn about the language at [bend-lang.com](https://bend-lang.com/).
 
 For development and the curator API, see [TECHNICAL.md](TECHNICAL.md).
 Contributions: [CONTRIBUTING.md](CONTRIBUTING.md).
-
-Get a weekly email with the latest Bend news and projects by subscribing on the
-homepage or any project page. Confirm your email to join; unsubscribe anytime.

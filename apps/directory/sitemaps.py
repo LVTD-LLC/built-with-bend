@@ -106,7 +106,7 @@ class PageSitemap(ConfiguredSitemapMixin, Sitemap):
     changefreq = "weekly"
 
     def items(self):
-        return ["directory:index", "directory:submit", "blog_posts"]
+        return ["directory:index", "directory:submit", "directory:newsletter", "blog_posts"]
 
     def location(self, item):
         return reverse(item)

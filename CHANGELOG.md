@@ -1,5 +1,7 @@
 ## 2026-11-03
 
+- Add a public newsletter signup and past-issues page, automatically refreshed from the Listmonk public archive with cached outage fallback.
+
 - Publish a tested Bend 2 proof workflow with separate law/witness files, negative controls, and an explicitly unsuccessful additional-kernel check; add contextual discovery links.
 
 ## 2026-11-03

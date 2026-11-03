@@ -143,3 +143,84 @@ def test_project_signup_respects_configuration(client, settings, category, confi
         assert 'name="csrfmiddlewaretoken"' in html
         assert "The latest Bend news and projects" in html
         assert "Confirm by email to subscribe" in html
+
+
+@pytest.fixture(autouse=True)
+def archive_provider():
+    from django.core.cache import cache
+
+    cache.clear()
+    with patch("apps.directory.newsletter_archive.requests.get") as get:
+        get.return_value = Mock(status_code=200)
+        get.return_value.json.return_value = {"data": {"results": [], "total": 0}}
+        yield get
+    cache.clear()
+
+
+def archive_record(**overrides):
+    return {
+        "subject": "Bend2 Newsletter #1 - Small programs, clear laws",
+        "url": "https://newsletter.builtwithbend.com/archive/bend2-newsletter-1",
+        "send_at": "2026-11-03T23:00:00Z",
+        "created_at": "2026-11-03T22:00:00Z",
+        **overrides,
+    }
+
+
+def test_archive_page_keeps_signup_first_and_escapes_subjects(client, archive_provider):
+    archive_provider.return_value.json.return_value = {
+        "data": {"results": [archive_record(subject="<script>private</script>")], "total": 21}
+    }
+    response = client.get("/newsletter/")
+    html = response.content.decode()
+    assert response.status_code == 200
+    assert 'name="csrfmiddlewaretoken"' in html
+    assert html.index('class="newsletter-form"') < html.index('id="past-issues-title"')
+    assert "&lt;script&gt;private&lt;/script&gt;" in html
+    assert "<script>private</script>" not in html
+    assert 'href="?page=2"' in html
+    assert 'name="robots" content="noindex"' not in html
+    assert "newsletter.builtwithbend.com/archive/bend2-newsletter-1" in html
+    assert b"/newsletter/" in client.get("/sitemap.xml").content
+
+
+@pytest.mark.parametrize("signup_available", [True, False])
+def test_archive_cache_survives_provider_outage(
+    client, settings, archive_provider, monkeypatch, signup_available
+):
+    from . import newsletter_archive
+
+    monkeypatch.setattr(newsletter_archive, "FRESH_SECONDS", 0)
+    archive_provider.return_value.json.return_value = {
+        "data": {"results": [archive_record()], "total": 1}
+    }
+    assert b"Small programs, clear laws" in client.get("/newsletter/").content
+    archive_provider.side_effect = requests.Timeout()
+    if not signup_available:
+        settings.NEWSLETTER_LIST_UUID = ""
+    response = client.get("/newsletter/")
+    assert response.status_code == 200
+    assert b"Small programs, clear laws" in response.content
+    assert (b'class="newsletter-form"' in response.content) is signup_available
+
+
+@pytest.mark.parametrize("invalid", ["timeout", "shape", "url"])
+def test_archive_failure_does_not_break_signup_or_publish_unsafe_links(
+    client, archive_provider, invalid
+):
+    if invalid == "timeout":
+        archive_provider.side_effect = requests.Timeout()
+    elif invalid == "shape":
+        archive_provider.return_value.json.return_value = {"data": []}
+    else:
+        archive_provider.return_value.json.return_value = {
+            "data": {
+                "results": [archive_record(url="https://evil.example/archive/issue")],
+                "total": 1,
+            }
+        }
+    response = client.get("/newsletter/")
+    assert response.status_code == 200
+    assert b'class="newsletter-form"' in response.content
+    assert b"Past issues are temporarily unavailable" in response.content
+    assert b"evil.example" not in response.content

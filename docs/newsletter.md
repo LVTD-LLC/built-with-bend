@@ -32,16 +32,19 @@ in Listmonk and Mailgun. Mailgun maintains domain-level bounce/complaint
 suppressions; this initial setup does not mirror provider events into Listmonk.
 Keep suppression lists intact. Use Listmonk's unsubscribe link in every campaign.
 
-No campaign or recurring editorial automation is created. Compose the weekly
-news/projects edition in Listmonk, send yourself a preview, then schedule it to
-this list. Check the sender and unsubscribe footer before sending.
+The approved weekly editorial workflow runs Tuesdays at 18:00 Europe/Istanbul.
+The Scribe-owned `bend-weekly-newsletter` skill in the agent control plane holds
+the collection, rendering, sending and completed-send ledger procedure. Check
+the sender, consent state and unsubscribe footer before sending. Never resend
+a finished campaign to repair archive publication.
 
 ## Website integration
 
 Set `NEWSLETTER_LISTMONK_URL=http://builtwithbend-listmonk:9000` and
 `NEWSLETTER_LIST_UUID` on web and workers. Neither is an admin credential.
 Empty configuration hides the homepage form and makes the signup endpoint
-return a recoverable unavailable response.
+return a recoverable unavailable response on POST. The public archive remains
+readable on GET even while signups are disabled.
 
 `POST /newsletter/` validates email and CSRF, checks a honeypot and a separate
 10-attempt/IP/hour database-backed rate limit, then calls Listmonk's public
@@ -83,3 +86,22 @@ a byte-for-byte SHA-256 match with the dump used in the database restore check.
 - Before Listmonk upgrades, take a consistent `pg_dump -Fc` and uploads snapshot;
   test restoring into a separate disposable database. Retain the pinned app image
   and never downgrade an already-migrated database without restoring its backup.
+
+## Public archive
+
+`GET /newsletter/` shows the signup first, followed by past issues, and is linked
+from navigation and the sitemap. Django reads only `/api/public/archive` on the
+private Listmonk service; no admin credentials or subscriber data reach the site.
+Issue links must match `NEWSLETTER_ARCHIVE_PUBLIC_URL` (default
+`https://newsletter.builtwithbend.com`) and point to HTTPS `/archive/` pages.
+The index caches each 20-issue page for five minutes, retaining the last good
+response for up to 30 days during provider outages.
+
+Listmonk's `app.enable_public_archive` is enabled. Only explicitly archived
+campaigns are public, not drafts or test issues. After a production send finishes,
+record it in the send ledger, then run the skill's `scripts/publish_archive.py`
+with the campaign ID and issue number. It requires the matching finished regular
+campaign on list 3 and publishes with archive template 2 and empty subscriber
+metadata. Verify the returned public URL and API entry. The website picks it up
+within five minutes, without a repository edit or deployment. If publication
+fails, retry only this idempotent archive step, never the send.
