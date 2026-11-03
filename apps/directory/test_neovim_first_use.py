@@ -23,7 +23,11 @@ class NeovimFirstUseTests(TestCase):
         self.assertContains(response, 'id="neovim-first-use-heading"')
         self.assertContains(response, "#native-package-layout")
         self.assertContains(response, "#neovim-vimpack")
-        self.assertContains(response, "not installed or run this plugin")
+        self.assertContains(response, "isolated first-use smoke check")
+        self.assertContains(response, "Neovim 0.11.7")
+        self.assertContains(response, "Bend 2.0.39")
+        self.assertContains(response, "not the full plugin test suite")
+        self.assertContains(response, "--verdict")
         self.assertContains(response, ":Bend2CheckWorkspace")
         self.assertContains(response, 'data-posthog-outbound="repository"')
         self.assertEqual(
@@ -33,9 +37,9 @@ class NeovimFirstUseTests(TestCase):
             response.content.index(b'class="sources"'),
             response.content.index(b'id="neovim-first-use-heading"'),
         )
-        self.assertEqual(ProjectSitemap().lastmod(project), datetime(2026, 10, 31, tzinfo=UTC))
+        self.assertEqual(ProjectSitemap().lastmod(project), datetime(2026, 11, 3, tzinfo=UTC))
         self.assertEqual(
-            ProjectSitemap().content_lastmod(project), datetime(2026, 10, 27, tzinfo=UTC)
+            ProjectSitemap().content_lastmod(project), datetime(2026, 11, 3, tzinfo=UTC)
         )
         project.refresh_from_db()
         self.assertEqual(project.published_at, datetime(2026, 9, 28, tzinfo=UTC))

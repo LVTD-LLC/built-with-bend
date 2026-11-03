@@ -21,5 +21,12 @@
     data-posthog-outbound="source"
     target="_blank"
     rel="noopener noreferrer nofollow">configuration reference</a> explains compiler selection and help commands. A successful check is not a guarantee about unwritten requirements or production readiness.</p>
-    <p>Sources reviewed <time datetime="2026-10-27">October 27, 2026</time>. Built with Bend has not installed or run this plugin. The maintainer’s documented compiler test matrix covers 2.0.28 and 2.0.32, not every later version; a supported-version claim is not a compatibility test.</p>
+    <p>Checked by Built with Bend on <time datetime="2026-11-03">November 3, 2026</time>: the native package layout loaded plugin revision <code>a673127</code> on Linux x86-64 with <a href="https://github.com/neovim/neovim/releases/tag/v0.11.7"
+    data-posthog-outbound="source"
+    target="_blank"
+    rel="noopener noreferrer nofollow">Neovim 0.11.7</a> and <a href="https://github.com/bendlang/bend/releases/tag/v2.0.39"
+    data-posthog-outbound="source"
+    target="_blank"
+    rel="noopener noreferrer nofollow">Bend 2.0.39</a>. We configured <code>cmd</code> to that Bend executable, opened the example above and ran the two commands. The workspace check returned <code>PASS</code>; Proof Explorer showed <code>adding_zero_preserves_value</code> as <code>proved</code>.</p>
+    <p>This was an isolated first-use smoke check, not the full plugin test suite or a check with the proven kernel via <code>--verdict</code>. We did not test macOS, WSL or Neovim 0.12. The maintainer’s documented compiler test matrix covers 2.0.28 and 2.0.32, not every later version; our result adds only the exact combination above.</p>
 </section>

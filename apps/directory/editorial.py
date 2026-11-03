@@ -31,7 +31,7 @@ BROWSER_EXERCISE_REPOSITORY = "https://github.com/raunak-11/bend-explainer"
 BROWSER_EXERCISE_ADDED_AT = datetime(2026, 10, 23, tzinfo=UTC)
 
 NEOVIM_FIRST_USE_REPOSITORY = "https://github.com/nuxyel/bend2-nvim"
-NEOVIM_FIRST_USE_ADDED_AT = datetime(2026, 10, 27, tzinfo=UTC)
+NEOVIM_FIRST_USE_ADDED_AT = datetime(2026, 11, 3, tzinfo=UTC)
 
 BENDO_FIRST_USE_REPOSITORY = "https://github.com/opencoredev/bendo"
 BENDO_FIRST_USE_ADDED_AT = datetime(2026, 11, 2, tzinfo=UTC)

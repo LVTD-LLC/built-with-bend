@@ -133,7 +133,7 @@
     "flags": "is"
   },
   {
-    "claim": "Neovim first-use keeps source-reviewed installation and compiler boundaries",
+    "claim": "Neovim checked first use retains exact runtime, platform and proof boundaries",
     "urls": [
       "/projects/bend-2-for-neovim/"
     ],
@@ -144,10 +144,24 @@
       "Neovim 0\\.12",
       "experimental API",
       ":Bend2CheckWorkspace",
-      "not installed or run this plugin",
-      "not every later version"
+      "not every later version",
+      "Neovim 0\\.11\\.7",
+      "Bend 2\\.0\\.39",
+      "November 3, 2026",
+      "isolated first-use smoke check",
+      "not the full plugin test suite",
+      "--verdict",
+      "adding_zero_preserves_value"
     ],
-    "flags": "is"
+    "flags": "is",
+    "paths": [
+      "frontend/templates/directory/neovim_first_use.html"
+    ],
+    "must_not_match": [
+      "not installed or run this plugin",
+      "guaranteed compatibility",
+      "proven kernel passed"
+    ]
   },
   {
     "claim": "Knot first-use distinguishes install from observed loader failure",

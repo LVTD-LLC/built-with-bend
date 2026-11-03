@@ -1,3 +1,11 @@
+## 2026-11-03
+
+- Add a dated, independently checked native-package first-use result to the
+  existing Neovim listing: Neovim 0.11.7, Bend 2.0.39, workspace check and
+  Proof Explorer, with explicit platform, suite and proven-kernel limits.
+- Preserve the listing’s original metadata, publication order and source actions;
+  advance only its source-matched sitemap content date.
+
 ## 2026-11-02
 
 - Add a checked, version-pinned local hello path to Bendo’s listing, with checkout-only scaffolding and explicit pre-alpha/proof limits. Preserve original metadata, actions and publication; update only its content date.

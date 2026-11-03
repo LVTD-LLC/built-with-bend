@@ -116,7 +116,8 @@ require Bend 2.0.28+ according to its maintainer. Neovim 0.11+ supports lazy.nvi
 and native package layout; vim.pack needs 0.12+ and has an experimental API.
 The published v1.0.0 GitHub release is available. The documented compiler test
 matrix covers 2.0.28 and 2.0.32, not every later compiler. No local plugin install
-or execution was performed. Preserve original listing metadata and sources.
+or execution was performed during the October 27 review; see the dated November 3
+smoke check below. Preserve original listing metadata and sources.
 Primary sources: https://github.com/nuxyel/bend2-nvim/blob/a67312765430fc8dea4f291ca2ab071f311f1e32/README.md
 and https://github.com/nuxyel/bend2-nvim/blob/a67312765430fc8dea4f291ca2ab071f311f1e32/docs/INSTALLATION.md .
 The dated first-use section and sitemap content date match the exact repository
@@ -169,3 +170,18 @@ requires checkout-based scaffolding before npm publication. See the reproducible
 public-source check in `.seo/evidence/2026-11-02-bendo-hello.md`.
 The section and content date apply only to the exact repository-bound Bendo
 listing; original publication, actions and metadata remain. Recheck November9.
+
+## Native Neovim checked first use — 2026-11-03
+
+Current source remains a67312765430fc8dea4f291ca2ab071f311f1e32. An isolated
+native-package installation on Linux x86-64 with official Neovim 0.11.7 and Bend
+2.0.39 loaded the plugin, detected Bend files, returned workspace PASS and showed
+adding_zero_preserves_value as proved in Proof Explorer. Configuration set cmd
+to the pinned compiler executable; the published setup and example instructions
+remain the source. This is a first-use smoke check, not the full plugin suite,
+a macOS/WSL/Neovim 0.12 test, a benchmark or a proven-kernel --verdict result.
+The maintainer matrix remains 2.0.28/2.0.32; the smoke adds only this combination.
+Official release sources: https://github.com/neovim/neovim/releases/tag/v0.11.7
+and https://github.com/bendlang/bend/releases/tag/v2.0.39 .
+Only the exact slug/repository section and its sitemap content date change.
+Recheck sources November 10 or on a relevant release.
