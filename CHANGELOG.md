@@ -1,5 +1,9 @@
 ## 2026-11-03
 
+- Publish a tested Bend 2 proof workflow with separate law/witness files, negative controls, and an explicitly unsuccessful additional-kernel check; add contextual discovery links.
+
+## 2026-11-03
+
 - Add a dated, independently checked native-package first-use result to the
   existing Neovim listing: Neovim 0.11.7, Bend 2.0.39, workspace check and
   Proof Explorer, with explicit platform, suite and proven-kernel limits.
