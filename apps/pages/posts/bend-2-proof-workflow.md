@@ -5,7 +5,6 @@ published_at: 2026-11-03
 author: Built with Bend
 keywords: [Bend 2 proofs, Bend 2 laws, Bend check-only, Bend verdict]
 topics: [Bend 2, Proofs, Developer tools]
-canonical_url: https://builtwithbend.com/blog/bend-2-proof-workflow
 ---
 
 To check **Bend 2 proofs**, state the property in `LAWS.bend`, implement its witness in `PROOF.bend`, and check the proof file rather than the law file alone. Then deliberately break the example. A useful first workflow distinguishes an open goal, a rejected proof, an ordinary checker pass, and a second-kernel result instead of treating every green message as the same guarantee.
