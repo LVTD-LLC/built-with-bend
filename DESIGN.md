@@ -81,6 +81,10 @@ list gate, consent copy, and native submission flow as the homepage.
 Blog posts reuse the same optional signup after the complete article, outside the
 prose block. Keep reading and project links primary; never gate the guide.
 
+The dedicated `/newsletter/` page puts signup above a quiet, date-led issue list.
+Use the directory reading width, native links, visible keyboard focus and shared
+light/dark tokens. Preserve useful empty/error states and paginated archives.
+
 ## Contextual guides
 
 Project listings covered by an editorial guide may link to it below the original

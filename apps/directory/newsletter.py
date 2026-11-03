@@ -6,6 +6,7 @@ from django.conf import settings
 from django.shortcuts import redirect, render
 from django.views.decorators.http import require_GET, require_http_methods
 
+from .newsletter_archive import archive_page, archive_page_number
 from .views import submission_allowed
 
 
@@ -25,11 +26,13 @@ def enabled():
 @require_http_methods(["GET", "POST"])
 def subscribe(request):
     form = NewsletterForm(request.POST if request.method == "POST" else None)
-    context = {"form": form}
+    page = archive_page_number(request.GET.get("page", "1"))
+    context = {"form": form, "newsletter_available": enabled(), "archive": archive_page(page)}
     status = 200
     if not enabled():
         context["service_error"] = True
-        status = 503
+        if request.method == "POST":
+            status = 503
     elif request.method == "POST":
         if not submission_allowed(request, scope=":newsletter"):
             context["rate_limited"] = True

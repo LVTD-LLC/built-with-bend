@@ -1,15 +1,46 @@
 {% extends "directory/base.html" %}
-{% block title %}Weekly Bend newsletter — Built with Bend{% endblock %}
-{% block meta %}<meta name="robots" content="noindex">{% endblock %}
+{% block title %}Bend2 Newsletter and past issues | Built with Bend{% endblock %}
+{% block description %}Get Bend 2 development news, useful builds, community posts, and tweets in one weekly email. Browse past issues before you subscribe.{% endblock %}
+{% block meta %}
+    <link rel="canonical"
+          href="{{ request.scheme }}://{{ request.get_host }}{% url 'directory:newsletter' %}">
+{% endblock %}
 {% block content %}
     <section class="newsletter-page">
         <a class="back" href="{% url 'directory:index' %}">← Back to the collection</a>
         <h1>Bend, once a week.</h1>
-        <p>The latest Bend news and projects, in one weekly email.</p>
+        <p>Bend 2 dev news, useful builds, community posts, and tweets worth your time. One concise email, every week.</p>
         {% if rate_limited %}<p class="form-alert"
    role="alert">Too many attempts. Please try again in an hour.</p>{% endif %}
-        {% if service_error %}<p class="form-alert"
-   role="alert">We couldn’t complete your signup. Please try again in a few minutes.</p>{% endif %}
-        {% include "directory/newsletter_form.html" %}
+        {% if newsletter_available %}
+            {% if service_error %}<p class="form-alert" role="alert">We couldn’t complete your signup. Please try again in a few minutes.</p>{% endif %}
+            {% include "directory/newsletter_form.html" %}
+        {% else %}
+            <p class="form-alert">Newsletter signup is temporarily unavailable. You can still read past issues below.</p>
+        {% endif %}
+        <section class="newsletter-archive" aria-labelledby="past-issues-title">
+            <h2 id="past-issues-title">Past issues</h2>
+            <p>See what you’ll get in your inbox.</p>
+            {% if archive.issues %}
+                <ul class="newsletter-issues">
+                    {% for issue in archive.issues %}
+                        <li>
+                            <time datetime="{{ issue.sent_at|date:'c' }}">{{ issue.sent_at|date:"F j, Y" }}</time>
+                            <a href="{{ issue.url }}">{{ issue.subject }} <span aria-hidden="true">↗</span></a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% elif archive.unavailable %}
+                <p>Past issues are temporarily unavailable. Please try again shortly.</p>
+            {% else %}
+                <p>The first issue will appear here after it’s sent.</p>
+            {% endif %}
+            {% if archive.previous_page or archive.next_page %}
+                <nav class="newsletter-pagination" aria-label="Newsletter archive pages">
+                    {% if archive.previous_page %}<a href="?page={{ archive.previous_page }}">← Newer issues</a>{% endif %}
+                    {% if archive.next_page %}<a href="?page={{ archive.next_page }}">Older issues →</a>{% endif %}
+                </nav>
+            {% endif %}
+        </section>
     </section>
 {% endblock %}

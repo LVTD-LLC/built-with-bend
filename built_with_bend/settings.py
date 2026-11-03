@@ -719,3 +719,6 @@ if THUMBNAIL_R2_ENABLED:
 # Empty configuration keeps the newsletter signup hidden until Listmonk is ready.
 NEWSLETTER_LISTMONK_URL = env("NEWSLETTER_LISTMONK_URL", default="")
 NEWSLETTER_LIST_UUID = env("NEWSLETTER_LIST_UUID", default="")
+NEWSLETTER_ARCHIVE_PUBLIC_URL = env(
+    "NEWSLETTER_ARCHIVE_PUBLIC_URL", default="https://newsletter.builtwithbend.com"
+)
