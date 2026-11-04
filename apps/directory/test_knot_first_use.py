@@ -30,9 +30,9 @@ class KnotFirstUseTests(TestCase):
             response.content.index(b'class="sources"'),
             response.content.index(b'id="knot-first-use-heading"'),
         )
-        self.assertEqual(ProjectSitemap().lastmod(project), datetime(2026, 10, 31, tzinfo=UTC))
+        self.assertEqual(ProjectSitemap().lastmod(project), datetime(2026, 11, 4, tzinfo=UTC))
         self.assertEqual(
-            ProjectSitemap().content_lastmod(project), datetime(2026, 10, 28, tzinfo=UTC)
+            ProjectSitemap().content_lastmod(project), datetime(2026, 11, 4, tzinfo=UTC)
         )
         project.refresh_from_db()
         self.assertEqual(project.published_at, published)
@@ -50,5 +50,5 @@ class KnotFirstUseTests(TestCase):
                     self.client.get(project.get_absolute_url()), "knot-first-use-heading"
                 )
                 self.assertNotEqual(
-                    ProjectSitemap().lastmod(project), datetime(2026, 10, 28, tzinfo=UTC)
+                    ProjectSitemap().lastmod(project), datetime(2026, 11, 4, tzinfo=UTC)
                 )

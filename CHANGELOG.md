@@ -1,5 +1,7 @@
 ## 2026-11-04
 
+- Add a checked, pinned Knot source-build alternative and compiler-example outputs to its existing listing, preserving the published-binary glibc limitation and original project metadata.
+
 - Publish a tested Bend 2 HTTP-server first-use guide comparing pinned official and Bendo hello responses, with path/method probes, source-only compatibility limits and contextual discovery links.
 
 ## 2026-11-03

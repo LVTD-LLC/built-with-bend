@@ -185,3 +185,15 @@ Official release sources: https://github.com/neovim/neovim/releases/tag/v0.11.7
 and https://github.com/bendlang/bend/releases/tag/v2.0.39 .
 Only the exact slug/repository section and its sitemap content date change.
 Recheck sources November 10 or on a relevant release.
+
+## Knot source-built first use — checked 2026-11-04
+
+Unmodified b914a71 source built on Linux x64/glibc2.36 with pinned Bend2.0.24
+(officialarchiveSHA256a05c1b5ecab1393f3dd5d67fedbeb83d5dd244c4187c7b36378b6a67a719ac2a),
+Node24.22.1 and Clang14.0.6. Version/help started, documented greet emitted JS
+printing `hello knot`; documented analyze reported two modules/no missing.
+Not full acceptance, package operations, newer compiler/otherplatform, proof/kernel,
+benchmark, security or production certification. npm0.0.1 install succeeded with
+scripts disabled but startup still failed forGLIBC_2.38. Preserve Oct28 observation.
+Public source: https://github.com/MatheusBBarni/knot-node-tooling/tree/b914a71bbca46b7e2fe447d19a7a182e2b9ff715 .
+Source review Nov11; new21/28-day endpointsNov25/Dec2; prior windows unchanged.

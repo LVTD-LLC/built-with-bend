@@ -173,8 +173,8 @@
       "glibc 2\\.36",
       "failed before Knot started",
       "not a claim that every Linux installation fails",
-      "not tested that build as a workaround",
-      "test runner remains planned"
+      "not the full",
+      "test.runner.*remains planned"
     ],
     "must_not_match": [
       "tested source.build workaround",
@@ -250,5 +250,31 @@
       "ALL PROOFS CHECK"
     ],
     "flags": "i"
+  },
+  {
+    "claim": "Knot source-built first use stays distinct from npm startup and complete acceptance",
+    "paths": [
+      "frontend/templates/directory/knot_first_use.html"
+    ],
+    "urls": [
+      "/projects/knot/"
+    ],
+    "must_match": [
+      "b914a71",
+      "2.0.24",
+      "Clang 14.0.6",
+      "November 4, 2026",
+      "hello knot",
+      "not the full",
+      "GLIBC_2.38",
+      "Transpilation is not type-checking",
+      "remains planned"
+    ],
+    "must_not_match": [
+      "guaranteed compatibility",
+      "production-ready",
+      "all tests pass",
+      "verified in the Lean kernel"
+    ]
   }
 ]
