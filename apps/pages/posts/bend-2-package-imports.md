@@ -2,7 +2,7 @@
 title: "Bend 2 Packages: Find and Import"
 description: "Find a Bend 2 package with JendHub, inspect its input type, and check a versioned import with a worked example tested on two compilers."
 published_at: 2026-10-18
-updated_at: 2026-10-25
+updated_at: 2026-11-04
 keywords: [Bend 2 packages, Bend 2 import, Bend libraries]
 topics: [Bend 2, Packages]
 author: Built with Bend
@@ -132,6 +132,8 @@ When sharing a result, include the complete file, the output of `bend version`, 
 Our check used the public search response and versioned source, then the ordinary local compiler. It did not test a deliberately empty package cache or measure network downloads. Repeated runs are therefore not evidence of cold-start behavior. Preserve that distinction if you use the example to investigate a fetch failure on another machine.
 
 ## What to try next
+
+If your next task is a local web endpoint, the [Bend 2 HTTP-server first-use guide](/blog/bend-2-http-server) applies the same version-and-result discipline to the official demo and Bendo. Inspect the observed response before adding packages or treating a greeting as a complete API.
 
 Repeat the same process with an operation your project actually needs: search, inspect the signature and source, keep the exact import, and test a small known case. Inspect dependencies and data representation before expanding the example. A useful search result saves discovery work; it does not remove the need to understand the function.
 
