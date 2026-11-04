@@ -1,3 +1,7 @@
+## 2026-11-04
+
+- Publish a tested Bend 2 HTTP-server first-use guide comparing pinned official and Bendo hello responses, with path/method probes, source-only compatibility limits and contextual discovery links.
+
 ## 2026-11-03
 
 - Add a public newsletter signup and past-issues page, automatically refreshed from the Listmonk public archive with cached outage fallback.

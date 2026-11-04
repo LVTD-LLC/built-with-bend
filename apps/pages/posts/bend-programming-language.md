@@ -2,7 +2,7 @@
 title: "Bend Programming Language: What You Can Build with Bend 2"
 description: "Explore the Bend programming language through five Bend 2 projects: a Doom recreation, an SVG editor, a database, a fractal explorer, and an HTTP server."
 published_at: 2026-09-24
-updated_at: 2026-10-16
+updated_at: 2026-11-04
 keywords: [Bend programming language, Bend 2, Bend 2 projects]
 topics: [Bend 2, Project examples]
 author: Built with Bend
@@ -119,6 +119,8 @@ The project also makes an important development distinction: running through the
 Read this as a small server implementation, not a complete web framework. Its value is that the boundaries are visible: parsing and routing on one side, socket effects on another, and an isolated workload to experiment with.
 
 **Explore it for:** server structure and CPU/GPU computation behind an HTTP interface. [Read the HTTP server source and README](https://github.com/iamsahilsonawane/bend2-http-server).
+
+For a runnable starting point, use the [tested Bend 2 HTTP-server walkthrough](/blog/bend-2-http-server). It compares the official local demo with Bendo's wildcard hello and checks unwanted paths and methods, without claiming the community compute server was run.
 
 ## How to choose your first Bend 2 example
 
