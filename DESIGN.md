@@ -119,3 +119,7 @@ The exact-repository Bendo listing offers a compact, source-linked native hello
 path after original sources. Use the existing project-guide typography and focus
 styles. Keep checkout-only scaffolding, the pinned compiler and smoke-test limits
 visible; do not imply production or proof certification.
+
+Contextual guide command blocks use the soft surface and ink tokens, a compact
+monospace size, horizontal scrolling within the block, and visible keyboard focus.
+Long commands must not widen the page on mobile.

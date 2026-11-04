@@ -1,9 +1,9 @@
 <section class="project-guide" aria-labelledby="knot-first-use-heading">
-    <h2 id="knot-first-use-heading">Before trying the published Knot CLI</h2>
+    <h2 id="knot-first-use-heading">Trying Knot: npm or a source build</h2>
     <p>The <a href="https://registry.npmjs.org/@matheusbbarni/knot/0.0.1"
     data-posthog-outbound="source"
     target="_blank"
-    rel="noopener noreferrer nofollow">npm release metadata for @matheusbbarni/knot 0.0.1</a> lists a Node.js launcher and platform-specific binaries. Installing the package and starting the CLI are separate checks.</p>
+    rel="noopener noreferrer nofollow">npm release metadata for @matheusbbarni/knot 0.0.1</a> lists a Node.js launcher and platform-specific binaries. Installing the package and starting the CLI are separate checks. On our Linux host, the published binary did not start, but a build from the maintainer’s pinned source did. Use the checked source-build path below if you want to try the compiler examples.</p>
     <p>On October 28, 2026, Built with Bend installed that exact version in an isolated directory with lifecycle scripts disabled. On our Linux x64 host with glibc 2.36 and Node.js 24.21.0, both <code>knot --version</code> and <code>knot --help</code> failed before Knot started: the native binary required <code>GLIBC_2.38</code>, which this host did not provide. The binary’s SHA-256 matched the published wrapper’s expected hash. This is one host result, not a claim that every Linux installation fails or that a newer glibc guarantees success.</p>
     <p>For the maintainer’s installation options, use the pinned <a href="https://github.com/MatheusBBarni/knot-node-tooling/blob/b914a71bbca46b7e2fe447d19a7a182e2b9ff715/README.md#install"
     data-posthog-outbound="source"
@@ -11,6 +11,24 @@
     rel="noopener noreferrer nofollow">installation instructions</a>. The separate <a href="https://github.com/MatheusBBarni/knot-node-tooling/blob/b914a71bbca46b7e2fe447d19a7a182e2b9ff715/README.md#build-from-source"
     data-posthog-outbound="source"
     target="_blank"
-    rel="noopener noreferrer nofollow">source-build instructions</a> name Node.js 24 LTS, Bend 2.0.24 and a native C compiler. We have not tested that build as a workaround, other platforms, or package operations. Transpilation is not type-checking; the test runner remains planned.</p>
-    <p>Release and sources checked <time datetime="2026-10-28">October 28, 2026</time>. These checks do not certify compatibility, security or production readiness.</p>
+    rel="noopener noreferrer nofollow">source-build instructions</a> name Node.js 24 LTS, Bend 2.0.24 and a native C compiler. On November 4 we repeated the isolated npm installation with lifecycle scripts disabled: installation succeeded, but both startup commands still failed with the same glibc requirement.</p>
+    <h3>A checked source-build path</h3>
+    <p>On November 4, 2026, Built with Bend built the unmodified <a href="https://github.com/MatheusBBarni/knot-node-tooling/tree/b914a71bbca46b7e2fe447d19a7a182e2b9ff715"
+    data-posthog-outbound="source"
+    target="_blank"
+    rel="noopener noreferrer nofollow">Knot source at b914a71</a> on Linux x64 with glibc 2.36, Node.js 24.22.1 and Clang 14.0.6. We used Bend 2.0.24, not the latest compiler: its Linux archive matched the SHA-256 in the repository’s <a href="https://github.com/MatheusBBarni/knot-node-tooling/blob/b914a71bbca46b7e2fe447d19a7a182e2b9ff715/toolchain.json"
+    data-posthog-outbound="source"
+    target="_blank"
+    rel="noopener noreferrer nofollow">toolchain pin</a>. The build wrapper needs Clang 14 or newer under the executable name <code>clang</code> on the command path. It checks <code>~/.bend/bin</code> first, so make sure that directory does not select a different Bend version.</p>
+    <p>Once the pinned checkout and toolchain are installed, work from that checkout’s root. Follow the maintainer’s source-build instructions above and its <a href="https://github.com/MatheusBBarni/knot-node-tooling/blob/b914a71bbca46b7e2fe447d19a7a182e2b9ff715/examples/compiler/README.md#typescript-erasure"
+    data-posthog-outbound="source"
+    target="_blank"
+    rel="noopener noreferrer nofollow">TypeScript-erasure example</a>:</p>
+    <pre tabindex="0" aria-label="Knot source-build and compiler-example commands"><code>./scripts/build-knot
+./bin/knot --help
+./bin/knot transpile examples/compiler/basic/greet.ts
+node examples/compiler/basic/greet.js
+./bin/knot analyze examples/compiler/analyze-graph/main.ts</code></pre>
+    <p>In this check, the source-built CLI started, the generated JavaScript printed <code>hello knot</code>, and graph analysis reported the example’s two modules with no missing imports. That is a small first-use smoke check, not the full <code>node --test</code> acceptance suite. It does not validate package installation by Knot, other platforms, newer compilers or arbitrary TypeScript. Transpilation is not type-checking; Knot’s own test-runner command remains planned.</p>
+    <p>Release and sources checked <time datetime="2026-11-04">November 4, 2026</time>. These checks do not certify compatibility, security or production readiness.</p>
 </section>
