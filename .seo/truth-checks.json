@@ -276,5 +276,31 @@
       "all tests pass",
       "verified in the Lean kernel"
     ]
+  },
+  {
+    "id": "ezmcp-stdio-first-use",
+    "paths": [
+      "frontend/templates/directory/ezmcp_first_use.html"
+    ],
+    "must_match": [
+      "222124b",
+      "2.0.38",
+      "Clang 14.0.6",
+      "November 5, 2026",
+      "stdio only",
+      "isError: true",
+      "-32602",
+      "no authorization",
+      "not a client configuration"
+    ],
+    "must_not_match": [
+      "production-ready",
+      "full conformance passed",
+      "proofs verified",
+      "works with every client"
+    ],
+    "urls": [
+      "/projects/ezmcp/"
+    ]
   }
 ]

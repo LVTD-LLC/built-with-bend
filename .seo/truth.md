@@ -197,3 +197,14 @@ benchmark, security or production certification. npm0.0.1 install succeeded with
 scripts disabled but startup still failed forGLIBC_2.38. Preserve Oct28 observation.
 Public source: https://github.com/MatheusBBarni/knot-node-tooling/tree/b914a71bbca46b7e2fe447d19a7a182e2b9ff715 .
 Source review Nov11; new21/28-day endpointsNov25/Dec2; prior windows unchanged.
+
+## ezmcp stdio first use — checked 2026-11-05
+Unmodified Emerging-Patterns/ezmcp 222124b0814a3e5c1193e78eba0392e709b99174
+examples/demo/main.bend builds on Linux x64 with Bend2.0.38 and Clang14.0.6.
+Newline-delimited initialize (2025-11-25), initialized notification, tools/list,
+and add(2,40) return the selected revision, echo/add, and structuredContent.sum42.
+The non-integer add returns a tool error (isError true); an unknown tool returns
+JSON-RPC -32602. No GUI/agent-client integration, other platform, full conformance,
+proof/kernel or security/production certification. Original Oct29 check stays dated.
+Source: pinned README.md, examples/demo/main.bend, docs/SPEC.md. Native C build,
+not JS; hash imports may need hub network/cache. No authorization is provided.

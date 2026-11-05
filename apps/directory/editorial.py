@@ -37,6 +37,14 @@ BENDO_FIRST_USE_REPOSITORY = "https://github.com/opencoredev/bendo"
 BENDO_FIRST_USE_ADDED_AT = datetime(2026, 11, 2, tzinfo=UTC)
 
 
+EZMCP_FIRST_USE_REPOSITORY = "https://github.com/Emerging-Patterns/ezmcp"
+EZMCP_FIRST_USE_ADDED_AT = datetime(2026, 11, 5, tzinfo=UTC)
+
+
+def has_ezmcp_first_use(project):
+    return project.slug == "ezmcp" and project.repository_url == EZMCP_FIRST_USE_REPOSITORY
+
+
 def has_bendo_first_use(project):
     return project.slug == "bendo" and project.repository_url == BENDO_FIRST_USE_REPOSITORY
 
