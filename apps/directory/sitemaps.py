@@ -9,6 +9,7 @@ from .editorial import (
     BROWSER_EXERCISE_ADDED_AT,
     EDITOR_GUIDE_ADDED_AT,
     EDITOR_GUIDE_PROJECTS,
+    EZMCP_FIRST_USE_ADDED_AT,
     HTTP_SERVER_DEMO_ADDED_AT,
     JENDHUB_DESTINATIONS_RESTORED_AT,
     KNOT_FIRST_USE_ADDED_AT,
@@ -17,6 +18,7 @@ from .editorial import (
     PACKAGE_GUIDE_ADDED_AT,
     has_bendo_first_use,
     has_browser_exercise,
+    has_ezmcp_first_use,
     has_http_server_note,
     has_jendhub_destinations,
     has_knot_first_use,
@@ -44,24 +46,14 @@ class ProjectSitemap(ConfiguredSitemapMixin, Sitemap):
         return content_date
 
     def content_lastmod(self, obj):
-        if has_bendo_first_use(obj):
-            return (
-                max(obj.published_at, BENDO_FIRST_USE_ADDED_AT)
-                if obj.published_at
-                else BENDO_FIRST_USE_ADDED_AT
-            )
-        if has_knot_first_use(obj):
-            return (
-                max(obj.published_at, KNOT_FIRST_USE_ADDED_AT)
-                if obj.published_at
-                else KNOT_FIRST_USE_ADDED_AT
-            )
-        if has_neovim_first_use(obj):
-            return (
-                max(obj.published_at, NEOVIM_FIRST_USE_ADDED_AT)
-                if obj.published_at
-                else NEOVIM_FIRST_USE_ADDED_AT
-            )
+        for applies, checked_at in (
+            (has_ezmcp_first_use, EZMCP_FIRST_USE_ADDED_AT),
+            (has_bendo_first_use, BENDO_FIRST_USE_ADDED_AT),
+            (has_knot_first_use, KNOT_FIRST_USE_ADDED_AT),
+            (has_neovim_first_use, NEOVIM_FIRST_USE_ADDED_AT),
+        ):
+            if applies(obj):
+                return max(obj.published_at, checked_at) if obj.published_at else checked_at
         if has_browser_exercise(obj):
             return (
                 max(obj.published_at, BROWSER_EXERCISE_ADDED_AT)

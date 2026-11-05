@@ -1,0 +1,34 @@
+<section class="project-guide" aria-labelledby="ezmcp-first-use-heading">
+    <h2 id="ezmcp-first-use-heading">Try the ezmcp stdio demo</h2>
+    <p>Want to see a Bend 2 tool server answer before connecting an agent client? Start with the upstream demo’s newline-delimited JSON-RPC interface. This checks the local server directly; it is not a client configuration or an end-to-end agent test.</p>
+    <p>On <time datetime="2026-11-05">November 5, 2026</time>, Built with Bend built the unmodified <a href="https://github.com/Emerging-Patterns/ezmcp/tree/222124b0814a3e5c1193e78eba0392e709b99174/examples/demo"
+    data-posthog-outbound="source"
+    target="_blank"
+    rel="noopener noreferrer nofollow">demo at 222124b</a> on Linux x64 using Bend 2.0.38 and Clang 14.0.6. Use that compiler version and the native C build below, not the JavaScript lane. Hash-pinned imports need access to the Bend hub or an existing dependency cache.</p>
+    <p>With Git, Bend 2.0.38 and Clang installed, use a fresh working directory. These commands follow the pinned <a href="https://github.com/Emerging-Patterns/ezmcp/blob/222124b0814a3e5c1193e78eba0392e709b99174/README.md#examples"
+    data-posthog-outbound="source"
+    target="_blank"
+    rel="noopener noreferrer nofollow">build instructions</a> and the demo’s <a href="https://github.com/Emerging-Patterns/ezmcp/blob/222124b0814a3e5c1193e78eba0392e709b99174/examples/demo/main.bend"
+    data-posthog-outbound="source"
+    target="_blank"
+    rel="noopener noreferrer nofollow">tool definitions</a>. The JSON input is our local smoke check:</p>
+    <pre tabindex="0" aria-label="Build and call the pinned ezmcp stdio demo"><code>git clone https://github.com/Emerging-Patterns/ezmcp.git
+cd ezmcp
+git checkout 222124b0814a3e5c1193e78eba0392e709b99174
+cd examples/demo
+bend main.bend -o demo
+./demo stdio &lt;&lt;'JSONL'
+{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-11-25","capabilities":{},"clientInfo":{"name":"local-smoke","version":"1"}}}
+{"jsonrpc":"2.0","method":"notifications/initialized"}
+{"jsonrpc":"2.0","id":2,"method":"tools/list"}
+{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"add","arguments":{"a":2,"b":40}}}
+JSONL</code></pre>
+    <p>The checked run answered initialization with protocol version <code>2025-11-25</code>, listed <code>echo</code> and <code>add</code>, and returned <code>structuredContent</code> containing <code>{"sum":42}</code> for request 3. The initialized notification has no response. In separate negative checks, passing <code>"two"</code> instead of integer <code>2</code> to <code>add</code> returned a tool result with <code>isError: true</code>; asking for an unknown tool returned JSON-RPC error <code>-32602</code>. Those are different failure paths, not successful calls.</p>
+    <p>For HTTP use, read the pinned <a href="https://github.com/Emerging-Patterns/ezmcp/blob/222124b0814a3e5c1193e78eba0392e709b99174/README.md#protocol-revisions"
+    data-posthog-outbound="source"
+    target="_blank"
+    rel="noopener noreferrer nofollow">transport limits</a> first: ezmcp supplies no authorization, so keep a local demo on <code>127.0.0.1</code>; remote access needs an authenticating proxy. The <a href="https://github.com/Emerging-Patterns/ezmcp/blob/222124b0814a3e5c1193e78eba0392e709b99174/docs/SPEC.md"
+    data-posthog-outbound="source"
+    target="_blank"
+    rel="noopener noreferrer nofollow">implementation scope</a> lists unsupported features, including resources, prompts and sessions. This November check covers stdio only, not HTTP, an agent client, other platforms, the full conformance suite, proof verification or security certification. The earlier October check above remains a separate dated result.</p>
+</section>

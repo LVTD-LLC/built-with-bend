@@ -123,3 +123,7 @@ visible; do not imply production or proof certification.
 Contextual guide command blocks use the soft surface and ink tokens, a compact
 monospace size, horizontal scrolling within the block, and visible keyboard focus.
 Long commands must not widen the page on mobile.
+
+The exact-repository ezmcp listing adds a checked stdio demo after original sources.
+Reuse project-guide command blocks and public source-link analytics; keep the native
+compiler pin, expected JSON response and untested-client boundary visible.

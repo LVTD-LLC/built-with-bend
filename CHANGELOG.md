@@ -1,3 +1,7 @@
+## 2026-11-05
+
+- Add a pinned, checked stdio first-use path to the ezmcp listing, with successful and failed tool-response examples and explicit local-only verification limits.
+
 ## 2026-11-04
 
 - Add a checked, pinned Knot source-build alternative and compiler-example outputs to its existing listing, preserving the published-binary glibc limitation and original project metadata.
