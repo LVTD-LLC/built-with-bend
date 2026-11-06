@@ -208,3 +208,7 @@ JSON-RPC -32602. No GUI/agent-client integration, other platform, full conforman
 proof/kernel or security/production certification. Original Oct29 check stays dated.
 Source: pinned README.md, examples/demo/main.bend, docs/SPEC.md. Native C build,
 not JS; hash imports may need hub network/cache. No authorization is provided.
+
+## Introduction → browser workshop — checked November 6, 2026
+
+The introduction's direct pocket-workshop path is separate from the existing guided Bend, Explained exercise. At upstream `c010d1c86643293ebbb90fb28ebadbf7094db96a`, the hosted workshop reported Bend 2.0.39 / `d30d7dd`. In fresh desktop Chromium at 390/1440 px, Examples → x + 0 = x → Check accepted the bundled law and proof; no provider key or external-provider request was used. This is a bounded ordinary-checker observation, not `--verdict`, a full suite, physical-phone or performance certification. Source: pinned README and BEND_COMMIT linked in the article. Original October 30 listing check and October 16/23 explainer checks remain historical, not overwritten.

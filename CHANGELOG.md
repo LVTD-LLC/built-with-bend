@@ -1,3 +1,7 @@
+## 2026-11-06
+
+- Link the Bend 2 introduction directly to the reviewed browser workshop, with a checked example path and a clear ordinary-checker/kernel boundary.
+
 ## 2026-11-05
 
 - Add a pinned, checked stdio first-use path to the ezmcp listing, with successful and failed tool-response examples and explicit local-only verification limits.

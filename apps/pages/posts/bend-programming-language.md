@@ -2,7 +2,7 @@
 title: "Bend Programming Language: What You Can Build with Bend 2"
 description: "Explore the Bend programming language through five Bend 2 projects: a Doom recreation, an SVG editor, a database, a fractal explorer, and an HTTP server."
 published_at: 2026-09-24
-updated_at: 2026-11-04
+updated_at: 2026-11-06
 keywords: [Bend programming language, Bend 2, Bend 2 projects]
 topics: [Bend 2, Project examples]
 author: Built with Bend
@@ -31,6 +31,14 @@ Want to see a proof check before installing a compiler? [Bend, Explained](/proje
 The demo bundles Bend 2.0.25's ordinary checker, not the separate `--verdict` kernel check. Its animated CPU/GPU rounds are illustrations, not speed measurements. See the [demo's version and limitations](https://github.com/raunak-11/bend-explainer/blob/84c04b02bbd3be2c5ee1b5622a1490e41e730391/README.md#limitations) before treating it as a development tool.
 
 Bend also targets parallel computation. Its current compiler supports C, Metal, CUDA, and JavaScript, although the JavaScript target runs sequentially. The [official limitations](https://github.com/bendlang/bend#limitations) describe a young toolchain, including restrictions on parallelism and unresolved compiler and proof-system concerns. That makes concrete projects especially valuable: they show the implementation choices behind the headline capabilities.
+
+## Try a browser editor before installing
+
+To write or edit a small program without a local toolchain, open the [Bend 2 pocket workshop](/projects/bend-2-pocket-workshop/). Unlike the guided explainer above, this is an editable workspace with bundled examples.
+
+In **Examples**, choose **x + 0 = x**, then press **Check**. Built with Bend repeated this path on November 6, 2026, in desktop Chromium at 390 px and 1440 px: the ordinary checker accepted the bundled law and proof. The workshop reported Bend 2.0.39, matching its [compiler pin](https://github.com/np/bend-workshop/blob/c010d1c86643293ebbb90fb28ebadbf7094db96a/BEND_COMMIT).
+
+This exercise needs no AI-provider key. It does not run the CLI's separate `--verdict` kernel check. Read the [workshop's source and setup notes](https://github.com/np/bend-workshop/blob/c010d1c86643293ebbb90fb28ebadbf7094db96a/README.md) before moving beyond the bundled example.
 
 ## Check your Bend version before trying a project
 
