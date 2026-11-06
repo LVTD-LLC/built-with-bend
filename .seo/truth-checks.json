@@ -302,5 +302,23 @@
     "urls": [
       "/projects/ezmcp/"
     ]
+  },
+  {
+    "id": "intro-workshop-discovery-boundary",
+    "paths": [
+      "apps/pages/posts/bend-programming-language.md"
+    ],
+    "urls": [
+      "/blog/bend-programming-language"
+    ],
+    "must_match": [
+      "Try a browser editor before installing",
+      "Bend 2 pocket workshop",
+      "ordinary checker",
+      "November 6, 2026",
+      "no AI-provider key",
+      "does not run the CLI"
+    ],
+    "must_not_match": []
   }
 ]
