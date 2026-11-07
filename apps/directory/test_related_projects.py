@@ -128,15 +128,28 @@ class RelatedProjectTests(TestCase):
         )
 
     def test_discovery_content_date_only_applies_to_exact_reviewed_identity(self):
-        project = self.project(
-            "bend-2-pocket-workshop",
-            repository_url=BEND2_PROJECTS["bend-2-pocket-workshop"],
-            published_at=datetime(2026, 10, 1, tzinfo=UTC),
-        )
         sitemap = ProjectSitemap()
-        self.assertEqual(sitemap.lastmod(project), datetime(2026, 10, 31, tzinfo=UTC))
-        project.published_at = datetime(2026, 11, 2, tzinfo=UTC)
-        self.assertEqual(sitemap.lastmod(project), project.published_at)
-        project.published_at = datetime(2026, 10, 1, tzinfo=UTC)
-        project.repository_url = "https://example.com/repurposed"
-        self.assertEqual(sitemap.lastmod(project), project.published_at)
+        for slug, expected in (
+            ("bend-2-pocket-workshop", datetime(2026, 11, 7, tzinfo=UTC)),
+            ("helix-bend", datetime(2026, 11, 7, tzinfo=UTC)),
+            ("bend2-lsp", datetime(2026, 11, 7, tzinfo=UTC)),
+            ("jendhub", datetime(2026, 10, 31, tzinfo=UTC)),
+        ):
+            with self.subTest(slug=slug):
+                project = self.project(
+                    slug,
+                    repository_url=BEND2_PROJECTS[slug],
+                    published_at=datetime(2026, 10, 1, tzinfo=UTC),
+                )
+                self.assertEqual(sitemap.lastmod(project), expected)
+                project.published_at = datetime(2026, 11, 8, tzinfo=UTC)
+                self.assertEqual(sitemap.lastmod(project), project.published_at)
+                project.published_at = datetime(2026, 10, 1, tzinfo=UTC)
+                project.repository_url = "https://example.com/repurposed"
+                # The older slug-bound editor-guide date still applies to the LSP.
+                expected_fallback = (
+                    datetime(2026, 10, 13, tzinfo=UTC)
+                    if slug == "bend2-lsp"
+                    else project.published_at
+                )
+                self.assertEqual(sitemap.lastmod(project), expected_fallback)
