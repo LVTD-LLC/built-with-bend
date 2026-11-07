@@ -1,3 +1,7 @@
+## 2026-11-07
+
+- Add the source-reviewed Helix configuration to Bend 2 related-project discovery, preserving the complete category browse ring and dating only changed recommendation lists.
+
 ## 2026-11-06
 
 - Link the Bend 2 introduction directly to the reviewed browser workshop, with a checked example path and a clear ordinary-checker/kernel boundary.

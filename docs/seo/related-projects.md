@@ -25,3 +25,28 @@ positive list only after a source review; never auto-classify from a name.
 The dated sitemap change applies only to these reviewed identities and preserves
 publication order and later content dates. There are no model/data migrations,
 new analytics events or external-source calls during page rendering.
+
+## Helix inclusion — November 7, 2026
+
+The exact `helix-bend` / `https://github.com/davidawad/helix-bend` identity
+now joins the positive set. Its [pinned README](https://github.com/davidawad/helix-bend/blob/093e204a8a9b87cd16d3f0801252eb3e97321901/README.md)
+explicitly describes Bend 2 support for Helix: language configuration, highlight
+queries and an installer, not a Helix plugin system or a guaranteed proof/LSP
+workflow. This classification does not certify installation or compiler parity.
+
+The current public catalog changes recommendations on the pocket workshop,
+standalone language server and Helix pages only. Their discovery content date is
+November 7; other reviewed pages retain their earlier dates, and later content
+or publication dates still win. Every published same-category project retains
+the next-sibling path, including unclassified and classic builds. No new page,
+analytics event or external request during rendering is introduced.
+
+The six original identities were rechecked against current primary READMEs on
+November 7. Their dated October 31 evidence above remains historical:
+
+- `np/bend-workshop`: [current README](https://github.com/np/bend-workshop/blob/c010d1c86643293ebbb90fb28ebadbf7094db96a/README.md).
+- `nuxyel/bend2-nvim`: [current README](https://github.com/nuxyel/bend2-nvim/blob/3d32ea86902dc4f646e3502641e23e0241ae86b5/README.md).
+- `nuxyel/bend2-vscode`: [current README](https://github.com/nuxyel/bend2-vscode/blob/04378567e667e642c710599596fa3482d32980e7/README.md).
+- `don2e4/bend2-lsp`: [current README](https://github.com/don2e4/bend2-lsp/blob/ed06027cc5396050459776accf91214f0c433f79/README.md).
+- `LeeeeT/JendHub`: [current README](https://github.com/LeeeeT/JendHub/blob/108c5054e4ee938540e4af6d0d996893d6e42ae2/README.md).
+- `MatheusBBarni/knot-node-tooling`: [current README](https://github.com/MatheusBBarni/knot-node-tooling/blob/b914a71bbca46b7e2fe447d19a7a182e2b9ff715/README.md).

@@ -11,10 +11,16 @@ BEND2_PROJECTS = {
     "bend-2-for-neovim": "https://github.com/nuxyel/bend2-nvim",
     "bend-2-for-vs-code-nuxyel": "https://github.com/nuxyel/bend2-vscode",
     "bend2-lsp": "https://github.com/don2e4/bend2-lsp",
+    "helix-bend": "https://github.com/davidawad/helix-bend",
     "jendhub": "https://github.com/LeeeeT/JendHub",
     "knot": "https://github.com/MatheusBBarni/knot-node-tooling",
 }
 BEND2_DISCOVERY_ADDED_AT = datetime(2026, 10, 31, tzinfo=UTC)
+# Helix changes these rendered lists only; retain other pages' original dates.
+BEND2_DISCOVERY_UPDATED_AT = dict.fromkeys(
+    ("bend-2-pocket-workshop", "bend2-lsp", "helix-bend"),
+    datetime(2026, 11, 7, tzinfo=UTC),
+)
 
 
 def has_bend2_discovery(project):

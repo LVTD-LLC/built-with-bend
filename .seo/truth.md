@@ -212,3 +212,14 @@ not JS; hash imports may need hub network/cache. No authorization is provided.
 ## Introduction → browser workshop — checked November 6, 2026
 
 The introduction's direct pocket-workshop path is separate from the existing guided Bend, Explained exercise. At upstream `c010d1c86643293ebbb90fb28ebadbf7094db96a`, the hosted workshop reported Bend 2.0.39 / `d30d7dd`. In fresh desktop Chromium at 390/1440 px, Examples → x + 0 = x → Check accepted the bundled law and proof; no provider key or external-provider request was used. This is a bounded ordinary-checker observation, not `--verdict`, a full suite, physical-phone or performance certification. Source: pinned README and BEND_COMMIT linked in the article. Original October 30 listing check and October 16/23 explainer checks remain historical, not overwritten.
+
+## Helix related-project inclusion — checked November 7, 2026
+
+Helix at `093e204a8a9b87cd16d3f0801252eb3e97321901` explicitly supports Bend 2.
+Only the exact slug/repository pair joins reviewed same-category discovery;
+classification is not installation, compiler, LSP or proof compatibility. Six
+original peers still identify as Bend 2 at the current pinned sources recorded
+in `docs/seo/related-projects.md`. Existing dated first-use checks are historical,
+not claims to have tested later upstream changes. The universal category ring
+and all original source actions remain. Source recheck November 14; new outcome
+endpoints November 28/December 5, with prior windows and overlap retained.
