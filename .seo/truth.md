@@ -223,3 +223,25 @@ in `docs/seo/related-projects.md`. Existing dated first-use checks are historica
 not claims to have tested later upstream changes. The universal category ring
 and all original source actions remain. Source recheck November 14; new outcome
 endpoints November 28/December 5, with prior windows and overlap retained.
+
+
+## Helix resource-health checks — November 8, 2026
+
+The editor guide adds a source-bound Helix highlighting path at helix-bend
+093e204a8a9b87cd16d3f0801252eb3e97321901. Unmodified installer grammar8ad225d
+and supplied config grammar e25608d differ. On Linuxx86-64/Helix25.07.1,
+isolated installer health then grammar-only fetch/build health both report parser
+and highlight queries present; textobject/indent queries absent, no configured
+LSP/formatter/debugger. Not visual coloring semantics, fullgrammar suite,
+compiler/proof/otherplatform certification or uniformpin claim. OriginalVSCode
+comparison remains datedOctober25; later native checks do not retest it.
+Source/check record: `.seo/evidence/2026-11-08-helix-health.md`.
+Source recheckNovember15;21/28dayNovember29/December6requirefinalGSC;
+alloriginaleditorwindowsremain,withoverlap/notcausal.
+
+
+## Package discovery fallback — November 8, 2026
+The guide's exact semantic-search destination repeatedly returned503/searchindexnotready.
+Read for bend-kit-bytes0.3.2.0 and grep with path/limit10 returned200;grep confirms
+to_hex(b:Bytes)->String at631. Keep originallytestedpackage/compilerpins;thisis
+sourceaccessonly,notnewcompilationor upstreamoutageresolution. RecheckNov9.

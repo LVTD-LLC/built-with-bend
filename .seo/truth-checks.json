@@ -320,5 +320,46 @@
       "does not run the CLI"
     ],
     "must_not_match": []
+  },
+  {
+    "id": "helix-resource-health-boundary",
+    "paths": [
+      "apps/pages/posts/bend-2-editor-tools.md"
+    ],
+    "urls": [
+      "/blog/bend-2-editor-tools"
+    ],
+    "must_match": [
+      "Helix: highlighting first",
+      "November 8, 2026",
+      "8ad225d",
+      "e25608d",
+      "does not install a language server",
+      "not correct coloring",
+      "use-grammars"
+    ],
+    "must_not_match": [
+      "every grammar test passed",
+      "Helix proof checking passed"
+    ]
+  },
+  {
+    "id": "jend-search-outage-fallback",
+    "paths": [
+      "apps/pages/posts/bend-2-package-imports.md"
+    ],
+    "urls": [
+      "/blog/bend-2-package-imports"
+    ],
+    "must_match": [
+      "Search unavailable",
+      "November 8, 2026",
+      "HTTP 503",
+      "Exact-name lookup is not semantic discovery",
+      "not a new compiler run"
+    ],
+    "must_not_match": [
+      "works with every Bend version"
+    ]
   }
 ]
