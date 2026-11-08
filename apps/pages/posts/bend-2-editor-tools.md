@@ -2,7 +2,7 @@
 title: "Bend 2 Editors: VS Code and LSP"
 description: "Choose Bend 2 editor tools by compiler setup: compare VS Code extensions, the standalone language server, version limits, and checks before you build."
 published_at: 2026-10-11
-updated_at: 2026-11-01
+updated_at: 2026-11-08
 keywords: [Bend 2 editor, Bend VS Code, Bend language server]
 topics: [Bend 2, Editor tools]
 author: Built with Bend
@@ -15,7 +15,7 @@ That distinction matters more than a screenshot of colored syntax. An editor can
 *Sources reviewed October 25, 2026: Nuxyel 1.0.1, kbrianps 0.1.3, published bend2-lsp 0.1.1 and the separate bend2-lsp source update described below. This is a source-and-documentation comparison, not a hands-on compatibility test or a ranking of every Bend extension.*
 
 <nav aria-label="On this page">
-<p><strong>In this guide:</strong> <a href="#choose">Choose a path</a> · <a href="#nuxyel">Nuxyel</a> · <a href="#kbrianps">Kbrianps</a> · <a href="#standalone">Standalone LSP</a> · <a href="#release-check">Check the server release</a> · <a href="#other-paths">Neovim or browser</a> · <a href="#troubleshooting">Troubleshooting</a> · <a href="#questions">Questions</a> · <a href="#method">Method</a></p>
+<p><strong>In this guide:</strong> <a href="#choose">Choose a path</a> · <a href="#nuxyel">Nuxyel</a> · <a href="#kbrianps">Kbrianps</a> · <a href="#standalone">Standalone LSP</a> · <a href="#release-check">Check the server release</a> · <a href="#helix">Helix highlighting</a> · <a href="#other-paths">Neovim or browser</a> · <a href="#troubleshooting">Troubleshooting</a> · <a href="#questions">Questions</a> · <a href="#method">Method</a></p>
 </nav>
 
 <span id="choose"></span>
@@ -27,6 +27,7 @@ That distinction matters more than a screenshot of colored syntax. An editor can
 | Check, build and inspect proofs in VS Code | Nuxyel | Separately installed Bend |
 | Add packaged diagnostics and formatting to VS Code | Kbrianps | Compiler bundled with its language server |
 | Connect another LSP-capable editor | Standalone bend2-lsp | Bundled compiler; separate Node runtime |
+| Add Bend 2 highlighting in Helix | [helix-bend configuration](#helix) | Parser and queries only; no compiler diagnostics |
 | Stay in Neovim without a Node/LSP server | [Native Bend2.nvim](#other-paths) | Editing without Bend; installed compiler for checks |
 | Try a small program without installing a compiler | [Pocket workshop in the browser](#other-paths) | Browser checker and JavaScript run; no Lean kernel |
 
@@ -113,6 +114,20 @@ When feedback differs from your terminal:
 
 Keep a separately passing terminal check as evidence for that compiler and file. Do not dismiss a real error—or claim the stronger independent `--verdict` check passed—because a source changelog describes improved diagnostics.
 
+<span id="helix"></span>
+
+## Helix: highlighting first, language server separately
+
+For **Bend 2 syntax highlighting in Helix**, [helix-bend](/projects/helix-bend/) packages a language entry, a Tree-sitter parser installer and highlight queries. It does not install a language server. Choose it for syntax support; configure an LSP separately if you need compiler diagnostics. The standalone server's Helix example above is a different part of that setup.
+
+The [reviewed configuration](https://github.com/davidawad/helix-bend/blob/093e204a8a9b87cd16d3f0801252eb3e97321901/languages.toml) calls the language `bend` but selects grammar `bend2`. Keep those names distinct. The [installer](https://github.com/davidawad/helix-bend/blob/093e204a8a9b87cd16d3f0801252eb3e97321901/install.sh) builds the parser and copies queries into Helix's runtime directory; it prints the language entry for you to merge into your own configuration. It does not merge that entry for you. Back up existing configuration rather than replacing it with the sample file.
+
+**Built with Bend checked this setup on November 8, 2026**, using Helix 25.07.1 on Linux x86-64 in a separate configuration directory. The unmodified installer and supplied language entry produced parser and highlight-query checkmarks in `hx --health bend`. Textobject and indent queries were missing, as the [pinned README](https://github.com/davidawad/helix-bend/blob/093e204a8a9b87cd16d3f0801252eb3e97321901/README.md) documents. No language server, formatter or debugger was configured. These health checks establish resource availability, not correct coloring of every program, compiler compatibility or proof checking.
+
+There is a revision difference to check before rebuilding: the installer pins grammar **`8ad225d`**, while its supplied `languages.toml` pins **`e25608d`**. A later grammar fetch can switch revisions. In our isolated check, fetching and building only the configured `bend2` grammar selected `e25608d`; the parser and highlight-query health checks still passed. That is a bounded second check, not evidence that both revisions behave identically or that all grammar tests pass.
+
+Start with the [versioned installation instructions](https://github.com/davidawad/helix-bend/blob/093e204a8a9b87cd16d3f0801252eb3e97321901/README.md#install), then merge the language entry and run `hx --health bend`. The [Helix language configuration reference](https://docs.helix-editor.com/languages.html) documents `use-grammars`; our second check used the top-level `use-grammars = { only = ["bend2"] }` selector to limit fetch/build to this grammar. Inspect your own health output. If highlighting works but diagnostics do not appear, first check whether a language server is configured; a loaded parser cannot supply compiler errors by itself.
+
 <span id="other-paths"></span>
 
 ## Neovim or a browser: two different starting points
@@ -154,15 +169,15 @@ No. A proof interface helps you inspect or invoke proof-related work. Its presen
 
 ### Are these the only Bend 2 editor options?
 
-No. Alongside the two VS Code paths and standalone server, this guide points to a native Neovim plugin and a no-install browser workshop. [Browse the developer-tool projects](/?category=tools) for other editors and integrations, then verify each project's current requirements. Built with Bend is an independent directory, not the vendor of these tools.
+No. Alongside the two VS Code paths and standalone server, this guide covers Helix highlighting, a native Neovim plugin and a no-install browser workshop. [Browse the developer-tool projects](/?category=tools) for other editors and integrations, then verify each project's current requirements. Built with Bend is an independent directory, not the vendor of these tools.
 
 <span id="method"></span>
 
 ## How this comparison was checked
 
-We compared release or package metadata with repository documentation and configuration/source wiring. The useful distinction is the path from editor feedback to compiler: installed toolchain versus bundled analysis snapshot. We did not install these extensions, benchmark them, or test the listed host combinations. Links to versioned sources preserve what informed this comparison; upstream requirements can change.
+We compared release or package metadata with repository documentation and configuration/source wiring. The useful distinction is the path from editor feedback to compiler: installed toolchain versus bundled analysis snapshot. We did not install these VS Code extensions, benchmark the tools, or test all listed host combinations. The separately dated Helix section records only the native resource-health checks described there. Links to versioned sources preserve what informed this comparison; upstream requirements can change.
 
 Choose one path, verify it against a small project, then follow the original repository for setup details. If you build another useful Bend 2 tool, [submit your project](/submit/) so other developers can find its source.
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Blog","item":"https://builtwithbend.com/blog/"},{"@type":"ListItem","position":2,"name":"Bend 2 Editors: VS Code and LSP","item":"https://builtwithbend.com/blog/bend-2-editor-tools"}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Does a Bend 2 language server replace the compiler?","acceptedAnswer":{"@type":"Answer","text":"Not for building your application. Don2e4's server bundles a compiler for diagnostic analysis, while Nuxyel calls an installed Bend toolchain for compiler-backed work. Keep the project's own build instructions and compiler requirements as a separate check."}},{"@type":"Question","name":"Does a proof explorer guarantee a verified program?","acceptedAnswer":{"@type":"Answer","text":"No. A proof interface helps you inspect or invoke proof-related work. Its presence does not establish which checker ran, what properties were stated, or whether every required proof passed. Follow the project's proof procedure and inspect its actual result rather than treating an editor panel as the verdict."}},{"@type":"Question","name":"Are these the only Bend 2 editor options?","acceptedAnswer":{"@type":"Answer","text":"No. Alongside the two VS Code paths and standalone server, this guide points to a native Neovim plugin and a no-install browser workshop. Browse the developer-tool projects for other editors and integrations, then verify each project's current requirements. Built with Bend is an independent directory, not the vendor of these tools."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Does a Bend 2 language server replace the compiler?","acceptedAnswer":{"@type":"Answer","text":"Not for building your application. Don2e4's server bundles a compiler for diagnostic analysis, while Nuxyel calls an installed Bend toolchain for compiler-backed work. Keep the project's own build instructions and compiler requirements as a separate check."}},{"@type":"Question","name":"Does a proof explorer guarantee a verified program?","acceptedAnswer":{"@type":"Answer","text":"No. A proof interface helps you inspect or invoke proof-related work. Its presence does not establish which checker ran, what properties were stated, or whether every required proof passed. Follow the project's proof procedure and inspect its actual result rather than treating an editor panel as the verdict."}},{"@type":"Question","name":"Are these the only Bend 2 editor options?","acceptedAnswer":{"@type":"Answer","text":"No. Alongside the two VS Code paths and standalone server, this guide covers Helix highlighting, a native Neovim plugin and a no-install browser workshop. Browse the developer-tool projects for other editors and integrations, then verify each project's current requirements. Built with Bend is an independent directory, not the vendor of these tools."}}]}</script>

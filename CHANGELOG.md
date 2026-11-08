@@ -1,3 +1,8 @@
+## 2026-11-08
+
+- Restore a usable package-walkthrough path during JendHub’s search-index outage with checked, version-pinned exact-name/source links; preserve the original compiler example.
+- Add a checked Helix highlighting path to the existing editor guide, distinguishing parser/query health, grammar revision pins and separately configured language-server diagnostics.
+
 ## 2026-11-07
 
 - Add the source-reviewed Helix configuration to Bend 2 related-project discovery, preserving the complete category browse ring and dating only changed recommendation lists.

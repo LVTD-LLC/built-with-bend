@@ -2,7 +2,7 @@
 title: "Bend 2 Packages: Find and Import"
 description: "Find a Bend 2 package with JendHub, inspect its input type, and check a versioned import with a worked example tested on two compilers."
 published_at: 2026-10-18
-updated_at: 2026-11-04
+updated_at: 2026-11-08
 keywords: [Bend 2 packages, Bend 2 import, Bend libraries]
 topics: [Bend 2, Packages]
 author: Built with Bend
@@ -41,11 +41,13 @@ You need an installed Bend 2 compiler, a terminal and a text editor. Start with 
 
 ## 1. Find a definition for your task
 
-Suppose you want to display bytes as hexadecimal text. A package name alone does not tell you whether its function accepts a string, a linked list, an array or a custom byte buffer. Search for the operation first: [hex encode bytes in JendHub](https://jend.leeeet.dev/search.txt?query=hex%20encode%20bytes&limit=10).
+Suppose you want to display bytes as hexadecimal text. A package name alone does not tell you whether its function accepts a string, a linked list, an array or a custom byte buffer. Search for the operation first, such as `hex encode bytes` in JendHub.
 
 [JendHub](/projects/jendhub/) searches definitions from Base and packages on BendHub. Its [agent instructions](https://jend.leeeet.dev/llms.txt) describe searching in plain language and opening a result's source before choosing it. The text endpoint is useful for a terminal or agent; the [website](https://jend.leeeet.dev/) also provides a browser interface.
 
 In the checked response, `Bytes.to_hex` appeared in more than one package. We selected the definition in **bend-kit-bytes 0.3.2.0**, rather than assuming that every result called `to_hex` was interchangeable. The result supplied a source link, a function signature and an import line. Search results change: the October 25 source review returned bend-kit-bytes 0.3.3.0. The worked example below still uses the originally tested **0.3.2.0**; it is not a test of 0.3.3.0. Use the pinned source link below rather than replacing the import with the newest search result.
+
+**Search unavailable?** On November 8, 2026, JendHub’s definition-search endpoint returned HTTP 503 with “The search index is not ready.” The [exact-name lookup in the pinned Bytes file](https://jend.leeeet.dev/grep.txt?pattern=to_hex&path=bend-kit-bytes%400.3.2.0%2Fbytes.bend&limit=10) still returned `def to_hex(b: Bytes) -> String` at line 631, and the [versioned source](https://jend.leeeet.dev/read.txt?path=bend-kit-bytes%400.3.2.0%2Fbytes.bend&start_line=1&end_line=700) opened. Use those links to continue this known example while search is unavailable. Exact-name lookup is not semantic discovery: it works here because the package, file and function are already known. These are source-access checks, not a new compiler run or a claim that JendHub’s search outage is fixed.
 
 For broader browsing, [Bend Packages](/projects/bend-packages/) is another discovery surface. It is a community catalog, not the compiler or official hub. Use a catalog to find a library, definition search to locate an operation, and the original sources to decide what to call. None of those steps replaces checking your own program.
 
