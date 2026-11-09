@@ -12,6 +12,9 @@ KNOT_RELEASE_CORRECTED_AT = datetime(2026, 10, 14, tzinfo=UTC)
 KNOT_FIRST_USE_REPOSITORY = "https://github.com/MatheusBBarni/knot-node-tooling"
 KNOT_FIRST_USE_ADDED_AT = datetime(2026, 11, 4, tzinfo=UTC)
 
+MYLSM_REPOSITORY = "https://github.com/FabianVegaA/mylsm"
+MYLSM_API_CORRECTED_AT = datetime(2026, 11, 9, tzinfo=UTC)
+
 HTTP_SERVER_REPOSITORY = "https://github.com/iamsahilsonawane/bend2-http-server"
 HTTP_SERVER_CHECKED_AT = datetime(2026, 10, 15, tzinfo=UTC)
 HTTP_SERVER_DEMO_ADDED_AT = datetime(2026, 10, 22, tzinfo=UTC)
@@ -122,3 +125,7 @@ def pocket_workshop_metadata(project, site_url):
     # JSON inside a script element must not let a catalog title close the tag.
     schema_json = json.dumps(schema, ensure_ascii=False).replace("</", "<\\/")
     return {"description": description, "schema_json": schema_json}
+
+
+def has_mylsm_correction(project):
+    return project.slug == "mylsm" and project.repository_url == MYLSM_REPOSITORY

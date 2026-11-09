@@ -2,7 +2,7 @@
 title: "Bend Programming Language: What You Can Build with Bend 2"
 description: "Explore the Bend programming language through five Bend 2 projects: a Doom recreation, an SVG editor, a database, a fractal explorer, and an HTTP server."
 published_at: 2026-09-24
-updated_at: 2026-11-06
+updated_at: 2026-11-09
 keywords: [Bend programming language, Bend 2, Bend 2 projects]
 topics: [Bend 2, Project examples]
 author: Built with Bend
@@ -16,7 +16,7 @@ If you've been reading about the **Bend programming language** and wondering wha
 
 First, one distinction matters: this article covers **Bend 2**. The current [official Bend repository](https://github.com/bendlang/bend#limitations) explicitly says that Bend 1 programs and HVM do not carry over. An older tutorial may describe a different language and toolchain from the one these projects use.
 
-*Project descriptions checked on September 24, 2026; toolchain check updated October 9, 2026. Project descriptions are based on their repositories and documentation, not independent runtime benchmarks.*
+*Project descriptions checked on September 24, 2026; toolchain check updated October 9, 2026; MyLSM section source-reviewed November 9, 2026. Project descriptions are based on their repositories and documentation, not independent runtime benchmarks.*
 
 ## What is the Bend programming language?
 
@@ -94,15 +94,15 @@ The README documents incomplete SVG conformance, CPU rendering, and a macOS requ
 
 ### 3. MyLSM: an experimental storage engine
 
-[MyLSM](https://builtwithbend.com/projects/mylsm/) is a log-structured merge-tree key-value store implemented in Bend 2. The project includes durable-storage machinery such as a write-ahead log, SSTables, compaction, and recovery.
+[MyLSM](/projects/mylsm/) is an experimental log-structured merge-tree key-value store implemented in Bend 2. It is useful for studying what happens after a write, a deletion, a restart or a lost response—not just whether a computation returns the expected answer once.
 
-It's an interesting change of pace from graphics demos. Storage forces you to think about what happens after a write, a deletion, a restart, or a failure—not just whether a computation returns the expected answer once.
+**Source review, November 9, 2026:** the [0.6.0.0 API](https://github.com/FabianVegaA/mylsm/blob/eefd74145aedbd331acca297ca781888a3f6d56c/docs/features/durable-api.md) exposes two views of the same durable database: `MyLSM.Bytes` for binary keys and values, and `MyLSM.Utf8` for strict UTF-8 text access. Both support scans and snapshots. The [release notes](https://github.com/FabianVegaA/mylsm/blob/eefd74145aedbd331acca297ca781888a3f6d56c/docs/releases/0.6.0.0.md) say the former top-level String and session APIs have been removed. Do not start a current integration from an older in-memory-facade example.
 
-MyLSM also distinguishes its pure, in-memory library interface from the repository's durable-storage implementation. Its documentation keeps storage I/O on the CPU; GPU execution applies only to suitable pure computation.
+For a first look, read the [public examples in order](https://github.com/FabianVegaA/mylsm/blob/eefd74145aedbd331acca297ca781888a3f6d56c/examples/README.md): a UTF-8 write/read, a binary key/value, then a snapshot scan that retains an old value while the live value changes. The source examples require Bend 2.0.39 and a fresh database path for each run. This is a source-reviewed reading path; Built with Bend did not run these examples or install the packaged CLI.
 
-The project's correctness notes are worth reading alongside the code. They distinguish existing proof witnesses and executable checks from general properties and host I/O behavior that still need stronger validation. The README also identifies remaining work before making production or competitive claims.
+The release has **no automatic flush or levelled compaction**: applications must flush explicitly. Its release notes record acceptance on Apple Silicon macOS and only partial Linux x86-64 validation, with owner-coordination and workload checks still open. Those are upstream's results, not our benchmarks or a production recommendation. Formal laws cover pure decisions, not the filesystem or host effects. If a write's response is lost, its outcome can be unknown; inspect the database before deciding to retry.
 
-**Explore it for:** storage architecture and the boundary between checked computation and external effects. [Read the MyLSM source and README](https://github.com/FabianVegaA/mylsm).
+**Explore it for:** durable API design, snapshot ownership and the boundary between checked computation and external effects. [Read the versioned MyLSM README](https://github.com/FabianVegaA/mylsm/blob/eefd74145aedbd331acca297ca781888a3f6d56c/README.md).
 
 ### 4. Bend 2 Mandelbrot: GPU computation inside a native application
 

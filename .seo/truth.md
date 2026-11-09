@@ -245,3 +245,20 @@ The guide's exact semantic-search destination repeatedly returned503/searchindex
 Read for bend-kit-bytes0.3.2.0 and grep with path/limit10 returned200;grep confirms
 to_hex(b:Bytes)->String at631. Keep originallytestedpackage/compilerpins;thisis
 sourceaccessonly,notnewcompilationor upstreamoutageresolution. RecheckNov9.
+
+
+## MyLSM durable API — source-reviewed November 9, 2026
+
+At eefd74145aedbd331acca297ca781888a3f6d56c, the documented 0.6.0.0 facade
+has MyLSM.Bytes and MyLSM.Utf8 over one durable database; the former top-level
+String/session APIs are removed. There is no automatic flush or levelled compaction.
+Upstream records Apple Silicon macOS acceptance and partial Linux x86-64 validation;
+these are not Built with Bend's runtime results. Pure laws exclude filesystem/host IO.
+The public examples require Bend2.0.39 and fresh database paths. No runtime,
+package-install, kernel, performance or production claim was independently checked.
+Sources: README.md, docs/features/durable-api.md, docs/releases/0.6.0.0.md and
+examples/README.md at the pinned revision. The migration changes only the
+exact reviewed listing description; its original title/actions/publication remain.
+The fixed content date changes, not the publication/sort date. Source recheck
+November16; new21/28day endpoints November30/December7 require final GSC.
+Earlier introduction windows remain intact with overlap/attribution caveats.
