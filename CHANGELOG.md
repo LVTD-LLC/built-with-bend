@@ -1,3 +1,7 @@
+## 2026-11-09
+
+- Correct MyLSM's former in-memory-facade description in the project listing and Bend 2 introduction; link the current durable API examples and make explicit flush, platform-validation and proof boundaries clear.
+
 ## 2026-11-08
 
 - Restore a usable package-walkthrough path during JendHub’s search-index outage with checked, version-pinned exact-name/source links; preserve the original compiler example.

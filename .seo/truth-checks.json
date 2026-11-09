@@ -361,5 +361,24 @@
     "must_not_match": [
       "works with every Bend version"
     ]
+  },
+  {
+    "id": "mylsm-current-durable-api",
+    "urls": [
+      "/projects/mylsm/",
+      "/blog/bend-programming-language"
+    ],
+    "must_match": [
+      "MyLSM.Bytes",
+      "MyLSM.Utf8",
+      "no automatic flush or levelled compaction",
+      "partial Linux x86-64",
+      "not the filesystem or host effects"
+    ],
+    "must_not_match": [
+      "exposes reusable storage components and an in-memory hub facade",
+      "distinguishes its pure, in-memory library interface"
+    ],
+    "flags": "is"
   }
 ]
