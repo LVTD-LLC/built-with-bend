@@ -14,6 +14,7 @@ KNOT_FIRST_USE_ADDED_AT = datetime(2026, 11, 4, tzinfo=UTC)
 
 MYLSM_REPOSITORY = "https://github.com/FabianVegaA/mylsm"
 MYLSM_API_CORRECTED_AT = datetime(2026, 11, 9, tzinfo=UTC)
+MYLSM_SOURCE_PATH_ADDED_AT = datetime(2026, 11, 16, tzinfo=UTC)
 
 HTTP_SERVER_REPOSITORY = "https://github.com/iamsahilsonawane/bend2-http-server"
 HTTP_SERVER_CHECKED_AT = datetime(2026, 10, 15, tzinfo=UTC)

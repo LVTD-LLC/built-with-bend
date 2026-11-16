@@ -127,3 +127,10 @@ Long commands must not widen the page on mobile.
 The exact-repository ezmcp listing adds a checked stdio demo after original sources.
 Reuse project-guide command blocks and public source-link analytics; keep the native
 compiler pin, expected JSON response and untested-client boundary visible.
+
+## MyLSM source progression
+
+The exact-repository MyLSM listing offers a source-reviewed release and example
+path after original sources. Reuse project-guide typography and native ordered
+links with numbered markers and spacing; keep text, binary and snapshot tasks distinct. Preserve the older dated
+catalog overview and make upstream-versus-independent validation explicit.

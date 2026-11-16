@@ -380,5 +380,26 @@
       "distinguishes its pure, in-memory library interface"
     ],
     "flags": "is"
+  },
+  {
+    "id": "mylsm-source-path-boundary",
+    "urls": [
+      "/projects/mylsm/"
+    ],
+    "paths": [
+      "frontend/templates/directory/mylsm_source_path.html"
+    ],
+    "must_match": [
+      "Choose a MyLSM example before integrating",
+      "0.6.0.2",
+      "rebuilding native binaries",
+      "existing 0.6 databases need no migration",
+      "not an installation or runtime execution",
+      "does not establish Linux or GPU compatibility"
+    ],
+    "must_not_match": [
+      "Built with Bend ran all MyLSM examples",
+      "MyLSM is production-ready"
+    ]
   }
 ]
