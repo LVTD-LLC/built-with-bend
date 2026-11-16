@@ -2,7 +2,7 @@
 title: "Bend Programming Language: What You Can Build with Bend 2"
 description: "Explore the Bend programming language through five Bend 2 projects: a Doom recreation, an SVG editor, a database, a fractal explorer, and an HTTP server."
 published_at: 2026-09-24
-updated_at: 2026-11-09
+updated_at: 2026-11-16
 keywords: [Bend programming language, Bend 2, Bend 2 projects]
 topics: [Bend 2, Project examples]
 author: Built with Bend
@@ -145,6 +145,8 @@ Then narrow the reading to one behavior. Trace its input, implementation, and ou
 You don't need to understand the entire repository to learn something useful from it.
 
 ## Where to go next
+
+Before interpreting a project's parallel-computing claims, try the [Bend 2 native CPU result checks](/blog/bend-2-cpu-parallelism). The range-partition exercise includes two deliberate mistakes, including one that makes both implementations agree on the wrong answer.
 
 For language syntax and installation, start with the [official Bend site](https://bend-lang.com/) and its linked guide. For project setup, follow the chosen repository's own requirements: examples may depend on a particular toolchain version or operating system.
 

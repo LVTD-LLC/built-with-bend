@@ -5,6 +5,8 @@ The introductory guide at /blog/bend-programming-language owns language and proj
 The editor comparison at /blog/bend-2-editor-tools owns Bend 2 editor, VS Code and language-server choice intent. Its discovery paths are /blog/ and the introductory guide's next-steps section; it leads readers toward suitable editor projects and source repositories.
 Full measured graph/evidence is private in Rowset, not maintained here.
 
+- 2026-11-16: `/blog/bend-2-cpu-parallelism` owns native CPU range-partition result acceptance and shared-error controls. Inbound: introductory guide, HTTP guide and automatic blog index. Leads readers to the compute-server listing and source-level target selection; no timing or utilization claim.
+
 - 2026-10-13: Nuxyel and bend2-lsp project listings link contextually to `/blog/bend-2-editor-tools`; no other editor listings implied to be covered.
 
 - 2026-11-03: `/blog/bend-2-proof-workflow` owns first-law/checker-boundary intent. Inbound: introductory guide, package guide and automatic blog index. Anchor variants: Bend 2 proof workflow; check a Bend 2 law; proof-checking failure controls; check-only versus verdict; read a project proof boundary.
