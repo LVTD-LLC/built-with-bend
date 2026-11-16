@@ -3,7 +3,6 @@ title: "Bend 2 CPU Parallelism: First Checks"
 description: "Try Bend 2 CPU parallelism with a checked range-sum example, two deliberately wrong partitions, and a checklist for evaluating real projects."
 published_at: 2026-11-16
 author: Built with Bend
-canonical_url: https://builtwithbend.com/blog/bend-2-cpu-parallelism
 keywords: [Bend 2 CPU parallelism, Bend native compilation, Bend parallel calls]
 topics: [Bend 2, Parallel computing, Developer tools]
 ---
