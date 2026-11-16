@@ -104,6 +104,8 @@
 
 - Publish a checked Bend 2 CPU-parallelism walkthrough with native result comparisons, two wrong-partition controls and a reusable project-evaluation checklist; connect it from the introduction, HTTP guide and blog index without performance claims.
 
+- Keep the CPU-parallelism result table readable on narrow screens with a keyboard-focusable horizontal scroll region instead of compressed columns.
+
 ## 2026-10-27
 
 - Add a source-reviewed first-use path to the Bend 2 for Neovim listing: installation

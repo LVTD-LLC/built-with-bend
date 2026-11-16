@@ -152,7 +152,7 @@ right = sum_seq(p, start)
 Leave the parallel mistake in place. Recheck and rebuild again. Our CLI and all three native settings now returned **`(0, 0)`**. A test that only compares the two results would pass. The assertion against the independently calculated answer still failed.
 
 <div role="region" aria-label="Observed range-partition checks" tabindex="0" style="overflow-x:auto">
-<table>
+<table style="min-width:38rem">
 <thead><tr><th scope="col">Program</th><th scope="col">Ordinary check</th><th scope="col">CLI and native 1 / 2 / 4 result</th><th scope="col">Expected-answer assertion</th></tr></thead>
 <tbody>
 <tr><th scope="row">Original partition</th><td>Accepted</td><td>(2016, 2016)</td><td>Passed</td></tr>
