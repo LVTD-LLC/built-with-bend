@@ -2,6 +2,7 @@
 title: "Bend 2 HTTP Server: Tested First Use"
 description: "Run a Bend 2 HTTP server locally, compare the official demo with Bendo, and test response contracts before choosing a project."
 published_at: 2026-11-04
+updated_at: 2026-11-16
 author: Built with Bend
 keywords: [Bend 2 HTTP server, Bendo, Bend web framework]
 topics: [Bend 2, HTTP, Developer tools]
@@ -178,6 +179,8 @@ However, its socket calls differ from the official 2.0.39 example, including the
 Its source reads a request with a single receive operation. TCP is a byte stream, not a sequence of complete HTTP messages: [RFC 9293](https://www.rfc-editor.org/rfc/rfc9293.html#name-key-tcp-concepts) explains that application writes and reads do not preserve message boundaries. A small request can still arrive in pieces. Passing our ordinary local probes does not test split headers, large bodies, timeouts, persistent connections or malformed requests.
 
 Also separate connection concurrency from parallel computation. The [versioned Bend guide](https://github.com/bendlang/bend/blob/v2.0.39/guide/GUIDE.md#parallelism) says the JavaScript target runs sequentially. Native worker settings and GPU-capable syntax do not, by themselves, prove a faster HTTP service. We ran native binaries with two CPU workers and GPU disabled; we did not measure speedup or test a GPU path.
+
+For a separate, network-free exercise, [check a Bend 2 CPU range partition](/blog/bend-2-cpu-parallelism) at several requested thread settings. Its expected-answer assertion catches a shared mistake that comparing sequential and parallel outputs alone would miss.
 
 Finally, distinguish a proof claim from an HTTP result. Bendo documents proofs for pure framework components while keeping socket effects outside that scope. The compute server's laws concern its arithmetic computation and range predicate, not every parser or socket behavior. This article ran no `--verdict` checks. The [proof-workflow guide](/blog/bend-2-proof-workflow) shows why an ordinary checker pass and additional kernel validation are separate results.
 

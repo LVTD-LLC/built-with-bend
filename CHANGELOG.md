@@ -102,6 +102,8 @@
 
 - Add a source-reviewed MyLSM upgrade and example-selection path: the 0.6.0.2 native rebuild notice, text versus binary access, and snapshot resource lifetimes. Preserve original catalog copy and clearly distinguish upstream validation from our source review.
 
+- Publish a checked Bend 2 CPU-parallelism walkthrough with native result comparisons, two wrong-partition controls and a reusable project-evaluation checklist; connect it from the introduction, HTTP guide and blog index without performance claims.
+
 ## 2026-10-27
 
 - Add a source-reviewed first-use path to the Bend 2 for Neovim listing: installation
