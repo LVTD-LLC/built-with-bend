@@ -18,7 +18,7 @@ from .editorial import (
     JENDHUB_DESTINATIONS_RESTORED_AT,
     KNOT_FIRST_USE_ADDED_AT,
     KNOT_RELEASE_CORRECTED_AT,
-    MYLSM_API_CORRECTED_AT,
+    MYLSM_SOURCE_PATH_ADDED_AT,
     NEOVIM_FIRST_USE_ADDED_AT,
     PACKAGE_GUIDE_ADDED_AT,
     has_bendo_first_use,
@@ -50,7 +50,7 @@ class ProjectSitemap(ConfiguredSitemapMixin, Sitemap):
 
     def content_lastmod(self, obj):
         for applies, checked_at in (
-            (has_mylsm_correction, MYLSM_API_CORRECTED_AT),
+            (has_mylsm_correction, MYLSM_SOURCE_PATH_ADDED_AT),
             (has_ezmcp_first_use, EZMCP_FIRST_USE_ADDED_AT),
             (has_bendo_first_use, BENDO_FIRST_USE_ADDED_AT),
             (has_knot_first_use, KNOT_FIRST_USE_ADDED_AT),

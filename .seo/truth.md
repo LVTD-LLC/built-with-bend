@@ -262,3 +262,18 @@ exact reviewed listing description; its original title/actions/publication remai
 The fixed content date changes, not the publication/sort date. Source recheck
 November16; new21/28day endpoints November30/December7 require final GSC.
 Earlier introduction windows remain intact with overlap/attribution caveats.
+
+## MyLSM upgrade and example selection — source-reviewed November 16, 2026
+
+At be7f9066b5a2bec3ef13c4965a3031963e4fc32c, 0.6.0.2 release notes require
+rebuilding native binaries for the owner polling fix exposed by Bend 2.0.40.
+Public APIs/storage formats remain unchanged; existing 0.6 databases need no
+migration, not all older formats. Current examples require Bend2.0.40 and fresh,
+nonexistent database paths. Utf8 reports invalid text, Bytes accepts arbitrary
+bytes, and the snapshot example closes its cursor/snapshot before the final
+live read. Release validation is upstream Darwin arm64 evidence, not a Built
+with Bend execution or Linux/GPU claim. Source record:
+`.seo/evidence/2026-11-16-mylsm-source-path.md`. The dated November9 overview is
+retained. Recheck sources November23; new21/28day endpoints December7/14 need
+finalGSC. Preserve November9's November30/December7 windows and all first-seens;
+overlapping interventions prevent clean attribution.

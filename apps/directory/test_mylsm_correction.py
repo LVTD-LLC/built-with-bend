@@ -46,7 +46,7 @@ class MyLSMCorrectionTests(TestCase):
         for text in ("MyLSM.Bytes", "MyLSM.Utf8", "no automatic flush or levelled compaction"):
             self.assertContains(response, text)
         self.assertNotContains(response, "in-memory hub facade")
-        self.assertEqual(ProjectSitemap().lastmod(project), datetime(2026, 11, 9, tzinfo=UTC))
+        self.assertEqual(ProjectSitemap().lastmod(project), datetime(2026, 11, 16, tzinfo=UTC))
         correction.backwards(apps, editor)
         correction.backwards(apps, editor)
         project.refresh_from_db()
@@ -73,5 +73,5 @@ class MyLSMCorrectionTests(TestCase):
         correction.forwards(apps, editor)
         correction.backwards(apps, editor)
         self.assertFalse(Project.objects.exists())
-        project = self.fixture(published_at=datetime(2026, 11, 12, tzinfo=UTC))
+        project = self.fixture(published_at=datetime(2026, 11, 20, tzinfo=UTC))
         self.assertEqual(ProjectSitemap().lastmod(project), project.published_at)

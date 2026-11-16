@@ -1,0 +1,30 @@
+<section class="project-guide" aria-labelledby="mylsm-source-path-heading">
+    <h2 id="mylsm-source-path-heading">Choose a MyLSM example before integrating</h2>
+    <p>Start with text if your keys and values are strings, binary access if they are arbitrary bytes, or a snapshot scan if a reader must retain an earlier view while writes continue. These are three different learning tasks, not three database engines.</p>
+    <p>Source review, <time datetime="2026-11-16">November 16, 2026</time>: the upstream <a href="https://github.com/FabianVegaA/mylsm/blob/be7f9066b5a2bec3ef13c4965a3031963e4fc32c/docs/releases/0.6.0.2.md"
+    data-posthog-outbound="source"
+    target="_blank"
+    rel="noopener noreferrer nofollow">0.6.0.2 release notes</a> describe a native owner crash exposed by Bend 2.0.40 and require rebuilding native binaries with the updated environment. Public APIs and storage formats are unchanged; existing 0.6 databases need no migration. This does not waive migration requirements for older formats.</p>
+    <ol>
+        <li><strong>Text write/read:</strong> follow <a href="https://github.com/FabianVegaA/mylsm/blob/be7f9066b5a2bec3ef13c4965a3031963e4fc32c/examples/utf8_basic.bend"
+    data-posthog-outbound="source"
+    target="_blank"
+    rel="noopener noreferrer nofollow">utf8_basic.bend</a>. <code>MyLSM.Utf8</code> encodes strings as UTF-8 and reports invalid stored text rather than replacing bytes.</li>
+        <li><strong>Binary keys and values:</strong> read <a href="https://github.com/FabianVegaA/mylsm/blob/be7f9066b5a2bec3ef13c4965a3031963e4fc32c/examples/bytes_basic.bend"
+    data-posthog-outbound="source"
+    target="_blank"
+    rel="noopener noreferrer nofollow">bytes_basic.bend</a>. <code>MyLSM.Bytes</code> accepts byte buffers, including bytes outside valid UTF-8; keys use unsigned lexicographic byte order.</li>
+        <li><strong>Stable reads during updates:</strong> inspect <a href="https://github.com/FabianVegaA/mylsm/blob/be7f9066b5a2bec3ef13c4965a3031963e4fc32c/examples/snapshot_scan.bend"
+    data-posthog-outbound="source"
+    target="_blank"
+    rel="noopener noreferrer nofollow">snapshot_scan.bend</a>. It reads the old value through a snapshot, closes the cursor and snapshot, then reads the new live value.</li>
+    </ol>
+    <p>The pinned <a href="https://github.com/FabianVegaA/mylsm/blob/be7f9066b5a2bec3ef13c4965a3031963e4fc32c/examples/README.md"
+    data-posthog-outbound="source"
+    target="_blank"
+    rel="noopener noreferrer nofollow">example instructions</a> require Bend 2.0.40 and a fresh, nonexistent <code>MYLSM_DB_PATH</code> for each run. The database remains afterward. Read the <a href="https://github.com/FabianVegaA/mylsm/blob/be7f9066b5a2bec3ef13c4965a3031963e4fc32c/docs/features/durable-api.md"
+    data-posthog-outbound="source"
+    target="_blank"
+    rel="noopener noreferrer nofollow">durable API’s handle and error rules</a> before adapting an example; a lost response after a dispatched write can leave the outcome unknown, so inspect before retrying.</p>
+    <p>Built with Bend reviewed these sources, not an installation or runtime execution. The release’s compatibility evidence is for Apple Silicon macOS; it does not establish Linux or GPU compatibility. Formal laws cover pure decisions, not filesystem or host effects. The dated 0.6.0.0 overview above remains an earlier source review, not a recommendation to skip the newer release notes.</p>
+</section>
