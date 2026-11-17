@@ -242,7 +242,12 @@
       "November 2, 2026",
       "smoke check",
       "not a benchmark, proof-kernel check",
-      "pure-code proofs from IO"
+      "pure-code proofs from IO",
+      "Trace a real todo request",
+      "November 17, 2026",
+      "types alone do not validate",
+      "not an interactive React browser test",
+      "generated-file freshness"
     ],
     "must_not_match": [
       "production-ready",
