@@ -277,3 +277,20 @@ with Bend execution or Linux/GPU claim. Source record:
 retained. Recheck sources November23; new21/28day endpoints December7/14 need
 finalGSC. Preserve November9's November30/December7 windows and all first-seens;
 overlapping interventions prevent clean attribution.
+
+## Bendo todo typed-client path — checked November 17, 2026
+
+Pinned source a42deb987571aeb6bb35790f787f5f7defb1d5e0 remains pre-alpha
+and checkout-only. With Bend 2.0.38, Bun 1.4.4 and clang 14 on Linux x64,
+the unmodified `tests/todo-example.test.ts` passed: native CRUD and rejected
+writes, generated manifest/schema freshness, shared validation, CORS, and
+the React build/typecheck. This did not exercise an interactive React browser,
+scaffolder templates, the proof kernel, performance or production readiness.
+The older November 2 hello-only test remains explicitly dated. The todo's
+`src/api.ts` supplies generated response schemas as well as route types;
+`kind: data` narrowing is required before reading the typed result. After route
+or schema edits, upstream requires regenerating `.bendo/`.
+Sources: the pinned examples/todo/README.md, examples/todo/src/api.ts,
+docs/client.md and tests/todo-example.test.ts in opencoredev/bendo.
+Sanitized verification: `.seo/evidence/2026-11-17-bendo-todo-client.md`.
+Recheck November 24; preserve the earlier hello and HTTP-guide outcome windows.

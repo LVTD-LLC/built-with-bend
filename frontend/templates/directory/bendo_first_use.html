@@ -20,4 +20,24 @@
     data-posthog-outbound="source"
     target="_blank"
     rel="noopener noreferrer nofollow">law coverage</a> distinguishes pure-code proofs from IO; this HTTP smoke check did not verify the documented proofs or full IO behavior.</p>
+    <h3 id="bendo-todo-heading">Trace a real todo request through the typed client</h3>
+    <p>The hello example echoes a path; it does not load a todo. For a stateful API and React client, continue with the checkout’s todo example rather than treating hello as a working todo application.</p>
+    <ol>
+        <li>Follow the pinned <a href="https://github.com/opencoredev/bendo/blob/a42deb987571aeb6bb35790f787f5f7defb1d5e0/examples/todo/README.md#run-it"
+    data-posthog-outbound="source"
+    target="_blank"
+    rel="noopener noreferrer nofollow">todo setup</a> with the same Bend 2.0.38 and Bun 1.4.4 toolchain. Run the API and web app in separate terminals. The API binds to localhost; another device needs forwarding or a proxy, not just a changed browser URL.</li>
+        <li>Read <a href="https://github.com/opencoredev/bendo/blob/a42deb987571aeb6bb35790f787f5f7defb1d5e0/examples/todo/src/api.ts"
+    data-posthog-outbound="source"
+    target="_blank"
+    rel="noopener noreferrer nofollow">the example’s client setup</a>: it imports generated route types and response schemas, then creates the client with both. The <a href="https://github.com/opencoredev/bendo/blob/a42deb987571aeb6bb35790f787f5f7defb1d5e0/docs/client.md#results"
+    data-posthog-outbound="source"
+    target="_blank"
+    rel="noopener noreferrer nofollow">result contract</a> distinguishes data, HTTP rejection, network failure and invalid responses. Narrow on <code>kind === "data"</code> before reading a todo; types alone do not validate a server response.</li>
+        <li>Create and edit a todo, then try a blank title with <strong>Check in the browser</strong> disabled. Expect HTTP 422 from the server, not a successful write. After changing routes or schemas, follow <a href="https://github.com/opencoredev/bendo/blob/a42deb987571aeb6bb35790f787f5f7defb1d5e0/examples/todo/README.md#change-a-route"
+    data-posthog-outbound="source"
+    target="_blank"
+    rel="noopener noreferrer nofollow">the regeneration instructions</a> before trusting the generated client contract.</li>
+    </ol>
+    <p>On <time datetime="2026-11-17">November 17, 2026</time>, Built with Bend ran the pinned todo example’s integration tests on Linux x64 with Bend 2.0.38, Bun 1.4.4 and clang 14. The checks exercised native API CRUD, rejected writes, generated-file freshness, shared validation, CORS, and the React build and typecheck. This was not an interactive React browser test, a scaffolder-template test, a proof-kernel check, a benchmark or a production-readiness assessment.</p>
 </section>

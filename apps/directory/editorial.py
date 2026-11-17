@@ -38,7 +38,7 @@ NEOVIM_FIRST_USE_REPOSITORY = "https://github.com/nuxyel/bend2-nvim"
 NEOVIM_FIRST_USE_ADDED_AT = datetime(2026, 11, 3, tzinfo=UTC)
 
 BENDO_FIRST_USE_REPOSITORY = "https://github.com/opencoredev/bendo"
-BENDO_FIRST_USE_ADDED_AT = datetime(2026, 11, 2, tzinfo=UTC)
+BENDO_FIRST_USE_ADDED_AT = datetime(2026, 11, 17, tzinfo=UTC)
 
 
 EZMCP_FIRST_USE_REPOSITORY = "https://github.com/Emerging-Patterns/ezmcp"

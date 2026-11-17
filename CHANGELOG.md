@@ -1,3 +1,7 @@
+## 2026-11-17
+
+- Add a checked todo/typed-client next step to the Bendo listing, with pinned sources, response-handling guidance, regeneration instructions and explicit test limits. Preserve the original project metadata and hello check.
+
 ## 2026-11-09
 
 - Correct MyLSM's former in-memory-facade description in the project listing and Bend 2 introduction; link the current durable API examples and make explicit flush, platform-validation and proof boundaries clear.

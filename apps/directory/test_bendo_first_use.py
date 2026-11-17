@@ -22,6 +22,9 @@ class BendoFirstUseTests(TestCase):
         )
         response = self.client.get(project.get_absolute_url())
         self.assertContains(response, 'id="bendo-first-use-heading"')
+        self.assertContains(response, 'id="bendo-todo-heading"')
+        self.assertContains(response, "types alone do not validate a server response")
+        self.assertContains(response, "not an interactive React browser test")
         self.assertContains(response, "Hello from Bendo! You asked for /todos/42")
         self.assertContains(response, "not a benchmark, proof-kernel check")
         self.assertLess(
@@ -31,7 +34,7 @@ class BendoFirstUseTests(TestCase):
         self.assertEqual(
             response.context["posthog_public_content_path"], project.get_absolute_url()
         )
-        self.assertEqual(ProjectSitemap().lastmod(project), datetime(2026, 11, 2, tzinfo=UTC))
+        self.assertEqual(ProjectSitemap().lastmod(project), datetime(2026, 11, 17, tzinfo=UTC))
         project.refresh_from_db()
         self.assertEqual(project.published_at, published)
         for changes in (
