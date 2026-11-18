@@ -2,7 +2,7 @@
 title: "Bend 2 Packages: Find and Import"
 description: "Find a Bend 2 package with JendHub, inspect its input type, and check a versioned import with a worked example tested on two compilers."
 published_at: 2026-10-18
-updated_at: 2026-11-08
+updated_at: 2026-11-18
 keywords: [Bend 2 packages, Bend 2 import, Bend libraries]
 topics: [Bend 2, Packages]
 author: Built with Bend
@@ -149,3 +149,5 @@ For a hands-on distinction between a law, an ordinary checker pass and additiona
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Built with Bend", "item": "https://builtwithbend.com/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://builtwithbend.com/blog/"}, {"@type": "ListItem", "position": 3, "name": "Bend 2 Packages: Find and Import", "item": "https://builtwithbend.com/blog/bend-2-package-imports"}]}</script>
 
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Why does the checker reject a string?", "acceptedAnswer": {"@type": "Answer", "text": "The reviewed to_hex function expects the package Bytes type, not a String. For the ASCII example, Bytes.from_string(\"Bend\") supplies that type. Passing the raw string failed with expected Bytes.Bytes, observed String on both tested compilers."}}, {"@type": "Question", "name": "Why can my editor disagree with the terminal?", "acceptedAnswer": {"@type": "Answer", "text": "Identify the compiler or language server producing the diagnostic. An editor using a bundled checker can differ from the separately installed compiler used by your terminal. Check that boundary before reinstalling tools."}}]}</script>
+
+Before adapting a byte package to disk storage, try the [checked Bend 2 file read/write exercise](/blog/bend-2-file-io). It follows returned handles through cleanup and checks the actual file bytes, without treating a package import as an I/O guarantee.

@@ -12,3 +12,5 @@ Full measured graph/evidence is private in Rowset, not maintained here.
 - 2026-11-03: `/blog/bend-2-proof-workflow` owns first-law/checker-boundary intent. Inbound: introductory guide, package guide and automatic blog index. Anchor variants: Bend 2 proof workflow; check a Bend 2 law; proof-checking failure controls; check-only versus verdict; read a project proof boundary.
 
 - 2026-11-04: `/blog/bend-2-http-server` owns local HTTP-server first-use and response-contract intent. Inbound: introductory guide, package guide and automatic blog index. Anchor variants: tested Bend 2 HTTP-server walkthrough; Bend 2 HTTP-server first-use guide; compare local Bend HTTP responses; Bendo wildcard hello; check a Bend response contract.
+
+- 2026-11-18: `/blog/bend-2-file-io` owns Base file-effect first use: exclusive create, handle cleanup, bounded read-back and failure controls. Inbound: introductory guide, package guide and automatic blog index. Leads to MyLSM, JendHub, Bend Packages and the library category without claiming those projects were runtime-tested.
