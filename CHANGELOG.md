@@ -1,5 +1,7 @@
 ## 2026-11-18
 
+- Shorten the file-I/O guide title so the existing site suffix keeps its rendered title under 60 characters.
+
 - Publish a checked Bend 2 file-I/O walkthrough with exclusive creation, native read-back, failure controls and storage-project next steps; link it from the language and package guides.
 
 ## 2026-11-17

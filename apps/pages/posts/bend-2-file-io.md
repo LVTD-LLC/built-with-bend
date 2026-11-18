@@ -1,5 +1,5 @@
 ---
-title: "Bend 2 File I/O: Create, Read and Close"
+title: "Bend 2 File I/O: Create, Read, Close"
 description: "Try Bend 2 file I/O with checked native examples, exclusive creation, read-back assertions and failure controls before exploring storage projects."
 published_at: 2026-11-18
 author: Built with Bend
