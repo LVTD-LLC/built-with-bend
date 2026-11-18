@@ -1,3 +1,7 @@
+## 2026-11-18
+
+- Publish a checked Bend 2 file-I/O walkthrough with exclusive creation, native read-back, failure controls and storage-project next steps; link it from the language and package guides.
+
 ## 2026-11-17
 
 - Add a checked todo/typed-client next step to the Bendo listing, with pinned sources, response-handling guidance, regeneration instructions and explicit test limits. Preserve the original project metadata and hello check.
