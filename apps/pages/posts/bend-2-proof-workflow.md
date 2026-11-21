@@ -195,6 +195,18 @@ On Linux x86-64, both commands exited 0. We also recorded the kernel invocation:
 
 That gives a kernel-checked result for **this arithmetic law and witness in this setup**. It neither explains the 2.0.39 mismatch nor validates the application projects below.
 
+### What if a repeat check skips every definition?
+
+The separate [bend-cache development tool](https://github.com/bendlang/bend/blob/624dd9f4607cd29b0871a9b96d413bfb11e92f52/tools/bend-cache/README.md) can reuse ordinary checks while you edit. With Bun installed, set `bend_src` to your trusted v2.0.40 source checkout. From the exercise directory, run this twice with the same scratch cache:
+
+```bash
+bun "$bend_src/tools/bend-cache/src/cache.ts" PROOF.bend --cache ./proof-check-traces.json --stats --min-ms 0
+```
+
+On our first run, 534 definitions were checked. On the unchanged second run, all 534 were skipped. Changing the law to the false equality forced two definitions to be checked again and the command failed. Restoring the original law returned a pass. The output and exit status matched the ordinary checker in all four cases; these counts are not a speed measurement.
+
+Use the cache for feedback on your own checkout. For a final result, rerun the installed compiler without the cache tool. A warm cache does not tell you that BendTT ran.
+
 <span id="projects"></span>
 
 ## 6. Read real Bend projects with a proof-boundary checklist
