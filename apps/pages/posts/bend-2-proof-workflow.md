@@ -2,6 +2,7 @@
 title: "Bend 2 Proofs: Check a Law and Test the Boundary"
 description: "Try a tested Bend 2 proof workflow with separate laws, failure controls, and an honest comparison of --check-only and --verdict."
 published_at: 2026-11-03
+updated_at: 2026-11-21
 author: Built with Bend
 keywords: [Bend 2 proofs, Bend 2 laws, Bend check-only, Bend verdict]
 topics: [Bend 2, Proofs, Developer tools]
@@ -9,7 +10,9 @@ topics: [Bend 2, Proofs, Developer tools]
 
 To check **Bend 2 proofs**, state the property in `LAWS.bend`, implement its witness in `PROOF.bend`, and check the proof file rather than the law file alone. Then deliberately break the example. A useful first workflow distinguishes an open goal, a rejected proof, an ordinary checker pass, and a second-kernel result instead of treating every green message as the same guarantee.
 
-**Checked November 3, 2026:** Built with Bend ran the files below with **Bend 2.0.39 on Linux x86-64**. The ordinary checker accepted the completed proof and rejected three negative controls. The stronger `--verdict` command failed with a translation/kernel mismatch diagnostic. We therefore report an ordinary-checker result, **not a kernel-validated proof**. No native binary, GPU workload or performance benchmark was tested.
+**Original check, November 3, 2026:** Built with Bend ran the files below with **Bend 2.0.39 on Linux x86-64**. The ordinary checker accepted the completed proof and rejected three negative controls. The stronger `--verdict` command failed with a translation/kernel mismatch diagnostic. We therefore report an ordinary-checker result, **not a kernel-validated proof**. No native binary, GPU workload or performance benchmark was tested.
+
+**November 21 retest:** The same law and witness passed both commands on Bend 2.0.40 with BendTT on Linux x86-64. [Compare the two runs](#kernel-retest) before interpreting your own result.
 
 This guide is for developers reading Bend projects or trying their first law. It uses the [official versioned guide](https://github.com/bendlang/bend/blob/v2.0.39/guide/GUIDE.md#laws-and-proofs), with a small file-layout adaptation and additional failure checks. The arithmetic theorem is the guide's example, not a new mathematical result. The contribution here is the reproducible boundary test and the decision checklist for interpreting project claims.
 
@@ -177,6 +180,33 @@ It exited **0** and wrote a nonempty translation file. Export success did not ma
 
 If you reproduce the mismatch, preserve your exact files, compiler version, platform, command and diagnostic. Investigate against upstream sources or a newer release as a new case. Do not silently remove `--verdict` from a gate that promises kernel validation, or describe this result as either a validated proof or a discovered false theorem. This walkthrough establishes neither.
 
+<span id="kernel-retest"></span>
+
+### Retesting the same proof on Bend 2.0.40
+
+Keep the two files above unchanged. With [Bend 2.0.40](https://github.com/bendlang/bend/blob/v2.0.40/guide/GUIDE.md#laws-and-proofs), run the ordinary check first. For the second command, point `BENDTT` at your installed BendTT executable rather than assuming a matching kernel is on your path:
+
+```bash
+bend PROOF.bend --check-only
+BENDTT=/path/to/bendtt bend PROOF.bend --verdict
+```
+
+On Linux x86-64, both commands exited 0. We also recorded the kernel invocation: the verdict command called BendTT and printed `ALL PROOFS CHECK`. To check that the command still rejects a bad input, we repeated it on a copy with the law’s right side changed to `0n`. It exited 1 at `Laws.add_zero`, before the kernel could validate anything.
+
+That gives a kernel-checked result for **this arithmetic law and witness in this setup**. It neither explains the 2.0.39 mismatch nor validates the application projects below.
+
+### What if a repeat check skips every definition?
+
+The separate [bend-cache development tool](https://github.com/bendlang/bend/blob/624dd9f4607cd29b0871a9b96d413bfb11e92f52/tools/bend-cache/README.md) can reuse ordinary checks while you edit. With Bun installed, set `bend_src` to your trusted v2.0.40 source checkout. From the exercise directory, run this twice with the same scratch cache:
+
+```bash
+bun "$bend_src/tools/bend-cache/src/cache.ts" PROOF.bend --cache ./proof-check-traces.json --stats --min-ms 0
+```
+
+On our first run, 534 definitions were checked. On the unchanged second run, all 534 were skipped. Changing the law to the false equality forced two definitions to be checked again and the command failed. Restoring the original law returned a pass. The output and exit status matched the ordinary checker in all four cases; these counts are not a speed measurement.
+
+Use the cache for feedback on your own checkout. For a final result, rerun the installed compiler without the cache tool. A warm cache does not tell you that BendTT ran.
+
 <span id="projects"></span>
 
 ## 6. Read real Bend projects with a proof-boundary checklist
@@ -203,7 +233,7 @@ The two project suggestions are reading routes, not fresh certifications of thei
 
 For a library import, combine this card with the [tested Bend 2 package workflow](/blog/bend-2-package-imports): preserve the package version and input representation as well as the compiler. For a larger application, start with one behavior and trace its law, witness and execution test before attempting a repository-wide conclusion.
 
-The useful result is a precise statement you can defend: **these files passed this ordinary checker; these negative controls failed; this additional validation attempt did not succeed**. That is a better foundation for choosing a project to study than an unqualified “all proven” label.
+The useful result is a precise statement you can defend: **these files passed ordinary checking; the false law failed; kernel validation failed in the original 2.0.39 setup and succeeded in the tested 2.0.40 setup**. That is a better foundation for choosing a project to study than an unqualified “all proven” label.
 
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "HowTo", "name": "Bend 2 Proofs: Check a Law and Test the Boundary", "step": [{"@type": "HowToStep", "name": "Identify Bend 2", "text": "Run bend version and read its matching guide.", "url": "https://builtwithbend.com/blog/bend-2-proof-workflow#version"}, {"@type": "HowToStep", "name": "State the law", "text": "Save LAWS.bend and observe the incomplete claim.", "url": "https://builtwithbend.com/blog/bend-2-proof-workflow#law"}, {"@type": "HowToStep", "name": "Check the witness", "text": "Save PROOF.bend and run --check-only.", "url": "https://builtwithbend.com/blog/bend-2-proof-workflow#proof"}, {"@type": "HowToStep", "name": "Exercise failure controls", "text": "Test an open witness, false statement and missing law import separately.", "url": "https://builtwithbend.com/blog/bend-2-proof-workflow#controls"}, {"@type": "HowToStep", "name": "Record additional validation", "text": "Attempt --verdict and report its actual result; this checked environment returned a mismatch.", "url": "https://builtwithbend.com/blog/bend-2-proof-workflow#verdict"}, {"@type": "HowToStep", "name": "Review an application", "text": "Use the statement, coverage, connection, completeness, checker, execution and reproduction checklist.", "url": "https://builtwithbend.com/blog/bend-2-proof-workflow#projects"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "HowTo", "name": "Bend 2 Proofs: Check a Law and Test the Boundary", "step": [{"@type": "HowToStep", "name": "Identify Bend 2", "text": "Run bend version and read its matching guide.", "url": "https://builtwithbend.com/blog/bend-2-proof-workflow#version"}, {"@type": "HowToStep", "name": "State the law", "text": "Save LAWS.bend and observe the incomplete claim.", "url": "https://builtwithbend.com/blog/bend-2-proof-workflow#law"}, {"@type": "HowToStep", "name": "Check the witness", "text": "Save PROOF.bend and run --check-only.", "url": "https://builtwithbend.com/blog/bend-2-proof-workflow#proof"}, {"@type": "HowToStep", "name": "Exercise failure controls", "text": "Test an open witness, false statement and missing law import separately.", "url": "https://builtwithbend.com/blog/bend-2-proof-workflow#controls"}, {"@type": "HowToStep", "name": "Record additional validation", "text": "Attempt --verdict and report its actual result; record the compiler and kernel alongside the result.", "url": "https://builtwithbend.com/blog/bend-2-proof-workflow#verdict"}, {"@type": "HowToStep", "name": "Review an application", "text": "Use the statement, coverage, connection, completeness, checker, execution and reproduction checklist.", "url": "https://builtwithbend.com/blog/bend-2-proof-workflow#projects"}]}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Built with Bend", "item": "https://builtwithbend.com/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://builtwithbend.com/blog/"}, {"@type": "ListItem", "position": 3, "name": "Bend 2 Proofs: Check a Law and Test the Boundary", "item": "https://builtwithbend.com/blog/bend-2-proof-workflow"}]}</script>

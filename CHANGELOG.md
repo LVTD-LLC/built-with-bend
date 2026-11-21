@@ -1,3 +1,7 @@
+## 2026-11-21
+
+- Add a Bend 2.0.40 kernel retest and false-law control to the proof workflow; preserve the original 2.0.39 result.
+
 ## 2026-11-18
 
 - Shorten the file-I/O guide title so the existing site suffix keeps its rendered title under 60 characters.

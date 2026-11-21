@@ -2,7 +2,7 @@
 title: "Bend 2 Packages: Find and Import"
 description: "Find a Bend 2 package with JendHub, inspect its input type, and check a versioned import with a worked example tested on two compilers."
 published_at: 2026-10-18
-updated_at: 2026-11-18
+updated_at: 2026-11-21
 keywords: [Bend 2 packages, Bend 2 import, Bend libraries]
 topics: [Bend 2, Packages]
 author: Built with Bend
@@ -143,7 +143,7 @@ For examples of larger applications and experiments, return to [what people buil
 
 
 
-For a hands-on distinction between a law, an ordinary checker pass and additional kernel validation, try the [Bend 2 proof workflow and its failure controls](/blog/bend-2-proof-workflow). The worked result includes a failed `--verdict` attempt, not a kernel-validation claim.
+For a hands-on distinction between a law, an ordinary checker pass and additional kernel validation, try the [Bend 2 proof workflow and its failure controls](/blog/bend-2-proof-workflow). Compare the original 2.0.39 mismatch with the successful 2.0.40 kernel check on the same law and witness.
 
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "HowTo", "name": "Bend 2 Packages: Find and Import", "description": "Find a Bend 2 package with JendHub, inspect its input type, and check a versioned import with a worked example tested on two compilers.", "step": [{"@type": "HowToStep", "name": "Confirm you are using Bend 2", "text": "Run bend version and read bend guide for the installed compiler.", "url": "https://builtwithbend.com/blog/bend-2-package-imports#generation"}, {"@type": "HowToStep", "name": "1. Find a definition for your task", "text": "Search JendHub for hex encode bytes and identify the bend-kit-bytes 0.3.2.0 result.", "url": "https://builtwithbend.com/blog/bend-2-package-imports#find"}, {"@type": "HowToStep", "name": "2. Inspect the type before copying the call", "text": "Inspect to_hex and from_string in the versioned bytes.bend source; keep this example ASCII.", "url": "https://builtwithbend.com/blog/bend-2-package-imports#inspect"}, {"@type": "HowToStep", "name": "3. Copy the version and file into a small program", "text": "Save the complete hex.bend example with the exact named package import and Bytes alias.", "url": "https://builtwithbend.com/blog/bend-2-package-imports#import"}, {"@type": "HowToStep", "name": "4. Check first, then compare the result", "text": "Check hex.bend with --check-only, then run it and compare the result with 42656e64.", "url": "https://builtwithbend.com/blog/bend-2-package-imports#check"}]}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Built with Bend", "item": "https://builtwithbend.com/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://builtwithbend.com/blog/"}, {"@type": "ListItem", "position": 3, "name": "Bend 2 Packages: Find and Import", "item": "https://builtwithbend.com/blog/bend-2-package-imports"}]}</script>
