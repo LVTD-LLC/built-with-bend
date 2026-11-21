@@ -2,7 +2,7 @@
 title: "Bend Programming Language: What You Can Build with Bend 2"
 description: "Explore the Bend programming language through five Bend 2 projects: a Doom recreation, an SVG editor, a database, a fractal explorer, and an HTTP server."
 published_at: 2026-09-24
-updated_at: 2026-11-18
+updated_at: 2026-11-21
 keywords: [Bend programming language, Bend 2, Bend 2 projects]
 topics: [Bend 2, Project examples]
 author: Built with Bend
@@ -156,6 +156,6 @@ For more applications to read, [browse the Built with Bend directory](https://bu
 
 Already building something with Bend 2? [Submit your build](https://builtwithbend.com/submit/) so other developers can learn from it.
 
-For a hands-on distinction between a law, an ordinary checker pass and additional kernel validation, try the [Bend 2 proof workflow and its failure controls](/blog/bend-2-proof-workflow). The worked result includes a failed `--verdict` attempt, not a kernel-validation claim.
+For a hands-on distinction between a law, an ordinary checker pass and additional kernel validation, try the [Bend 2 proof workflow and its failure controls](/blog/bend-2-proof-workflow). Compare the original 2.0.39 mismatch with the successful 2.0.40 kernel check on the same law and witness.
 
 For a smaller external-effects exercise, try the [Bend 2 file I/O guide](/blog/bend-2-file-io). It checks exclusive creation, read-back and failure paths before moving to storage projects.
