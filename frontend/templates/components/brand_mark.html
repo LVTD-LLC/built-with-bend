@@ -1,2 +1,11 @@
-<span class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-orange-600 text-sm font-bold leading-none text-white"
-      aria-hidden="true">B</span>
+{% load static %}
+<img src="{% static 'brand/logo-primary.svg' %}"
+     width="167"
+     height="30"
+     class="block dark:hidden"
+     alt="Built with Bend" />
+<img src="{% static 'brand/logo-reverse.svg' %}"
+     width="167"
+     height="30"
+     class="hidden dark:block"
+     alt="Built with Bend" />

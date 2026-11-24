@@ -4,6 +4,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 from struct import unpack
 from urllib.parse import urlsplit
+from zipfile import ZipFile
 
 import pytest
 from django.conf import settings
@@ -60,6 +61,7 @@ def assert_preview(response, origin, card):
     ):
         assert len(head.metadata[key]) == 1, key
         assert head.metadata[key][0], key
+    assert head.metadata["twitter:site"] == ["@builtwithbend"]
     assert head.metadata["twitter:card"] == ["summary_large_image"]
     if card:
         assert head.metadata["og:image"] == [f"{origin}/static/social/{card}.png"]
@@ -115,6 +117,10 @@ def test_project_preview_escapes_content_and_hides_drafts(client, settings):
     assert metadata["og:title"] == [f"{project.title} — Built with Bend"]
     assert len(metadata["og:description"][0]) <= 200
     assert metadata["og:url"] == [settings.SITE_URL + project.get_absolute_url()]
+    image = urlsplit(metadata["og:image"][0])
+    assert image.path == project.get_absolute_url() + "og.png"
+    assert image.query.startswith("v=")
+    assert client.get(image.path, QUERY_STRING=image.query)["Content-Type"] == "image/png"
     project.status = Project.Status.DRAFT
     project.save()
     assert client.get(project.get_absolute_url()).status_code == 404
@@ -129,6 +135,24 @@ def test_bundled_social_artwork_is_available_to_staticfiles():
         assert len(image) < 1_000_000
         built = finders.find(f"social/{name}.png")
         assert built and Path(built).read_bytes() == image
+
+
+def test_homepage_exposes_matching_media_kit_and_web_assets(client):
+    html = client.get("/").content.decode()
+    kit_path = "brand/built-with-bend-media-kit.zip"
+    assert f"/static/{kit_path}" in html
+    with ZipFile(finders.find(kit_path)) as kit:
+        for public, member in [
+            ("brand/logo-primary.svg", "logos/logo-primary.svg"),
+            ("brand/logo-reverse.svg", "logos/logo-reverse.svg"),
+            ("directory/icon.svg", "icons/favicon.svg"),
+            ("brand/apple-touch-icon.png", "icons/apple-touch-icon.png"),
+            ("brand/site.webmanifest", "icons/site.webmanifest"),
+        ]:
+            assert f"/static/{public}" in html
+            assert Path(finders.find(public)).read_bytes() == kit.read(
+                f"built-with-bend-media-kit/{member}"
+            )
 
 
 @pytest.mark.parametrize("path", ["/blog/", "/docs/getting-started/introduction/"])

@@ -28,5 +28,7 @@ direct HTTPS image link to show a screenshot or example alongside your build.
 An independent project by [LVTD](https://lvtd.dev), not affiliated with the Bend
 team. Learn about the language at [bend-lang.com](https://bend-lang.com/).
 
+Download the [Built with Bend media kit](frontend/src/brand/built-with-bend-media-kit.zip) for logos, social images, and brand usage.
+
 For development and the curator API, see [TECHNICAL.md](TECHNICAL.md).
 Contributions: [CONTRIBUTING.md](CONTRIBUTING.md).

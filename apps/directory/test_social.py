@@ -6,6 +6,7 @@ from PIL import Image
 
 from .models import Project
 from .social import (
+    CARD_BACKGROUND,
     font,
     project_card_content,
     project_card_version,
@@ -85,12 +86,16 @@ def test_unpublishing_hides_images_even_after_cache_warmup(client, project, stat
 )
 def test_long_text_stays_inside_pixel_budget(text):
     face = font(48, "bold")
-    lines = text_lines(text, face, 800, 3)
+    lines = text_lines(text, face, 712, 3)
     assert 1 <= len(lines) <= 3
-    assert all(face.getlength(line) <= 800 for line in lines)
-    assert Image.open(
-        BytesIO(render_project_card((text[:120], text * 8, text[:120], "Tools")))
-    ).size == (1200, 630)
+    assert all(face.getlength(line) <= 712 for line in lines)
+    card = Image.open(BytesIO(render_project_card((text[:120], text * 8, text[:120], "Tools"))))
+    artwork_panel = (816, 0, 1200, 630)
+    with Image.open(CARD_BACKGROUND) as background:
+        assert (
+            card.crop(artwork_panel).tobytes()
+            == background.convert("RGB").crop(artwork_panel).tobytes()
+        )
 
 
 def test_empty_description_and_author_render(project):

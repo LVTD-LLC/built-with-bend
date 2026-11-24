@@ -34,7 +34,7 @@ def social_meta(context):
         image = build_absolute_public_url(
             reverse("directory:project_image", args=[project.slug]) + f"?v={version}"
         )
-        alt = f"{project.title} — a project built with Bend 2"
+        alt = f"{project.title} — {project.get_category_display()} on Built with Bend"
     elif post:
         title, description = post.title, post.description
         image, alt = post.image_url, post.image_alt
@@ -63,6 +63,8 @@ def social_meta(context):
         }
         title = f"{titles[route]} — Built with Bend"
         description = f"{titles[route]} information for the Built with Bend project directory."
+    if card == "directory" and not image:
+        alt = "What people build with Bend. A folded terracotta paper sculpture."
     image = image or build_absolute_public_url(static(f"social/{card}.png"))
     standard_images = {
         build_absolute_public_url(path)
