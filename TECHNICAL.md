@@ -177,14 +177,26 @@ project-owned renderer at `http://builtwithbend-mjml:15500`.
 CI uses `CAPROVER_APP_NAME=builtwithbend`; the deployment script derives
 `builtwithbend-workers` and uses its separate `WORKERS_APP_TOKEN`.
 
-The `CI and deploy` workflow tests PRs and main pushes, builds the Docker image on
-both, and deploys **only this repository's main** after checks pass. Deployments
-are serialized and use the app-scoped `APP_TOKEN` GitHub secret, never the server
-password. The action archives the exact git SHA, embeds that revision in the Docker build,
-submits the source through CapRover's app-token API, and waits for `/health/` to
-report that exact revision in 12 consecutive checks over at least 55 seconds. A local
-container healthcheck gates Swarm readiness on the process and database. CapRover builds the same Dockerfile validated in CI.
-A successful upload alone is not a successful deployment.
+The `CI and deploy` workflow runs the PostgreSQL tests and validates the production
+Dockerfile on PRs. On a push to this repository's `main`, the publishing job
+builds the image with `DEPLOYMENT_REVISION=$GITHUB_SHA`, pushes it to
+`ghcr.io/lvtd-llc/built-with-bend` with the commit SHA as its tag, and checks the
+revision inside the published image. It passes the resulting `sha256` digest to
+the serialized deployment job. CapRover receives a version 2 `captain-definition`
+with an `imageName` pinned to that digest for each app.
+
+The publishing job uses its short-lived GitHub Actions token with
+`packages: write`. The organization must allow the repository to publish the
+container package. For a private package, the identity in CapRover's matching
+GHCR registry entry needs package read access. If the first pull is denied,
+check that identity's access to the package, then rerun the failed deployment
+job to reuse the published digest. Keep the previous production digest
+available for rollback.
+
+The deployment request waits for CapRover's result. An explicit rejection stops
+the job. If the proxy times out after forwarding the request, CI checks the live
+revision without resubmitting the deployment. Swarm uses each process's local
+health check to gate readiness.
 
 Runtime: `ENVIRONMENT=prod`, `DEBUG=False`, strong `SECRET_KEY`, PostgreSQL
 `DATABASE_URL`, `SITE_URL=https://builtwithbend.com`, and bootstrap credentials.
@@ -199,8 +211,8 @@ issue TLS, then enable forced HTTPS. Both are served, with apex canonical URLs.
 The stack also retains Redis persistence, Qdrant storage, and Listmonk database
 and upload volumes.
 
-To roll back, redeploy a previously passing git revision using the supported
-CapRover API. Database migrations must remain backward-compatible; inspect each
+To roll back, deploy the last healthy image digest to both apps with its matching
+git SHA, using the same CapRover API and revision checks. Database migrations must remain backward-compatible; inspect each
 migration before merge. Persistent storage is not a backup—take database dumps
 through the operator's approved backup process before destructive schema changes.
 
@@ -228,7 +240,7 @@ The source of truth is `djass-manifest.json` (hosted job 34). All 18 current fea
 - **MJML**: existing private MJML renderer; npm dependency updated to the current compatible major to address audit findings.
 - **Chatwoot / Apprise / Healthchecks pings**: generated integrations retained; external widgets/notifications/pings require their project-specific settings. No unsolicited notification destinations are created. Database/cache and worker health endpoints are active.
 
-Web and worker deployments use separate app tokens and the same immutable commit archive. CI first verifies 12 consecutive web revision probes, then deploys and verifies the worker. The local container healthcheck tests the actual process dependencies. Swarm's app-specific update policy continues after a failed transient task instead of leaving old and new tasks indefinitely after a pause; sustained revision probes remain the deployment success gate.
+Web and worker deployments use separate app tokens and the same published image digest. CI first verifies 12 consecutive web revision probes, then deploys and verifies the worker. The local container healthcheck tests the actual process dependencies. Swarm's app-specific update policy continues after a failed transient task instead of leaving old and new tasks indefinitely after a pause; sustained revision probes remain the deployment success gate.
 
 The existing PostgreSQL database, auth users, directory tables and migrations are preserved. Core/Allauth/Q2/MCP migrations add their own tables. The generated initial extension migration was adapted **before its first deployment** to enable only available PostgreSQL extensions; Qdrant supplies vector storage, and no application model requires pgvector. No existing historical directory migration is rewritten. Take a database dump before the additive migration rollout.
 

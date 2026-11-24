@@ -1,40 +1,42 @@
-import { readFile } from 'node:fs/promises';
 import { setTimeout as delay } from 'node:timers/promises';
 import { pathToFileURL } from 'node:url';
 
-export async function uploadApp({
-  server,
-  appName,
-  appToken,
-  gitSha,
-  archive,
-  request = fetch,
-}) {
-  const form = new FormData();
-  form.set('gitHash', gitSha);
-  form.set(
-    'sourceFile',
-    new Blob([archive], { type: 'application/x-tar' }),
-    'deploy.tar',
-  );
-  const response = await request(
-    new URL(`/api/v2/user/apps/appData/${appName}/?detached=1`, server),
-    {
+const imageRepository = 'ghcr.io/lvtd-llc/built-with-bend';
+
+async function deployImage({ server, appName, appToken, gitSha, digest, request }) {
+  const imageName = `${imageRepository}@${digest}`;
+  console.log(`Deploying ${imageName} to ${appName}`);
+  let response;
+  try {
+    // Wait for CapRover to finish so an explicit pull or rollout failure reaches CI.
+    response = await request(new URL(`/api/v2/user/apps/appData/${appName}/`, server), {
       method: 'POST',
-      headers: { 'x-captain-app-token': appToken },
-      body: form,
+      headers: { 'Content-Type': 'application/json', 'x-captain-app-token': appToken },
+      body: JSON.stringify({
+        gitHash: gitSha,
+        captainDefinitionContent: JSON.stringify({ schemaVersion: 2, imageName }),
+      }),
       redirect: 'error',
       signal: AbortSignal.timeout(120_000),
-    },
-  );
+    });
+  } catch (error) {
+    const connectionLost = ['ECONNRESET', 'UND_ERR_SOCKET'].includes(error.cause?.code);
+    if (error.name !== 'TimeoutError' && !connectionLost) throw error;
+    console.warn(`Lost the deployment response for ${appName}; checking its live revision.`);
+    return;
+  }
+  if ([502, 504].includes(response.status)) {
+    console.warn(`Gateway returned HTTP ${response.status} for ${appName}; checking its live revision.`);
+    return;
+  }
   if (!response.ok)
-    throw new Error(`CapRover upload failed (HTTP ${response.status}).`);
+    throw new Error(`CapRover deployment for ${appName} failed (HTTP ${response.status}).`);
   const result = await response.json();
-  if (![100, 101].includes(result.status))
-    throw new Error(`CapRover rejected deployment (status ${result.status}).`);
-  console.log(
-    'CapRover accepted the upload; waiting for the production revision.',
-  );
+  if (result.status !== 100)
+    throw new Error(
+      `CapRover failed to deploy ${appName} (status ${result.status}). ` +
+      `Check the app deployment log and registry pull access for ${imageRepository}.`,
+    );
 }
 
 export async function deploy({
@@ -43,7 +45,7 @@ export async function deploy({
   appToken,
   productionUrl,
   gitSha,
-  archive,
+  digest,
   request = fetch,
   pause = delay,
   attempts = 120,
@@ -55,6 +57,8 @@ export async function deploy({
     !/^[a-f0-9]{40}$/.test(gitSha ?? '')
   )
     throw new Error('Missing deployment token or invalid app name/commit SHA.');
+  if (!/^sha256:[a-f0-9]{64}$/.test(digest ?? ''))
+    throw new Error('Expected the SHA-256 digest of the published production image.');
   for (const value of [server, productionUrl]) {
     const url = new URL(value);
     if (url.protocol !== 'https:' || url.username || url.password)
@@ -63,9 +67,9 @@ export async function deploy({
       );
   }
 
-  await uploadApp({ server, appName, appToken, gitSha, archive, request });
+  await deployImage({ server, appName, appToken, gitSha, digest, request });
 
-  // Upload acceptance is not deployment success. Check what the public server actually serves.
+  // Require consecutive healthy responses to catch mixed revisions during replacement.
   let healthyChecks = 0;
   for (let attempt = 0; attempt < attempts; attempt++) {
     const url = new URL(healthPath, productionUrl);
@@ -76,11 +80,12 @@ export async function deploy({
         redirect: 'error',
         signal: AbortSignal.timeout(10_000),
       });
-      if (live.ok && (await live.json()).revision === gitSha) {
+      const health = live.ok ? await live.json() : null;
+      if (health?.status === 'ok' && health.revision === gitSha) {
         healthyChecks++;
         if (healthyChecks >= 12) {
           console.log(
-            `Verified production revision ${gitSha} at ${productionUrl} across 12 consecutive checks`,
+            `Verified production revision ${gitSha} at ${productionUrl}${healthPath} across 12 consecutive checks`,
           );
           return;
         }
@@ -92,35 +97,34 @@ export async function deploy({
     if (attempt + 1 < attempts) await pause(5000);
   }
   throw new Error(
-    'Production did not serve the expected revision; check the CapRover build and service logs.',
+    `Production did not serve the expected revision for ${appName} at ${healthPath}; check its CapRover deployment and service logs.`,
   );
 }
 
-if (
-  process.argv[1] &&
-  import.meta.url === pathToFileURL(process.argv[1]).href
-) {
+export async function deployRelease({ appToken, workerToken, ...config }) {
+  if (!appToken || !workerToken) throw new Error('Web and worker deployment tokens are required.');
+  await deploy({ ...config, appToken });
+  await deploy({
+    ...config,
+    appName: `${config.appName}-workers`,
+    appToken: workerToken,
+    healthPath: '/health/workers/',
+  });
+}
+
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   try {
-    await deploy({
+    await deployRelease({
       server: process.env.CAPROVER_SERVER,
       appName: process.env.CAPROVER_APP_NAME,
       appToken: process.env.CAPROVER_APP_TOKEN,
+      workerToken: process.env.WORKERS_APP_TOKEN,
       productionUrl: process.env.PRODUCTION_URL,
-      archive: await readFile(process.argv[2]),
-      gitSha: process.argv[3],
-    });
-    if (!process.env.WORKERS_APP_TOKEN) throw new Error('Missing worker deployment token.');
-    await deploy({
-      server: process.env.CAPROVER_SERVER,
-      appName: `${process.env.CAPROVER_APP_NAME}-workers`,
-      appToken: process.env.WORKERS_APP_TOKEN,
-      productionUrl: process.env.PRODUCTION_URL,
-      archive: await readFile(process.argv[2]),
-      gitSha: process.argv[3],
-      healthPath: '/health/workers/',
+      digest: process.env.IMAGE_DIGEST,
+      gitSha: process.env.GITHUB_SHA,
     });
   } catch (error) {
-    // Do not log request headers, server response bodies, or credential-bearing objects.
+    // Keep credentials and raw CapRover response bodies out of CI logs.
     console.error(error.message);
     process.exitCode = 1;
   }
