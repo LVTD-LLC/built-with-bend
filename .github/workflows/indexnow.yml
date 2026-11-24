@@ -3,6 +3,10 @@ on:
   schedule:
     - cron: '23 8 * * *'
   workflow_dispatch:
+  workflow_run:
+    workflows: ['Deploy production']
+    types: [completed]
+    branches: [main]
 permissions:
   contents: read
 concurrency:
@@ -10,7 +14,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   notify:
-    if: github.repository == 'LVTD-LLC/built-with-bend'
+    if: github.repository == 'LVTD-LLC/built-with-bend' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -21,7 +25,9 @@ jobs:
           key: indexnow-state-v1-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: indexnow-state-v1-
       - name: Submit new, removed and lastmod-changed public URLs
-        run: python apps/pages/indexnow.py --site-url https://builtwithbend.com --state indexnow-state.json --expected-revision "$GITHUB_SHA"
+        env:
+          EXPECTED_REVISION: ${{ github.event.workflow_run.head_sha || github.sha }}
+        run: python apps/pages/indexnow.py --site-url https://builtwithbend.com --state indexnow-state.json --expected-revision "$EXPECTED_REVISION"
       - uses: actions/cache/save@v4
         with:
           path: indexnow-state.json

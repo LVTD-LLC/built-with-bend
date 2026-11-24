@@ -1,8 +1,7 @@
-name: CI and deploy
+name: CI
 on:
   pull_request:
-  push:
-    branches: [main]
+  workflow_call:
 permissions:
   contents: read
 jobs:
@@ -58,86 +57,3 @@ jobs:
           build-args: DEPLOYMENT_REVISION=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-  publish:
-    name: Publish production image
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository == 'LVTD-LLC/built-with-bend'
-    needs: checks
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    permissions:
-      contents: read
-      packages: write
-    outputs:
-      digest: ${{ steps.build.outputs.digest }}
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          persist-credentials: false
-      - uses: docker/setup-buildx-action@v3
-      - uses: docker/login-action@v4
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: docker/build-push-action@v6
-        id: build
-        with:
-          context: .
-          file: deployment/Dockerfile
-          push: true
-          tags: ghcr.io/lvtd-llc/built-with-bend:${{ github.sha }}
-          labels: org.opencontainers.image.source=https://github.com/LVTD-LLC/built-with-bend
-          build-args: DEPLOYMENT_REVISION=${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-      - name: Verify revision baked into the published image
-        env:
-          IMAGE_DIGEST: ${{ steps.build.outputs.digest }}
-        run: |
-          image="ghcr.io/lvtd-llc/built-with-bend@$IMAGE_DIGEST"
-          revision=$(docker run --rm --pull=always --network none --entrypoint printenv "$image" DEPLOYMENT_REVISION)
-          test "$revision" = "$GITHUB_SHA"
-  deploy:
-    name: Deploy and verify live revision
-    needs: publish
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository == 'LVTD-LLC/built-with-bend'
-    runs-on: ubuntu-latest
-    timeout-minutes: 35
-    concurrency:
-      group: built-with-bend-production
-      cancel-in-progress: false
-    steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
-        with:
-          node-version-file: .nvmrc
-      - name: Skip superseded commits
-        id: latest
-        run: |
-          if [ "$(git ls-remote origin refs/heads/main | cut -f1)" = "$GITHUB_SHA" ]; then
-            echo 'current=true' >> "$GITHUB_OUTPUT"
-          else
-            echo 'A newer main revision exists; skipping this deployment.'
-          fi
-      - name: Snapshot public URLs before deployment
-        if: steps.latest.outputs.current == 'true'
-        run: python apps/pages/indexnow.py --site-url https://builtwithbend.com --snapshot /tmp/indexnow-before.json
-      - uses: actions/upload-artifact@v4
-        if: steps.latest.outputs.current == 'true'
-        with:
-          name: indexnow-before-${{ github.sha }}-${{ github.run_attempt }}
-          path: /tmp/indexnow-before.json
-          retention-days: 30
-      - name: Deploy published digest and verify web and worker revisions
-        if: steps.latest.outputs.current == 'true'
-        env:
-          IMAGE_DIGEST: ${{ needs.publish.outputs.digest }}
-          CAPROVER_SERVER: https://captain.cr.lvtd.dev
-          CAPROVER_APP_NAME: builtwithbend
-          CAPROVER_APP_TOKEN: ${{ secrets.APP_TOKEN }}
-          WORKERS_APP_TOKEN: ${{ secrets.WORKERS_APP_TOKEN }}
-          PRODUCTION_URL: https://builtwithbend.com
-        run: node scripts/deploy-caprover.mjs
-      - name: Notify IndexNow after verified deployment
-        if: steps.latest.outputs.current == 'true'
-        run: python apps/pages/indexnow.py --site-url https://builtwithbend.com --previous /tmp/indexnow-before.json --expected-revision "$GITHUB_SHA"

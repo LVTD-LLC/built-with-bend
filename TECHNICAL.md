@@ -174,29 +174,14 @@ Private DNS aliases retain the former `built-with-bend` service names.
 Web and worker connection URLs use the new service names, including the
 project-owned renderer at `http://builtwithbend-mjml:15500`.
 
-CI uses `CAPROVER_APP_NAME=builtwithbend`; the deployment script derives
-`builtwithbend-workers` and uses its separate `WORKERS_APP_TOKEN`.
-
-The `CI and deploy` workflow runs the PostgreSQL tests and validates the production
-Dockerfile on PRs. On a push to this repository's `main`, the publishing job
-builds the image with `DEPLOYMENT_REVISION=$GITHUB_SHA`, pushes it to
-`ghcr.io/lvtd-llc/built-with-bend` with the commit SHA as its tag, and checks the
-revision inside the published image. It passes the resulting `sha256` digest to
-the serialized deployment job. CapRover receives a version 2 `captain-definition`
-with an `imageName` pinned to that digest for each app.
-
-The publishing job uses its short-lived GitHub Actions token with
-`packages: write`. The organization must allow the repository to publish the
-container package. For a private package, the identity in CapRover's matching
-GHCR registry entry needs package read access. If the first pull is denied,
-check that identity's access to the package, then rerun the failed deployment
-job to reuse the published digest. Keep the previous production digest
-available for rollback.
-
-The deployment request waits for CapRover's result. An explicit rejection stops
-the job. If the proxy times out after forwarding the request, CI checks the live
-revision without resubmitting the deployment. Swarm uses each process's local
-health check to gate readiness.
+On a push to `main`, [Deploy production](.github/workflows/deploy.yml) runs the
+[CI tests](.github/workflows/ci.yml), then builds and publishes one image to
+`ghcr.io/lvtd-llc/built-with-bend` tagged with the commit SHA. The standard
+CapRover action deploys that image by digest to `builtwithbend` with `APP_TOKEN`
+and then to `builtwithbend-workers` with `WORKERS_APP_TOKEN`. Each deployment
+waits for 12 consecutive healthy responses for that revision, five seconds apart.
+PRs run the tests and a Docker build. Publishing requires the workflow's
+`packages: write` permission and CapRover needs read access to the GHCR package.
 
 Runtime: `ENVIRONMENT=prod`, `DEBUG=False`, strong `SECRET_KEY`, PostgreSQL
 `DATABASE_URL`, `SITE_URL=https://builtwithbend.com`, and bootstrap credentials.
@@ -240,7 +225,8 @@ The source of truth is `djass-manifest.json` (hosted job 34). All 18 current fea
 - **MJML**: existing private MJML renderer; npm dependency updated to the current compatible major to address audit findings.
 - **Chatwoot / Apprise / Healthchecks pings**: generated integrations retained; external widgets/notifications/pings require their project-specific settings. No unsolicited notification destinations are created. Database/cache and worker health endpoints are active.
 
-Web and worker deployments use separate app tokens and the same published image digest. CI first verifies 12 consecutive web revision probes, then deploys and verifies the worker. The local container healthcheck tests the actual process dependencies. Swarm's app-specific update policy continues after a failed transient task instead of leaving old and new tasks indefinitely after a pause; sustained revision probes remain the deployment success gate.
+Each container's health check tests its process dependencies. If a rollout fails,
+check the affected app's CapRover deployment log and live revision before retrying.
 
 The existing PostgreSQL database, auth users, directory tables and migrations are preserved. Core/Allauth/Q2/MCP migrations add their own tables. The generated initial extension migration was adapted **before its first deployment** to enable only available PostgreSQL extensions; Qdrant supplies vector storage, and no application model requires pgvector. No existing historical directory migration is rewritten. Take a database dump before the additive migration rollout.
 
@@ -427,19 +413,14 @@ verification and rollback. The website needs only `NEWSLETTER_LISTMONK_URL` and
 
 ## IndexNow notifications
 
-The public `/indexnow-key.txt` route proves ownership. Production CI snapshots
-public URL-to-lastmod state before deployment, retains the snapshot as a 30-day
-artifact, then notifies only added, changed or removed URLs after web/worker
-verification and an exact revision check on the key endpoint. Unchanged URLs
-are skipped; a code-only deployment sends no notifications. No repository variable
-or new credential is needed.
-
-`IndexNow directory changes` runs daily at 08:23 UTC (GitHub may delay schedules)
-and supports manual dispatch. It compares sitemap URLs and lastmod values with its
-last successful Actions-cache checkpoint. Unchanged URLs are skipped. A missing or
-evicted cache causes a full baseline. Failures never advance the checkpoint and
-remain visible in Actions; notification failure does not roll back the site.
-HTTP 200 is receipt, 202 is receipt with key validation pending, not indexing proof.
+The public `/indexnow-key.txt` route proves ownership. The independent
+[IndexNow workflow](.github/workflows/indexnow.yml) runs after a successful
+production deployment, daily at 08:23 UTC, or on manual dispatch. It verifies
+the live revision and compares the sitemap to its last successful checkpoint,
+including additions, removals and lastmod changes. A missing or evicted cache
+causes a full baseline. Failures leave the checkpoint in place so rerunning the
+notification retries the delta. HTTP 200 indicates receipt and 202 indicates
+receipt with key validation pending.
 
 Project lastmod currently reflects publication, not every database edit. Existing
 project description/image-only edits need a manual notification using
@@ -447,10 +428,5 @@ project description/image-only edits need a manual notification using
 distinct content lastmod is recorded. Same-date edits or edits without a lastmod
 change are not detected by sitemap comparison. New API-published projects and
 removals are covered by the daily check.
-For failed deployment notifications download the snapshot artifact and use
-`--previous <snapshot-file>` to retry the same delta, including removed URLs; do
-not redeploy just to retry. Legacy URL-only snapshots fail explicitly because they
-cannot identify edited pages. The no-argument manual command remains an explicit
-full-sitemap submission, not the automatic deployment path.
 The generated-stack reference describes upstream defaults; this section and the
 actual workflows describe this site's wiring.
