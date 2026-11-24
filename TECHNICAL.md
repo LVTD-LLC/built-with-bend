@@ -346,12 +346,13 @@ may retain their own previously fetched previews after a project is edited.
 Blog frontmatter can override `image` and `image_alt`; custom images do not inherit
 assumed dimensions. Missing blog artwork falls back to the local blog card.
 
-The committed 1200×630 PNGs live in `frontend/src/social/`. `npm run build` copies
-them to `frontend/static/social/` for WhiteNoise/collectstatic. To regenerate them,
-install Playwright locally (`npm install --no-save --package-lock=false playwright`
-and `npx playwright install chromium`), then run
-`node scripts/generate-social-images.mjs`. The generator uses system fonts and
-makes no external font or image requests. Ordinary builds need no browser.
+The approved media kit lives in `frontend/src/brand/built-with-bend-media-kit.zip`
+and is downloadable from the directory footer. After updating it, run
+`uv run python scripts/generate_brand_assets.py` and commit the refreshed assets.
+The generator extracts the web logos and icons, prepares the five static preview
+PNGs in `frontend/src/social/`, and builds one shared background for all project
+cards. Instrument Serif and its license are bundled in `apps/directory/fonts/`.
+`npm run build` copies the public assets for WhiteNoise and collectstatic.
 
 ## Navbar traffic and search
 

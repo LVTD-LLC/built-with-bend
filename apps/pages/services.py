@@ -11,6 +11,7 @@ from urllib.parse import urlsplit
 import frontmatter
 import markdown
 from django.conf import settings
+from django.templatetags.static import static
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.dateparse import parse_date, parse_datetime
@@ -242,7 +243,10 @@ def publisher_schema() -> dict:
     return {
         "@type": "Organization",
         "name": "Built with Bend",
-        "logo": {"@type": "ImageObject", "url": build_absolute_public_url(BLOG_DEFAULT_IMAGE_URL)},
+        "logo": {
+            "@type": "ImageObject",
+            "url": build_absolute_public_url(static("brand/android-512.png")),
+        },
     }
 
 
