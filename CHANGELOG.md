@@ -353,3 +353,7 @@ with release sections grouped by ISO 8601 date headings (`## YYYY-MM-DD`).
   required by `django-storages`.
 - Local Docker Compose now waits for the frontend watcher to finish its first asset build, and `npm run watch` now keeps browser modules in sync while editing JavaScript.
 - SEO metadata now uses project-scoped social tags/schema data, keeps private auth/app pages out of indexing, and limits blog listing/sitemaps to published posts.
+
+## 2026-11-25
+
+- Published a tested explanation of Bendoom’s random table and linked it from the language and proof guides.

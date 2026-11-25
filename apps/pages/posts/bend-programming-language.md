@@ -78,7 +78,7 @@ The useful learning material isn't just the familiar game. The repository separa
 
 Start with the simulation laws, then find the corresponding game behavior. Which properties are formalized? Which behaviors are checked by tests or comparison with a reference implementation? Those are more revealing questions than simply asking whether the whole game is “proven.”
 
-**Explore it for:** game logic, simulation invariants, and a substantial Bend application. [Read the Bendoom source and README](https://github.com/eliesgalvira/bendoom).
+**Explore it for:** game logic, simulation invariants, and a substantial Bend application. [Read the Bendoom source and README](https://github.com/eliesgalvira/bendoom). For a small example you can run without launching the game, [trace Bendoom’s random table](/blog/bendoom-random-table).
 
 ### 2. Bend SVG Studio: an editor that does its own rendering
 
