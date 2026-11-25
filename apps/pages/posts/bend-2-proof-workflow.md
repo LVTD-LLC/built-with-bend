@@ -207,6 +207,27 @@ On our first run, 534 definitions were checked. On the unchanged second run, all
 
 Use the cache for feedback on your own checkout. For a final result, rerun the installed compiler without the cache tool. A warm cache does not tell you that BendTT ran.
 
+### Try to disprove a law before writing its witness
+
+Open the [Bend 2 pocket workshop](/projects/bend-2-pocket-workshop/) and paste this into a scratch file. Read the function first: it returns 1 at exactly one input. Can the workshop find that input?
+
+```bend
+import Base
+
+def probe(x: U32) -> U32:
+  match x:
+    case 3: 1
+    case n: 0
+
+law sample:
+  for x: U32
+  {probe(x) == 0 : U32}
+```
+
+Place the cursor on `sample`, open its signature row and choose **Try on small values**. In our November 25 browser check the workshop reported that all four cases held. Look at the values it tried: **0, 1, 2 and 4294967295**. None is 3. The law is false even though the sample passed.
+
+To make the checker show the counterexample, replace `probe(x)` in the law with `probe(3)`, leaving the right side at 0. Try the same action again. Now the comparison is 1 against 0, regardless of the binder. A single failed case rules out the original universal claim because 3 is a valid U32 input; four passing cases could not establish it. This [workshop feature](https://github.com/np/bend-workshop/commit/b2248b8513f7e24071fd06fd94466abc3b75a430) tests examples. It does not supply a witness or run BendTT.
+
 <span id="projects"></span>
 
 ## 6. Read real Bend projects with a proof-boundary checklist
