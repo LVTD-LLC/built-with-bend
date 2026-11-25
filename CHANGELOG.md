@@ -1,3 +1,7 @@
+## 2026-11-25
+
+- Add a runnable Pocket Workshop exercise to the proof guide showing how a false law can pass every sampled input.
+
 ## 2026-11-24
 
 - Introduce the folded-b logo, downloadable media kit and matching social previews for the directory and individual project links.
