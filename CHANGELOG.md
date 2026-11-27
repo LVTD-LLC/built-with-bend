@@ -1,3 +1,7 @@
+## 2026-11-27
+
+- Show how bounded line reads distinguish blank lines, partial lines and end-of-file in native Bend 2.
+
 ## 2026-11-25
 
 - Add a runnable Pocket Workshop exercise to the proof guide showing how a false law can pass every sampled input.

@@ -2,6 +2,7 @@
 title: "Bend 2 File I/O: Create, Read, Close"
 description: "Try Bend 2 file I/O with checked native examples, exclusive creation, read-back assertions and failure controls before exploring storage projects."
 published_at: 2026-11-18
+updated_at: 2026-11-27
 author: Built with Bend
 keywords: [Bend 2 file I/O, Bend File.open, Bend read file, Bend write file]
 topics: [Bend 2, File I/O, Developer tools]
@@ -140,6 +141,18 @@ The `64` is a **byte bound**, not a request for the entire contents of any file.
 For larger inputs, decide what a complete result means before adding a loop. A byte cap prevents this call from requesting an unbounded buffer, but it does not validate a file format or report that the whole document fit. A prefix can look plausible while omitting the record you needed. Compare the expected length or structure in your own application, and test a file that is deliberately too large. That larger-file case is a recommended extension, not one of our executed controls.
 
 Text and binary data also need different handling. Base exposes `File.read_bytes` and `File.write_bytes` for byte lists. Do not assume a package-specific `Bytes` type is interchangeable with that list or that every string conversion is a UTF-8 encoder. The [package-import walkthrough](/blog/bend-2-package-imports) shows why reading a function's exact input type matters. This exercise stays ASCII; it is not a Unicode-boundary test. The [native reader](https://github.com/bendlang/bend/blob/v2.0.40/bend2/effs/file_read.c) converts each read buffer separately. A byte-sized chunk can split a multibyte character, so do not present repeated text reads as a lossless streaming decoder. Preserve bytes first when you need to control decoding across chunk boundaries.
+
+### Tell a blank line from end-of-file
+
+Use a **positive byte limit** with `File.read_line` if your loop treats an empty string as end-of-file. With a limit of zero, the native reader can return an empty string without consuming anything. In our Bend 2.0.40 check, a zero-byte read returned `""`; the next read on the returned handle, with a limit of 64, still returned the entire first line.
+
+A successful read is not necessarily a whole line, either. The [release’s runnable line-reader example](https://github.com/bendlang/bend/blob/v2.0.40/tests/io/file_read_line.bend) writes `ab\n\nlonger\nend`. Predict the next chunk before each read:
+
+- A limit of 64 returns `"ab\n"`, then `"\n"` for the blank line. The reader keeps the newline.
+- A limit of 3 returns `"lon"`. Reading again with 64 returns `"ger\n"`: two reads, one line.
+- The next read returns `"end"` without a trailing newline. Process it. Only the following read returns `""`.
+
+If your input uses Windows-style line endings, do not assume the reader strips the carriage return. On Linux with a CRLF fixture, our blank line came back as `"\r\n"`. Decide whether to normalize line endings **after** assembling the line; a chunk boundary is not a record boundary.
 
 <span id="controls"></span>
 
